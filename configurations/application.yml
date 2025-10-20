@@ -1,0 +1,6 @@
+#actuator'ın butun endpointleri dışarıya açmasını sağlıyor
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
