@@ -1,2 +1,6 @@
 server:
   port: 8888
+
+eureka:
+  register-with-eureka: true
+  fetch-resgistry: true
