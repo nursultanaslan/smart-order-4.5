@@ -1,0 +1,8 @@
+#ortama göre değişiklik göstermeyen konfigurasyonları buraya yazıyoruz
+server:
+  port: 8761
+
+eureka:
+  client:
+    fetch-resgistry: false
+    register-with-eureka: false

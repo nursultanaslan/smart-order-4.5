@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: gateway-server
+  profiles:
+    active: dev
+  config: #config'i nereden çekecek?
+    import: configserver:http://localhost:8787
