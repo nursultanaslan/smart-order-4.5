@@ -1,0 +1,16 @@
+services:
+  productsv_db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: product_service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: productservice_db_password
+    volumes:
+      - productdb_vol:/var/lib/postgresql/data #postgrenin dosyaları yazdıgı konum pg16 icin volume bu dizine baglanır
+    ports:
+      - "5432:5432"
+
+#her container kapandiginda o containerda calısan veriler kapatıldıgında kaybolur (kalıcı veri icin)
+#ve tekrar baslatildiginda sifirdan olusur. bunun onune gecmek icin volume tanımlarız.
+volumes:
+  productdb_vol: {}

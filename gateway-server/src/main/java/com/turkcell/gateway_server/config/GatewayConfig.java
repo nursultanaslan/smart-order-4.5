@@ -9,24 +9,23 @@ import org.springframework.http.HttpStatus;
 @Configuration
 public class GatewayConfig {
 
-    @Bean
-    public RouteLocator routeLocator(RouteLocatorBuilder builder) {
+        @Bean
+        public RouteLocator routeLocator(RouteLocatorBuilder builder) {
 
-        return builder
-                .routes()
-                .route("product-service", r -> r
-                        .path("/api/v1/products/**")
-                        .filters(f -> f // tekrar deneme mekanizması
-                                .retry(config -> config.setRetries(3)))
-                        .uri("lb://product-service"))
+                return builder
+                                .routes()
+                                .route("product-service", r -> r
+                                                .path("/api/v1/products/**")
+                                                .filters(f -> f // tekrar deneme mekanizması
+                                                                .retry(config -> config.setRetries(3)))
+                                                .uri("lb://product-service"))
 
+                                .route("fallback", r -> r
+                                                .path("/**")
+                                                .filters(f -> f.setStatus(HttpStatus.NOT_FOUND))
+                                                .uri("no://op"))
+                                .build();
 
-                .route("fallback", r -> r
-                .path("/**")
-                .filters(f -> f.setStatus(HttpStatus.NOT_FOUND))
-                .uri("no://op"))
-                .build();
-
-    }
+        }
 
 }
