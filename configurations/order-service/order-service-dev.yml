@@ -12,6 +12,6 @@ spring:
         binders:
           brokers: localhost:9094
       bindings:
-        orderCreated-out-0:
+        orderCreated-out-0:  #dışarıya bir mesaj göndereceksen out
           destination: order-topic
-          contentType: application/json
+          contentType: application/json  #içeriği serialize ederken json kullan
