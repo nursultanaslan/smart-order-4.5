@@ -15,8 +15,8 @@ services:
     container_name: kafka
     restart: unless-stopped
     ports:
-      - "9092:9092" # container içi (PLAINTEXT) - diğer container'lar için
-      - "9094:9094" # host'tan erişim (EXTERNAL)
+      - "9092:9092"   # container içi (PLAINTEXT) - diğer container'lar için
+      - "9094:9094"   # host'tan erişim (EXTERNAL)
     environment:
       # KRaft (ZooKeeper yok)
       KAFKA_PROCESS_ROLES: "broker,controller"
@@ -30,10 +30,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT"
       KAFKA_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
 
-      # Advertised (içeriden ve dışarıdan erişim için)
-      # Sunucu DOCKER HOST'unda çalışıyorsa ve host IP'n sabitse onu yaz: EXTERNAL://<host-ip>:9094
-      # Lokal Windows/Mac için genelde host.docker.internal iş görür.
-      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092,EXTERNAL://host.docker.internal:9094"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094"
 
       # Tek kopyalı ayarlar (tek düğüm olduğu için)
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
@@ -52,7 +49,7 @@ services:
 
     volumes: #bilgiler oluşturduğumuz volume'e yazılsın her defasında silinmesin
       - kafka-data:/var/lib/kafka/data
-    networks: #oluşturduğumuz networke bağlansın
+    networks:  #oluşturduğumuz networke bağlansın
       - kafkanet
 
     #kafka service'ine bağlanır. hangi service'ler ayakta hangi topicler var, hangi brokerlar var bunları gözlemleyebiliriz.
@@ -76,7 +73,7 @@ services:
 #ve tekrar baslatildiginda sifirdan olusur. bunun onune gecmek icin volume tanımlarız.
 volumes:
   productdb_vol: {}
-  kafka-data:
+  kafka-data: {}
 
 networks:
   kafkanet:
