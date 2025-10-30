@@ -8,9 +8,75 @@ services:
     volumes:
       - productdb_vol:/var/lib/postgresql/data #postgrenin dosyaları yazdıgı konum pg16 icin volume bu dizine baglanır
     ports:
-      - "5432:5432"
+      - "5433:5432"
+
+  kafka:
+    image: apache/kafka:3.8.0
+    container_name: kafka
+    restart: unless-stopped
+    ports:
+      - "9092:9092" # container içi (PLAINTEXT) - diğer container'lar için
+      - "9094:9094" # host'tan erişim (EXTERNAL)
+    environment:
+      # KRaft (ZooKeeper yok)
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_NODE_ID: "1"
+      # Controller quorum (tek düğüm)
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+      KAFKA_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+
+      # Listener tanımları
+      KAFKA_LISTENERS: "PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
+
+      # Advertised (içeriden ve dışarıdan erişim için)
+      # Sunucu DOCKER HOST'unda çalışıyorsa ve host IP'n sabitse onu yaz: EXTERNAL://<host-ip>:9094
+      # Lokal Windows/Mac için genelde host.docker.internal iş görür.
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092,EXTERNAL://host.docker.internal:9094"
+
+      # Tek kopyalı ayarlar (tek düğüm olduğu için)
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
+      KAFKA_NUM_PARTITIONS: "3"
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: "0"
+
+      # Storage / Cluster ID (KRaft için zorunlu)
+      # Loglarında gördüğün gibi image CLUSTER_ID bekliyor; güvenli taraf için ikisini de set edelim.
+      CLUSTER_ID: "5L6g3nShT-eMCtK--X86sw"
+      KAFKA_CLUSTER_ID: "5L6g3nShT-eMCtK--X86sw"
+
+      # Log dizini (container içi)
+      KAFKA_LOG_DIRS: "/var/lib/kafka/data"
+
+    volumes: #bilgiler oluşturduğumuz volume'e yazılsın her defasında silinmesin
+      - kafka-data:/var/lib/kafka/data
+    networks: #oluşturduğumuz networke bağlansın
+      - kafkanet
+
+    #kafka service'ine bağlanır. hangi service'ler ayakta hangi topicler var, hangi brokerlar var bunları gözlemleyebiliriz.
+  kafka-ui:
+    image: provectuslabs/kafka-ui:v0.7.2
+    container_name: kafka-ui
+    restart: unless-stopped
+    depends_on:
+      - kafka
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: "local"
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka:9092" #kafka-ui, yukarıdaki kafa broker'ına baglanıyor burada
+      # İstersen Schema Registry vb. ekleyeceksen aşağıyı kullanırsın:
+      # KAFKA_CLUSTERS_0_SCHEMAREGISTRY: "http://schema-registry:8081"
+    networks:
+      - kafkanet
 
 #her container kapandiginda o containerda calısan veriler kapatıldıgında kaybolur (kalıcı veri icin)
 #ve tekrar baslatildiginda sifirdan olusur. bunun onune gecmek icin volume tanımlarız.
 volumes:
   productdb_vol: {}
+  kafka-data:
+
+networks:
+  kafkanet:
