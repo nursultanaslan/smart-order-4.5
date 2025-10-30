@@ -5,12 +5,12 @@ eureka:
 
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: host.docker.internal:9094
   cloud:
     stream:
       kafka:
         binders:
-          brokers: localhost:9092
+          brokers: host.docker.internal:9094
       bindings:
         orderCreated-out-0:
           destination: order-topic

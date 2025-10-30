@@ -5,12 +5,12 @@ eureka:
 
 spring:
   kafka:
-    bootstrap-servers: kafka:9094
+    bootstrap-servers: kafka:9092
   cloud:
     stream:
       kafka:
         binders:
-          brokers: kafka:9094
+          brokers: kafka:9092
       bindings:
         orderCreated-out-0:
           destination: order-topic
