@@ -27,7 +27,16 @@ public class OrdersController {
         //hangi event olursa olsun Generic Message ile sarmallamak best practice'tir.
         Message<OrderCreatedEvent> message = MessageBuilder.withPayload(event).build();
         //binding ismiyle eventi alır özellikleri gönderir
-        streamBridge.send("orderCreated-out-0", message);
+
+        try{
+            boolean isSent = streamBridge.send("orderCreated-out-0", message);
+            if(!isSent){
+                System.out.println("Message not sent");
+            }
+        }catch (Exception e){
+            System.out.println("Message not sent");
+        }
+
         return orderDto.id().toString();
     }
 }

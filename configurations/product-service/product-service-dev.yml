@@ -6,7 +6,7 @@ eureka:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/product_service
+    url: jdbc:postgresql://localhost:5433/product_service
     username: postgres
     password: productservice_db_password
 
