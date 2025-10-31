@@ -4,7 +4,9 @@ import com.turkcell.product_service.domain.model.Money;
 import com.turkcell.product_service.domain.model.Product;
 import com.turkcell.product_service.domain.model.ProductId;
 import com.turkcell.product_service.infrastructure.persistence.model.JpaProductEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProductEntityMapper {
 
     public Product toDomain(JpaProductEntity entity){

@@ -10,6 +10,17 @@ services:
     ports:
       - "5433:5432"
 
+  ordersv_db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: order_service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: orderservice_db_password
+    volumes:
+      - orderdb_vol:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
   kafka:
     image: apache/kafka:3.8.0
     container_name: kafka
@@ -73,6 +84,7 @@ services:
 #ve tekrar baslatildiginda sifirdan olusur. bunun onune gecmek icin volume tanımlarız.
 volumes:
   productdb_vol: {}
+  orderdb_vol: {}
   kafka-data: {}
 
 networks:
