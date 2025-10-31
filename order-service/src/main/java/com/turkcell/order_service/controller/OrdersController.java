@@ -41,6 +41,7 @@ public class OrdersController {
         outboxMessage.setAggregateType("Order");           //Order domaini
         outboxMessage.setEventId(UUID.randomUUID());
         outboxMessage.setEventType("OrderCreatedEvent");
+        //dbye yazarken json'a ceviriyoruz
         outboxMessage.setPayloadJson(objectMapper.writeValueAsString(event)); //gönderdiğimiz eventin(mesajın) serialize edilmiş hali
 
         outboxRepository.save(outboxMessage);
