@@ -26,6 +26,8 @@ public class OutboxMessage {
     private String eventType;    //hangi türde event gidecek -> OrderCreatedEvent
     private String payloadJson;  //gönderilecek eventin içerisindeki Json detayları
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private OutboxStatus status = OutboxStatus.PENDING; //(pending olarak başlar)
     private Integer retryCount = 0;      //bu mesajı kaç kere göndermeyi denedim? (0'dan başlar)
 
