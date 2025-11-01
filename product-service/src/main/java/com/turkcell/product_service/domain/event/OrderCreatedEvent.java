@@ -1,4 +1,4 @@
-package com.turkcell.product_service.infrastructure.messaging.event;
+package com.turkcell.product_service.domain.event;
 
 import java.util.UUID;
 

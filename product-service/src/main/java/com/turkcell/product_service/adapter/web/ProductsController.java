@@ -1,4 +1,4 @@
-package com.turkcell.product_service.infrastructure.web;
+package com.turkcell.product_service.adapter.web;
 
 import com.turkcell.product_service.application.dto.request.CreateProductRequest;
 import com.turkcell.product_service.application.dto.response.DeleteProductResponse;

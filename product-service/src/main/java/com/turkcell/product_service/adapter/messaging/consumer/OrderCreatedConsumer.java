@@ -1,6 +1,6 @@
-package com.turkcell.product_service.infrastructure.messaging.stream;
+package com.turkcell.product_service.adapter.messaging.consumer;
 
-import com.turkcell.product_service.infrastructure.messaging.event.OrderCreatedEvent;
+import com.turkcell.product_service.domain.event.OrderCreatedEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,7 +16,6 @@ public class OrderCreatedConsumer {
         return event -> {
             System.out.println("Yeni bir order create edildi.");
             System.out.println("Stok düş.");
-            System.out.println("Bildirim gönder.");
             System.out.println(event.id());
         };
     }

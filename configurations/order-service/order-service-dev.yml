@@ -26,4 +26,4 @@ spring:
       bindings:
         orderCreated-out-0:  #dışarıya bir mesaj göndereceksen out
           destination: order-topic
-          contentType: application/json  #içeriği serialize ederken json kullan
+          contentType: application/json  #mesaj içeriğini serialize ederken json kullan

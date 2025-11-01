@@ -1,6 +1,7 @@
 spring:
   application:
     name: bff-service
-
-server:
-  port: 8989
+  profiles:
+    active: dev
+  config:
+    import: configserver:http://localhost:8787
