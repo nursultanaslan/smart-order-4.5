@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: cart-service
+  profiles:
+    active: dev
+  config:
+    import: configserver:http://localhost:8787
