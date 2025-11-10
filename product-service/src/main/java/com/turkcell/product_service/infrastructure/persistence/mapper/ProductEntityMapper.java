@@ -21,13 +21,13 @@ public class ProductEntityMapper {
 
 
     public JpaProductEntity toEntity(Product product){
-        JpaProductEntity entity = new JpaProductEntity();
-        entity.setId(product.id().value());
-        entity.setName(product.name());
-        entity.setAmount(product.price().amount());
-        entity.setCurrency(product.price().currency());
-        entity.setDescription(product.description());
-        entity.setStock(product.stock());
-        return entity;
+        return new JpaProductEntity(
+                product.id().value(),
+                product.name(),
+                product.price().amount(),
+                product.price().currency(),
+                product.description(),
+                product.stock()
+        );
     }
 }

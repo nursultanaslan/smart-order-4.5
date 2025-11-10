@@ -17,13 +17,12 @@ public class DeleteProductUseCase {
     private final ProductRepository productRepository;
     private final DeleteProductMapper productMapper;
 
-
     public DeleteProductUseCase(ProductRepository productRepository, DeleteProductMapper productMapper) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
     }
 
-    public DeleteProductResponse delete(UUID id){
+    public DeleteProductResponse delete(UUID id) {
         Product product = productRepository.findById(new ProductId(id))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
         productRepository.delete(product);

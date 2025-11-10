@@ -26,6 +26,18 @@ public class JpaProductEntity {
     @Column(name = "stock", nullable = false)
     private Integer stock;
 
+    public JpaProductEntity(UUID id, String name, BigDecimal amount, String currency, String description, Integer stock) {
+        this.id = id;
+        this.name = name;
+        this.amount = amount;
+        this.currency = currency;
+        this.description = description;
+        this.stock = stock;
+    }
+
+    public JpaProductEntity() {
+    }
+
     public UUID id() {
         return id;
     }
