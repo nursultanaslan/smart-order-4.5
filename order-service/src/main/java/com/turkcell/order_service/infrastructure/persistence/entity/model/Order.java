@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,66 +13,21 @@ import java.util.UUID;
 public class Order {
 
     @Id
-    @Column(nullable = false, columnDefinition = "uuid")
-    private UUID id = UUID.randomUUID();
+    @Column(columnDefinition = "uuid")
+    private UUID id;
 
-    @Column(nullable = false, columnDefinition = "uuid")
-    private UUID customerId;
     @Column(name = "total_price")
     private BigDecimal totalPrice;
+    @Column(name = "currency")
+    private String currency;
     @Column(name = "created_at")
-    private OffsetDateTime createdAt =  OffsetDateTime.now();
+    private OffsetDateTime createdAt;
+
     @Enumerated(EnumType.STRING)
-    private OrderStatus status = OrderStatus.PENDING;
+    private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems;
+    private List<OrderLine> lines = new ArrayList<>();
 
-    public UUID id() {
-        return id;
-    }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID customerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(UUID customerId) {
-        this.customerId = customerId;
-    }
-
-    public BigDecimal totalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public OffsetDateTime createdAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(OffsetDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public OrderStatus status() {
-        return status;
-    }
-
-    public void setStatus(OrderStatus status) {
-        this.status = status;
-    }
-
-    public List<OrderItem> orderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
 }

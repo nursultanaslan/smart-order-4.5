@@ -2,7 +2,7 @@ package com.turkcell.order_service.web.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.turkcell.order_service.application.dto.OrderResponse;
+import com.turkcell.order_service.application.dto.response.OrderResponse;
 import com.turkcell.order_service.infrastructure.persistence.entity.messaging.outbox.OutboxMessage;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
 import com.turkcell.order_service.infrastructure.persistence.repository.OutboxRepository;
@@ -17,46 +17,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/orders")
 public class OrdersController {
-    //kafka ile iletişim kuruyoruz streamBridge sayesinde.
-    private final StreamBridge streamBridge;
-    private final OutboxRepository outboxRepository;  //mimarisel olarak bunu burada tanımlamamız dogru değil
-    private final ObjectMapper objectMapper;
-
-    public OrdersController(StreamBridge streamBridge, OutboxRepository outboxRepository, ObjectMapper objectMapper) {
-        this.streamBridge = streamBridge;
-        this.outboxRepository = outboxRepository;
-        this.objectMapper = objectMapper;
-    }
 
     @PostMapping
-    public String createOrder(@RequestBody OrderResponse orderDto) throws JsonProcessingException {
-
-        OrderCreatedEvent event = new OrderCreatedEvent(orderDto.id());
-
-        //burası icin mapper yazılabilir
-        OutboxMessage outboxMessage = new OutboxMessage();
-        outboxMessage.setAggregateId(UUID.randomUUID());   //dbde oluşan order'ın id'si olacak
-        outboxMessage.setAggregateType("Order");           //Order domaini
-        outboxMessage.setEventId(UUID.randomUUID());
-        outboxMessage.setEventType("OrderCreatedEvent");
-        //dbye yazarken json'a ceviriyoruz
-        outboxMessage.setPayloadJson(objectMapper.writeValueAsString(event)); //gönderdiğimiz eventin(mesajın) serialize edilmiş hali
-
-        outboxRepository.save(outboxMessage);
-        /** Eski Tip mesajı direkt kafkaya gönderdiğimiz yöntem
-        //Eventi message ile sarmallayıp gönderiyoruz.
-        //hangi event olursa olsun Generic Message ile sarmallamak best practice'tir.
-        Message<OrderCreatedEvent> message = MessageBuilder.withPayload(event).build();
-        try{
-            //binding ismiyle eventi alır özellikleri gönderir
-            boolean isSent = streamBridge.send("orderCreated-out-0", message);
-            if(!isSent){
-                System.out.println("Message not sent");
-            }
-        }catch (Exception e){
-            System.out.println("Message not sent");
-        }
-        **/
-        return orderDto.id().toString();
+    public OrderResponse createOrder(@RequestBody OrderResponse orderDto) throws JsonProcessingException {
+        return null;
     }
 }

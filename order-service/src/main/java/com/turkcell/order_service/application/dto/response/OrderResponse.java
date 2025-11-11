@@ -1,4 +1,4 @@
-package com.turkcell.order_service.application.dto;
+package com.turkcell.order_service.application.dto.response;
 
 import java.util.UUID;
 
