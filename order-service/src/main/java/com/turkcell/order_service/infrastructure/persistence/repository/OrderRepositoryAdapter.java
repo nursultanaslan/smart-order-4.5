@@ -3,10 +3,12 @@ package com.turkcell.order_service.infrastructure.persistence.repository;
 import com.turkcell.order_service.domain.model.Order;
 import com.turkcell.order_service.domain.model.OrderId;
 import com.turkcell.order_service.domain.port.OrderRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class OrderRepositoryAdapter implements OrderRepository {
     @Override
     public Order save(Order order) {

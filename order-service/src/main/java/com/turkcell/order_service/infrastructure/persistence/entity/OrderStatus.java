@@ -1,4 +1,4 @@
-package com.turkcell.order_service.infrastructure.persistence.entity.model;
+package com.turkcell.order_service.infrastructure.persistence.entity;
 
 public enum OrderStatus {
     PENDING,

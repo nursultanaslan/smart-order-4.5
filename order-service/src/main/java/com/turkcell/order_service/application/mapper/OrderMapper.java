@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
 
-
 @Component
 public class OrderMapper {
 
@@ -22,13 +21,13 @@ public class OrderMapper {
         );
     }
 
-    public Order toDomain(CreateOrderCommand command) {
-        return Order.create(
-                new CustomerId(command.customerId()),
-                new CartId(command.cartId()),
-                OffsetDateTime.now(),
-
-        )
-
-    }
+//    public Order toDomain(CreateOrderCommand command) {
+//        return Order.create(
+//                new CustomerId(command.customerId()),
+//                new CartId(command.cartId()),
+//                OffsetDateTime.now(),
+//
+//        )
+//
+//    }
 }

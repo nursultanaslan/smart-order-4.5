@@ -1,4 +1,4 @@
-package com.turkcell.order_service.infrastructure.persistence.entity.messaging.outbox;
+package com.turkcell.order_service.infrastructure.messaging.outbox;
 
 import jakarta.persistence.*;
 
@@ -26,7 +26,7 @@ public class OutboxMessage {
     private String aggregateType;   //kafkaya gönderdiğimiz eventin domain nesnesi (ornegin: order)
 
     private OffsetDateTime createdAt = OffsetDateTime.now();  //mesaj ne zaman oluşturuldu?
-    private OffsetDateTime lastUpdatedDate;     //son işlem yapılan tarihi tutarız (null olabilir, başlangıçta da null olacaktır)
+    private OffsetDateTime updatedAt;     //son işlem yapılan tarihi tutarız (null olabilir, başlangıçta da null olacaktır)
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -106,11 +106,11 @@ public class OutboxMessage {
         this.createdAt = createdAt;
     }
 
-    public OffsetDateTime lastUpdatedDate() {
-        return lastUpdatedDate;
+    public OffsetDateTime updatedAt() {
+        return updatedAt;
     }
 
-    public void setLastUpdatedDate(OffsetDateTime lastUpdatedDate) {
-        this.lastUpdatedDate = lastUpdatedDate;
+    public void setUpdatedAt(OffsetDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

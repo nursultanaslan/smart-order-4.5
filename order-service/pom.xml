@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.turkcell</groupId>
-	<artifactId>order-service</artifactId>
+	<artifactId>jpaOrderEntity-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>order-service</name>
+	<name>jpaOrderEntity-service</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

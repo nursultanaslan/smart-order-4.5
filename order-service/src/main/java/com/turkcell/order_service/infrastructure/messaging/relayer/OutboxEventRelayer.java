@@ -1,11 +1,11 @@
-package com.turkcell.order_service.infrastructure.persistence.entity.messaging.relayer;
+package com.turkcell.order_service.infrastructure.messaging.relayer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.turkcell.order_service.infrastructure.persistence.entity.messaging.outbox.OutboxMessage;
-import com.turkcell.order_service.infrastructure.persistence.entity.messaging.outbox.OutboxStatus;
+import com.turkcell.order_service.infrastructure.messaging.outbox.OutboxMessage;
+import com.turkcell.order_service.infrastructure.messaging.outbox.OutboxStatus;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
-import com.turkcell.order_service.infrastructure.persistence.repository.OutboxRepository;
+import com.turkcell.order_service.infrastructure.messaging.repository.OutboxRepository;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -54,13 +54,13 @@ public class OutboxEventRelayer {
                 }else {
                     pendingEvent.setStatus(OutboxStatus.SENT);
                 }
-                pendingEvent.setLastUpdatedDate(OffsetDateTime.now());
+                pendingEvent.setUpdatedAt(OffsetDateTime.now());
                 outboxRepository.save(pendingEvent);
             }catch (Exception e) { //kafkaya ulasamadı hata fırlattı -> mesaj gitmedi
                 pendingEvent.setRetryCount(pendingEvent.retryCount() + 1);
                 if (pendingEvent.retryCount() > 5) {
                     pendingEvent.setStatus(OutboxStatus.FAILED);
-                    pendingEvent.setLastUpdatedDate(OffsetDateTime.now());
+                    pendingEvent.setUpdatedAt(OffsetDateTime.now());
                 }
                 outboxRepository.save(pendingEvent);
             }

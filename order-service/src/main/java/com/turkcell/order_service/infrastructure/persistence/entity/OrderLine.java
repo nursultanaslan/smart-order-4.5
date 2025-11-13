@@ -1,4 +1,4 @@
-package com.turkcell.order_service.infrastructure.persistence.entity.model;
+package com.turkcell.order_service.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 
@@ -26,7 +26,7 @@ public class OrderLine {
 
     @ManyToOne()
     @JoinColumn(name = "order_id")
-    private Order order;
+    private JpaOrderEntity jpaOrderEntity;
 
     public UUID productId() {
         return productId;
@@ -76,11 +76,11 @@ public class OrderLine {
         this.lineTotalPrice = lineTotalPrice;
     }
 
-    public Order order() {
-        return order;
+    public JpaOrderEntity order() {
+        return jpaOrderEntity;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrder(JpaOrderEntity jpaOrderEntity) {
+        this.jpaOrderEntity = jpaOrderEntity;
     }
 }

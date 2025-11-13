@@ -1,4 +1,4 @@
 package com.turkcell.product_service.domain.event;
 
-public class ProductStockIncreasedEvent {
+public record ProductStockIncreasedEvent() {
 }

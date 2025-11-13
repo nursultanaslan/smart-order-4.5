@@ -1,4 +1,4 @@
-package com.turkcell.order_service.infrastructure.persistence.entity.model;
+package com.turkcell.order_service.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 
@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class JpaOrderEntity {
 
     @Id
     @Column(columnDefinition = "uuid")
