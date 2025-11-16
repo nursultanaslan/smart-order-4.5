@@ -1,7 +1,7 @@
-package com.turkcell.order_service.infrastructure.messaging.repository;
+package com.turkcell.order_service.infrastructure.persistence.repository;
 
-import com.turkcell.order_service.infrastructure.messaging.outbox.OutboxMessage;
-import com.turkcell.order_service.infrastructure.messaging.outbox.OutboxStatus;
+import com.turkcell.order_service.infrastructure.persistence.entity.OutboxMessage;
+import com.turkcell.order_service.infrastructure.persistence.entity.OutboxStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

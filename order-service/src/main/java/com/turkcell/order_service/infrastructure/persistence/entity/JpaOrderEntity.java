@@ -26,8 +26,75 @@ public class JpaOrderEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    @Column(name = "customer_id", nullable = false)
+    private UUID customerId;
+    @Column(name = "cart_id", nullable = false)
+    private UUID cartId;
+
     @OneToMany(mappedBy = "order")
-    private List<OrderLine> lines = new ArrayList<>();
+    private List<OrderLineEntity> lines = new ArrayList<>();
 
+    public UUID id() {
+        return id;
+    }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public BigDecimal totalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String currency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public OffsetDateTime createdAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public OrderStatus orderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public UUID customerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(UUID customerId) {
+        this.customerId = customerId;
+    }
+
+    public UUID cartId() {
+        return cartId;
+    }
+
+    public void setCartId(UUID cartId) {
+        this.cartId = cartId;
+    }
+
+    public List<OrderLineEntity> lines() {
+        return lines;
+    }
+
+    public void setLines(List<OrderLineEntity> lines) {
+        this.lines = lines;
+    }
 }

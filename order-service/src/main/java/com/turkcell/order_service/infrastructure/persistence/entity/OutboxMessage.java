@@ -1,4 +1,4 @@
-package com.turkcell.order_service.infrastructure.messaging.outbox;
+package com.turkcell.order_service.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 

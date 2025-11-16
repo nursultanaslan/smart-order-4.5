@@ -1,0 +1,36 @@
+package com.turkcell.order_service.infrastructure.messaging.producer.adapter;
+
+import com.turkcell.order_service.domain.event.OrderCreatedEvent;
+import com.turkcell.order_service.domain.port.DomainEventsPublisher;
+import com.turkcell.order_service.infrastructure.messaging.producer.event.OrderCreatedIntegrationEvent;
+import com.turkcell.order_service.infrastructure.persistence.entity.OutboxMessage;
+import com.turkcell.order_service.infrastructure.persistence.mapper.IntegrationEventMapper;
+import com.turkcell.order_service.infrastructure.persistence.mapper.OutboxMapper;
+import com.turkcell.order_service.infrastructure.persistence.repository.OutboxRepository;
+import org.springframework.stereotype.Component;
+
+@Component
+public class DomainEventsPublisherAdapter implements DomainEventsPublisher {
+
+    private final OutboxRepository outboxRepository;
+    private final OutboxMapper outboxMapper;
+    private final IntegrationEventMapper integrationEventMapper;
+
+    public DomainEventsPublisherAdapter(OutboxRepository outboxRepository, OutboxMapper outboxMapper, IntegrationEventMapper integrationEventMapper) {
+        this.outboxRepository = outboxRepository;
+        this.outboxMapper = outboxMapper;
+        this.integrationEventMapper = integrationEventMapper;
+    }
+
+    @Override
+    public void publish(OrderCreatedEvent event) {
+
+        OrderCreatedIntegrationEvent orderIntegrationEvent =
+                integrationEventMapper.toIntegrationEvent(event);
+
+        OutboxMessage outboxMessage = outboxMapper.toOutbox(orderIntegrationEvent);
+
+        outboxRepository.save(outboxMessage);
+
+    }
+}

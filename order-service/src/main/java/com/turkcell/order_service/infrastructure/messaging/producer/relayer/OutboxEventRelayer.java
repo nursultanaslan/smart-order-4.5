@@ -1,11 +1,11 @@
-package com.turkcell.order_service.infrastructure.messaging.relayer;
+package com.turkcell.order_service.infrastructure.messaging.producer.relayer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.turkcell.order_service.infrastructure.messaging.outbox.OutboxMessage;
-import com.turkcell.order_service.infrastructure.messaging.outbox.OutboxStatus;
+import com.turkcell.order_service.infrastructure.persistence.entity.OutboxMessage;
+import com.turkcell.order_service.infrastructure.persistence.entity.OutboxStatus;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
-import com.turkcell.order_service.infrastructure.messaging.repository.OutboxRepository;
+import com.turkcell.order_service.infrastructure.persistence.repository.OutboxRepository;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;

@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "order_lines")
-public class OrderLine {
+public class OrderLineEntity {
 
     @Id
     @Column(columnDefinition = "uuid", nullable = false)
@@ -27,6 +27,20 @@ public class OrderLine {
     @ManyToOne()
     @JoinColumn(name = "order_id")
     private JpaOrderEntity jpaOrderEntity;
+
+
+    public OrderLineEntity(UUID productId, String productName, BigDecimal unitPrice, String currency, Integer quantity, BigDecimal lineTotalPrice) {
+        this.productId = productId;
+        this.productName = productName;
+        this.unitPrice = unitPrice;
+        this.currency = currency;
+        this.quantity = quantity;
+        this.lineTotalPrice = lineTotalPrice;
+    }
+
+    public OrderLineEntity() {
+
+    }
 
     public UUID productId() {
         return productId;

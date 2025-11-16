@@ -20,7 +20,8 @@ public class Order {
     private OrderStatus orderStatus;
     private List<OrderLine> lines;
 
-    private Order(OrderId id, CustomerId customerId, CartId cartId, BigDecimal totalPrice, String currency, OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderLine> lines) {
+    private Order(OrderId id, CustomerId customerId, CartId cartId, BigDecimal totalPrice, String currency,
+            OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderLine> lines) {
         this.id = id;
         this.customerId = customerId;
         this.cartId = cartId;
@@ -31,21 +32,23 @@ public class Order {
         this.lines = lines;
     }
 
-    public static Order create(CustomerId customerId, CartId cartId, BigDecimal totalPrice, String currency, OffsetDateTime createdAt, List<OrderLine> lines){
-        validateTotalPrice(totalPrice);
-        return new Order(
+    public static Order create(CustomerId customerId, CartId cartId, OffsetDateTime createdAt, List<OrderLine> lines) {
+        validateCurrencyConsistency(lines);
+        Order order = new Order(
                 OrderId.generate(),
                 customerId,
                 cartId,
-                totalPrice,
-                lines.isEmpty() ? null : lines.getFirst().currency(),
+                null, // totalPrice will be calculated
+                lines.getFirst().currency(), // currency from first line (all lines have same currency after validation)
                 createdAt,
                 OrderStatus.getDefault(),
-                lines
-        );
+                lines);
+        order.calculateTotalPrice();
+        return order;
     }
 
-    public static Order rehydrate(OrderId id, CustomerId customerId, CartId cartId, BigDecimal totalPrice, String currency, OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderLine> lines){
+    public static Order rehydrate(OrderId id, CustomerId customerId, CartId cartId, BigDecimal totalPrice,
+            String currency, OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderLine> lines) {
         return new Order(
                 id,
                 customerId,
@@ -54,12 +57,11 @@ public class Order {
                 currency,
                 createdAt,
                 orderStatus,
-                lines
-        );
+                lines);
     }
 
-    //worker methods
-    public void calculateTotalPrice(){
+    // worker methods
+    public void calculateTotalPrice() {
         this.totalPrice = lines
                 .stream()
                 .map(line -> line.unitPrice().multiply(BigDecimal.valueOf(line.quantity())))
@@ -69,40 +71,50 @@ public class Order {
 
     }
 
-    //set status
-    public void markInProgress(){
+    // set status
+    public void markInProgress() {
         this.orderStatus = OrderStatus.IN_PROGRESS;
     }
-    public void markCompleted(){
+
+    public void markCompleted() {
         this.orderStatus = OrderStatus.COMPLETED;
     }
-    public void markCancelled(){
-        if (orderStatus != OrderStatus.PENDING){
+
+    public void markCancelled() {
+        if (orderStatus != OrderStatus.PENDING) {
             throw new IllegalStateException("Only pending orders can be marked as cancelled.");
         }
         this.orderStatus = OrderStatus.CANCELLED;
     }
-    public void markClaimed(){
+
+    public void markClaimed() {
         if (orderStatus != OrderStatus.COMPLETED) {
             throw new IllegalStateException("");
         }
     }
 
-    //validate methods
-    public static void validateTotalPrice(BigDecimal totalPrice){
-        if(totalPrice.signum() < 0){
+    // validate methods
+    public static void validateTotalPrice(BigDecimal totalPrice) {
+        if (totalPrice.signum() < 0) {
             throw new IllegalArgumentException("Total price cannot be negative");
         }
     }
 
-    public static void validateCurrencyConsistency(List<OrderLine> lines){
-        if (lines == null || lines.isEmpty()){
-            throw new IllegalArgumentException("Order line cannot be empty");
+    public static void validateCurrencyConsistency(List<OrderLine> lines) {
+        if (lines == null || lines.isEmpty()) {
+            throw new IllegalArgumentException("Order lines cannot be null or empty");
         }
 
+        String firstCurrency = lines.getFirst().currency();
+        boolean allSameCurrency = lines.stream()
+                .allMatch(line -> firstCurrency.equals(line.currency()));
+
+        if (!allSameCurrency) {
+            throw new IllegalArgumentException("All order lines must have the same currency");
+        }
     }
 
-    //getters
+    // getters
     public OrderId id() {
         return id;
     }
