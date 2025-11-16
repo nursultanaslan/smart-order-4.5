@@ -10,7 +10,7 @@ import java.util.UUID;
         @Index(name = "ix_outbox_event_id", columnList = "eventId", unique = true),  //id gorevi gormez eventId fakat unique olmalıdır
         @Index(name = "ix_outbox_status_created", columnList = "status, createdAt") //status ve createdAt alanları öncelikli sıralama (performans icin)
 })
-public class OutboxMessage {
+public class OrderOutboxEntity {
 
     @Id
     @Column(nullable = false, columnDefinition = "uuid")
@@ -30,7 +30,7 @@ public class OutboxMessage {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private OutboxStatus status = OutboxStatus.PENDING; //(pending olarak başlar)
+    private OrderOutboxStatus status = OrderOutboxStatus.PENDING; //(pending olarak başlar)
 
     private Integer retryCount = 0;      //bu mesajı kaç kere göndermeyi denedim? (0'dan başlar)
 
@@ -82,11 +82,11 @@ public class OutboxMessage {
         this.payloadJson = payloadJson;
     }
 
-    public OutboxStatus status() {
+    public OrderOutboxStatus status() {
         return status;
     }
 
-    public void setStatus(OutboxStatus status) {
+    public void setStatus(OrderOutboxStatus status) {
         this.status = status;
     }
 

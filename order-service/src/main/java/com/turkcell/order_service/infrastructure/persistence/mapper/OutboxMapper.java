@@ -3,7 +3,7 @@ package com.turkcell.order_service.infrastructure.persistence.mapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.turkcell.order_service.infrastructure.messaging.producer.event.OrderCreatedIntegrationEvent;
-import com.turkcell.order_service.infrastructure.persistence.entity.OutboxMessage;
+import com.turkcell.order_service.infrastructure.persistence.entity.OrderOutboxEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -17,14 +17,14 @@ public class OutboxMapper {
         this.objectMapper = objectMapper;
     }
 
-    public OutboxMessage toOutbox(OrderCreatedIntegrationEvent integrationEvent) {
-        OutboxMessage outboxMessage = new OutboxMessage();
-        outboxMessage.setAggregateId(integrationEvent.orderId());
-        outboxMessage.setAggregateType("Order");
-        outboxMessage.setEventId(UUID.randomUUID());
-        outboxMessage.setEventType("OrderCreatedEvent");
-        outboxMessage.setPayloadJson(serializeEvent(integrationEvent));
-        return outboxMessage;
+    public OrderOutboxEntity toOutbox(OrderCreatedIntegrationEvent integrationEvent) {
+        OrderOutboxEntity orderOutboxEntity = new OrderOutboxEntity();
+        orderOutboxEntity.setAggregateId(integrationEvent.orderId());
+        orderOutboxEntity.setAggregateType("Order");
+        orderOutboxEntity.setEventId(UUID.randomUUID());
+        orderOutboxEntity.setEventType("OrderCreatedEvent");
+        orderOutboxEntity.setPayloadJson(serializeEvent(integrationEvent));
+        return orderOutboxEntity;
     }
 
     // from java object(integrationEvent) to serialize as json

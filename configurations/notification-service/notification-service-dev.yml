@@ -1,4 +1,30 @@
 eureka:
   client:
     service-url:
-      defaultZone : http://localhost:8761/eureka
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/notification_service
+    username: postgres
+    password: notificationservice_db_password
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    format-sql: true
+
+  kafka:
+    bootstrap-servers: localhost:9094
+  cloud:
+    stream:
+      kafka:
+        binders:
+          brokers: localhost:9094
+      bindings:
+        orderCreated-in-0:
+          destination: order-topic
+          group: notification-service
+          contentType: application/json

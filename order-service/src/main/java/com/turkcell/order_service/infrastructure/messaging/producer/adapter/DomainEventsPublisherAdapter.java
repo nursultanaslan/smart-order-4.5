@@ -3,7 +3,7 @@ package com.turkcell.order_service.infrastructure.messaging.producer.adapter;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
 import com.turkcell.order_service.domain.port.DomainEventsPublisher;
 import com.turkcell.order_service.infrastructure.messaging.producer.event.OrderCreatedIntegrationEvent;
-import com.turkcell.order_service.infrastructure.persistence.entity.OutboxMessage;
+import com.turkcell.order_service.infrastructure.persistence.entity.OrderOutboxEntity;
 import com.turkcell.order_service.infrastructure.persistence.mapper.IntegrationEventMapper;
 import com.turkcell.order_service.infrastructure.persistence.mapper.OutboxMapper;
 import com.turkcell.order_service.infrastructure.persistence.repository.OutboxRepository;
@@ -28,9 +28,9 @@ public class DomainEventsPublisherAdapter implements DomainEventsPublisher {
         OrderCreatedIntegrationEvent orderIntegrationEvent =
                 integrationEventMapper.toIntegrationEvent(event);
 
-        OutboxMessage outboxMessage = outboxMapper.toOutbox(orderIntegrationEvent);
+        OrderOutboxEntity orderOutboxEntity = outboxMapper.toOutbox(orderIntegrationEvent);
 
-        outboxRepository.save(outboxMessage);
+        outboxRepository.save(orderOutboxEntity);
 
     }
 }
