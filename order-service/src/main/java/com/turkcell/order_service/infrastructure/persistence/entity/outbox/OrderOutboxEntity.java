@@ -1,4 +1,4 @@
-package com.turkcell.order_service.infrastructure.persistence.entity;
+package com.turkcell.order_service.infrastructure.persistence.entity.outbox;
 
 import jakarta.persistence.*;
 
@@ -7,39 +7,42 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "outbox", indexes = {
-        @Index(name = "ix_outbox_event_id", columnList = "eventId", unique = true),  //id gorevi gormez eventId fakat unique olmalıdır
-        @Index(name = "ix_outbox_status_created", columnList = "status, createdAt") //status ve createdAt alanları öncelikli sıralama (performans icin)
+        @Index(name = "ix_outbox_event_id", columnList = "eventId", unique = true), //tekrar eden event üretimini engeller
+        @Index(name = "ix_outbox_status_created", columnList = "status, createdAt") // status ve createdAt alanları
+                                                                                    // öncelikli sıralama (performans
+                                                                                    // icin)
 })
 public class OrderOutboxEntity {
 
     @Id
     @Column(nullable = false, columnDefinition = "uuid")
-    private UUID messageId = UUID.randomUUID();  //outbox mesajın kendi id'si.
+    private UUID id = UUID.randomUUID(); // outbox mesajın kendi id'si.
 
     @Column(nullable = false, columnDefinition = "uuid")
-    private UUID eventId = UUID.randomUUID();   //kafkada tutulacak her evente ozel id.
-    private String eventType;    //hangi türde event gidecek -> OrderCreatedEvent
-    private String payloadJson;  //gönderilecek eventin içerisindeki Json detayları
+    private UUID eventId = UUID.randomUUID(); // kafkada tutulacak her evente ozel id. (idempotency)
+    private String eventType; // hangi türde event gidecek -> OrderCreatedEvent
+    private String payloadJson; // gönderilecek eventin içerisindeki Json detayları
 
     @Column(nullable = false, columnDefinition = "uuid")
-    private UUID aggregateId;       //aggregate'in id'si (orderId)
-    private String aggregateType;   //kafkaya gönderdiğimiz eventin domain nesnesi (ornegin: order)
+    private UUID aggregateId; // aggregate'in id'si (orderId)
+    private String aggregateType; // kafkaya gönderdiğimiz eventin domain nesnesi (ornegin: order)
 
-    private OffsetDateTime createdAt = OffsetDateTime.now();  //mesaj ne zaman oluşturuldu?
-    private OffsetDateTime updatedAt;     //son işlem yapılan tarihi tutarız (null olabilir, başlangıçta da null olacaktır)
+    private OffsetDateTime createdAt = OffsetDateTime.now(); // mesaj ne zaman oluşturuldu?
+    private OffsetDateTime updatedAt; // son işlem yapılan tarihi tutarız (null olabilir, başlangıçta da null
+                                      // olacaktır)
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private OrderOutboxStatus status = OrderOutboxStatus.PENDING; //(pending olarak başlar)
+    private OrderOutboxStatus status = OrderOutboxStatus.PENDING; // (pending olarak başlar)
 
-    private Integer retryCount = 0;      //bu mesajı kaç kere göndermeyi denedim? (0'dan başlar)
+    private Integer retryCount = 0; // bu mesajı kaç kere göndermeyi denedim? (0'dan başlar)
 
-    public UUID messageId() {
-        return messageId;
+    public UUID id() {
+        return id;
     }
 
-    public void setMessageId(UUID messageId) {
-        this.messageId = messageId;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public UUID eventId() {

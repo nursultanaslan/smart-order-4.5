@@ -15,18 +15,15 @@ public class ProcessedMessage {
     @Column(columnDefinition = "uuid")
     private UUID id;
 
-    @Column(name = "message_id", nullable = false)
-    private UUID messageId;
-    @Column(name = "consumer_id", nullable = false)
-    private UUID consumerId;
+    @Column(name = "event_id", nullable = false, unique = true)
+    private UUID eventId;
 
     public ProcessedMessage() {
     }
 
-    public ProcessedMessage(UUID id, UUID messageId, UUID consumerId) {
+    public ProcessedMessage(UUID id, UUID eventId) {
         this.id = id;
-        this.messageId = messageId;
-        this.consumerId = consumerId;
+        this.eventId = eventId;
     }
 
     public UUID id() {
@@ -37,19 +34,11 @@ public class ProcessedMessage {
         this.id = id;
     }
 
-    public UUID messageId() {
-        return messageId;
+    public UUID eventId() {
+        return eventId;
     }
 
-    public void setMessageId(UUID messageId) {
-        this.messageId = messageId;
-    }
-
-    public UUID consumerId() {
-        return consumerId;
-    }
-
-    public void setConsumerId(UUID consumerId) {
-        this.consumerId = consumerId;
+    public void setEventId(UUID eventId) {
+        this.eventId = eventId;
     }
 }

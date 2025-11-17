@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
 public class OrderMapper {
 
     public Order toDomain(CreateOrderCommand command) {
-        List<OrderLine> orderLines = command.lines().stream()
+        List<OrderLine> orderLines =
+                command.lines().stream()
                 .map(this::toOrderLine)
                 .collect(Collectors.toList());
 

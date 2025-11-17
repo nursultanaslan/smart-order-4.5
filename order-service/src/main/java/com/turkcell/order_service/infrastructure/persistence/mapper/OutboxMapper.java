@@ -3,7 +3,7 @@ package com.turkcell.order_service.infrastructure.persistence.mapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.turkcell.order_service.infrastructure.messaging.producer.event.OrderCreatedIntegrationEvent;
-import com.turkcell.order_service.infrastructure.persistence.entity.OrderOutboxEntity;
+import com.turkcell.order_service.infrastructure.persistence.entity.outbox.OrderOutboxEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;

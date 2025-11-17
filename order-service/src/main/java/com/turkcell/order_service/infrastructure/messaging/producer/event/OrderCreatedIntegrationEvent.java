@@ -1,7 +1,7 @@
 package com.turkcell.order_service.infrastructure.messaging.producer.event;
 
 
-import com.turkcell.order_service.infrastructure.persistence.entity.OrderLineEntity;
+import com.turkcell.order_service.infrastructure.persistence.entity.order.OrderLineEntity;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

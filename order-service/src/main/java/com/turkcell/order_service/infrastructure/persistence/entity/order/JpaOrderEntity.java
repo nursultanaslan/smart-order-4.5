@@ -1,4 +1,4 @@
-package com.turkcell.order_service.infrastructure.persistence.entity;
+package com.turkcell.order_service.infrastructure.persistence.entity.order;
 
 import jakarta.persistence.*;
 
@@ -31,7 +31,7 @@ public class JpaOrderEntity {
     @Column(name = "cart_id", nullable = false)
     private UUID cartId;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "jpaOrderEntity")
     private List<OrderLineEntity> lines = new ArrayList<>();
 
     public UUID id() {

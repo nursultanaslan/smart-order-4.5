@@ -3,7 +3,7 @@ package com.turkcell.order_service.infrastructure.persistence.mapper;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
 import com.turkcell.order_service.domain.model.OrderLine;
 import com.turkcell.order_service.infrastructure.messaging.producer.event.OrderCreatedIntegrationEvent;
-import com.turkcell.order_service.infrastructure.persistence.entity.OrderLineEntity;
+import com.turkcell.order_service.infrastructure.persistence.entity.order.OrderLineEntity;
 import org.springframework.stereotype.Component;
 
 @Component

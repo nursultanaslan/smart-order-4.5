@@ -2,9 +2,9 @@ package com.turkcell.order_service.infrastructure.messaging.producer.relayer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.turkcell.order_service.infrastructure.persistence.entity.OrderOutboxEntity;
-import com.turkcell.order_service.infrastructure.persistence.entity.OrderOutboxStatus;
-import com.turkcell.order_service.domain.event.OrderCreatedEvent;
+import com.turkcell.order_service.infrastructure.messaging.producer.event.OrderCreatedIntegrationEvent;
+import com.turkcell.order_service.infrastructure.persistence.entity.outbox.OrderOutboxEntity;
+import com.turkcell.order_service.infrastructure.persistence.entity.outbox.OrderOutboxStatus;
 import com.turkcell.order_service.infrastructure.persistence.repository.OutboxRepository;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.messaging.Message;
@@ -35,18 +35,21 @@ public class OutboxEventRelayer {
         System.out.println("publish pending event is called");
 
         //OutboxStatusu pending olan eventleri bul pendingEventse at
-        List<OrderOutboxEntity> pendingEvents = outboxRepository.findByStatusOrderByCreatedAtAsc(OrderOutboxStatus.PENDING);
+        List<OrderOutboxEntity> pendingEvents =
+                outboxRepository.findByStatusOrderByCreatedAtAsc(OrderOutboxStatus.PENDING);
 
         for (OrderOutboxEntity pendingEvent : pendingEvents) {
             //Deserialize
             //db'den okurken tekrardan event türüne cevirip okuyoruz.
-            OrderCreatedEvent event = objectMapper.readValue(pendingEvent.payloadJson(), OrderCreatedEvent.class);
+            OrderCreatedIntegrationEvent event =
+                    objectMapper.readValue(pendingEvent.payloadJson(), OrderCreatedIntegrationEvent.class);
 
-            Message<OrderCreatedEvent> message = MessageBuilder.withPayload(event).build();
-
-            try { //Kafkaya ulaştı
+            Message<OrderCreatedIntegrationEvent> message = MessageBuilder.withPayload(event).build();
+            //Kafkaya ulaştı
+            try {
                 boolean isSent = streamBridge.send("OrderCreatedEvent", message);
-                if (!isSent) {  //fakat isSent'in true olması -> mesaj gitmedi
+                //fakat isSent'in true olması -> mesaj gitmedi
+                if (!isSent) {
                     pendingEvent.setRetryCount(pendingEvent.retryCount() + 1);
                     if (pendingEvent.retryCount() > 5) {
                         pendingEvent.setStatus(OrderOutboxStatus.FAILED);
@@ -54,9 +57,12 @@ public class OutboxEventRelayer {
                 }else {
                     pendingEvent.setStatus(OrderOutboxStatus.SENT);
                 }
+
                 pendingEvent.setUpdatedAt(OffsetDateTime.now());
                 outboxRepository.save(pendingEvent);
-            }catch (Exception e) { //kafkaya ulasamadı hata fırlattı -> mesaj gitmedi
+
+            //kafkaya ulasamadı hata fırlattı -> mesaj gitmedi
+            }catch (Exception e) {
                 pendingEvent.setRetryCount(pendingEvent.retryCount() + 1);
                 if (pendingEvent.retryCount() > 5) {
                     pendingEvent.setStatus(OrderOutboxStatus.FAILED);

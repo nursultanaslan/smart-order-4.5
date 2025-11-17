@@ -3,7 +3,7 @@ package com.turkcell.order_service.infrastructure.messaging.producer.adapter;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
 import com.turkcell.order_service.domain.port.DomainEventsPublisher;
 import com.turkcell.order_service.infrastructure.messaging.producer.event.OrderCreatedIntegrationEvent;
-import com.turkcell.order_service.infrastructure.persistence.entity.OrderOutboxEntity;
+import com.turkcell.order_service.infrastructure.persistence.entity.outbox.OrderOutboxEntity;
 import com.turkcell.order_service.infrastructure.persistence.mapper.IntegrationEventMapper;
 import com.turkcell.order_service.infrastructure.persistence.mapper.OutboxMapper;
 import com.turkcell.order_service.infrastructure.persistence.repository.OutboxRepository;

@@ -14,9 +14,6 @@ import java.util.function.Consumer;
 public class OrderCreatedConsumer {
 
     private final ProcessedMessageRepository processedMessageRepository;
-    private static final UUID CONSUMER_ID = UUID.fromString("00000000-0000-0000-0000-000000000001"); // Notification
-                                                                                                     // service consumer
-                                                                                                     // ID
 
     public OrderCreatedConsumer(ProcessedMessageRepository processedMessageRepository) {
         this.processedMessageRepository = processedMessageRepository;
@@ -25,23 +22,32 @@ public class OrderCreatedConsumer {
     @Bean
     public Consumer<Message<OrderCreatedEvent>> orderCreated() {
         return message -> {
-            OrderCreatedEvent event = message.getPayload();
-
             // Kafka header'larından eventId/messageId'yi al
             UUID eventId = extractEventId(message);
+            OrderCreatedEvent event = message.getPayload();
 
-            // Idempotency kontrolü
-            if (isAlreadyProcessed(eventId)) {
+            if (processedMessageRepository.existsByEventId(eventId)) {
                 System.out.println("Message already processed. Skipping. EventId: " + eventId);
                 return;
             }
 
             try {
                 // Mesajı işle
-                processOrderCreated(event);
+                System.out.println("Processing order created event");
+                System.out.println("Order ID: " + event.orderId());
+                System.out.println("Customer ID: " + event.customerId());
+                System.out.println("Total Price: " + event.totalPrice() + " " + event.currency());
+                System.out.println("Order Lines: " + event.lines().size());
+
+                // Burada gerçek bildirim gönderme işlemi yapılacak
+                System.out.println("Send mail to customer: " + event.customerId());
+                System.out.println("Send SMS to customer: " + event.customerId());
 
                 // İşlendi olarak işaretle
-                markAsProcessed(eventId);
+                ProcessedMessage processedMessage = new ProcessedMessage(
+                        UUID.randomUUID(),
+                        eventId);
+                processedMessageRepository.save(processedMessage);
 
             } catch (Exception e) {
                 System.err.println("Error processing order created event: " + e.getMessage());
@@ -68,31 +74,5 @@ public class OrderCreatedConsumer {
         // Not: Bu ideal değil, order service'de eventId'yi header'a eklemek daha iyi
         // olur
         return message.getPayload().orderId();
-    }
-
-    private boolean isAlreadyProcessed(UUID eventId) {
-        return processedMessageRepository
-                .findByMessageIdAndConsumerId(eventId, CONSUMER_ID)
-                .isPresent();
-    }
-
-    private void markAsProcessed(UUID eventId) {
-        ProcessedMessage processedMessage = new ProcessedMessage(
-                UUID.randomUUID(),
-                eventId,
-                CONSUMER_ID);
-        processedMessageRepository.save(processedMessage);
-    }
-
-    private void processOrderCreated(OrderCreatedEvent event) {
-        System.out.println("Processing order created event");
-        System.out.println("Order ID: " + event.orderId());
-        System.out.println("Customer ID: " + event.customerId());
-        System.out.println("Total Price: " + event.totalPrice() + " " + event.currency());
-        System.out.println("Order Lines: " + event.lines().size());
-
-        // Burada gerçek bildirim gönderme işlemi yapılacak
-        System.out.println("Send mail to customer: " + event.customerId());
-        System.out.println("Send SMS to customer: " + event.customerId());
     }
 }

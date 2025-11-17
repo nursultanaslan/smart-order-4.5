@@ -1,7 +1,7 @@
 package com.turkcell.order_service.infrastructure.persistence.repository;
 
-import com.turkcell.order_service.infrastructure.persistence.entity.OrderOutboxEntity;
-import com.turkcell.order_service.infrastructure.persistence.entity.OrderOutboxStatus;
+import com.turkcell.order_service.infrastructure.persistence.entity.outbox.OrderOutboxEntity;
+import com.turkcell.order_service.infrastructure.persistence.entity.outbox.OrderOutboxStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
