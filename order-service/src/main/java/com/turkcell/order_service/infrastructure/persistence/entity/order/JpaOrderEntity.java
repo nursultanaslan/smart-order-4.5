@@ -31,7 +31,7 @@ public class JpaOrderEntity {
     @Column(name = "cart_id", nullable = false)
     private UUID cartId;
 
-    @OneToMany(mappedBy = "jpaOrderEntity")
+    @OneToMany(mappedBy = "order")
     private List<OrderLineEntity> lines = new ArrayList<>();
 
     public UUID id() {

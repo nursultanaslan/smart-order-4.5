@@ -26,7 +26,7 @@ public class OrderLineEntity {
 
     @ManyToOne()
     @JoinColumn(name = "order_id")
-    private JpaOrderEntity jpaOrderEntity;
+    private JpaOrderEntity order;
 
 
     public OrderLineEntity(UUID productId, String productName, BigDecimal unitPrice, String currency, Integer quantity, BigDecimal lineTotalPrice) {
@@ -91,10 +91,10 @@ public class OrderLineEntity {
     }
 
     public JpaOrderEntity order() {
-        return jpaOrderEntity;
+        return order;
     }
 
-    public void setOrder(JpaOrderEntity jpaOrderEntity) {
-        this.jpaOrderEntity = jpaOrderEntity;
+    public void setOrder(JpaOrderEntity order) {
+        this.order = order;
     }
 }

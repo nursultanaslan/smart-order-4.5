@@ -60,19 +60,6 @@ public class OrderCreatedConsumer {
         // Spring Cloud Stream'de eventId genellikle header'larda olur
         // Önce "eventId" header'ını kontrol et, yoksa event'in orderId'sini kullan
         Object eventIdHeader = message.getHeaders().get("eventId");
-        if (eventIdHeader instanceof UUID) {
-            return (UUID) eventIdHeader;
-        }
-
-        // Eğer header'da yoksa, messageId header'ını dene
-        Object messageIdHeader = message.getHeaders().get("messageId");
-        if (messageIdHeader instanceof UUID) {
-            return (UUID) messageIdHeader;
-        }
-
-        // Son çare olarak orderId'yi eventId olarak kullan
-        // Not: Bu ideal değil, order service'de eventId'yi header'a eklemek daha iyi
-        // olur
-        return message.getPayload().orderId();
+        return (UUID) eventIdHeader;
     }
 }

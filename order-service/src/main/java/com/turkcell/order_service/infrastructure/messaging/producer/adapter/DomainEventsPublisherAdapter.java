@@ -9,6 +9,12 @@ import com.turkcell.order_service.infrastructure.persistence.mapper.OutboxMapper
 import com.turkcell.order_service.infrastructure.persistence.repository.OutboxRepository;
 import org.springframework.stereotype.Component;
 
+/**
+ * Domain Events Publisher Adapter
+ * Domain event'leri alıp outbox pattern kullanarak persistence katmanına kaydeder.
+ * Bu sayede application layer infrastructure detaylarından bağımsız kalır.
+ */
+
 @Component
 public class DomainEventsPublisherAdapter implements DomainEventsPublisher {
 

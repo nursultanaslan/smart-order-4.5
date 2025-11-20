@@ -1,4 +1,4 @@
-package com.turkcell.customer_service.domain;
+package com.turkcell.customer_service.domain.model;
 
 import java.io.Serializable;
 import java.util.Objects;
