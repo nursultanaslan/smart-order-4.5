@@ -72,12 +72,9 @@ public class Order {
     }
 
     // set status
+    //pending statusunden sonraki süreç.
     public void markInProgress() {
         this.orderStatus = OrderStatus.IN_PROGRESS;
-    }
-
-    public void markCompleted() {
-        this.orderStatus = OrderStatus.COMPLETED;
     }
 
     public void markCancelled() {
@@ -87,10 +84,17 @@ public class Order {
         this.orderStatus = OrderStatus.CANCELLED;
     }
 
+    //sipariş teslim edildi -> tamamlandı olarak işaretlenir
+    public void markCompleted() {
+        this.orderStatus = OrderStatus.COMPLETED;
+    }
+
+
     public void markClaimed() {
         if (orderStatus != OrderStatus.COMPLETED) {
-            throw new IllegalStateException("");
+            throw new IllegalStateException("Sipariş teslim alındıktan sonra iptal süreci başlatılabilir.");
         }
+        this.orderStatus = OrderStatus.CLAIMED;
     }
 
     // validate methods

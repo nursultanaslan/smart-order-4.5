@@ -1,6 +1,7 @@
 package com.turkcell.customer_service.domain.model;
 
 //rich domain
+//Customer entitysinin gercek hayattaki davranısları nelerdir?
 public class Customer {
 
     private final CustomerId id;
