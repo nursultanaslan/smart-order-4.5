@@ -2,3 +2,17 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+spring:
+  #db config (postgresql)
+  datasource:
+    url: jdbc:postgresql://localhost:5433/customer_service
+    username: postgres
+    password: customerservice_db_password
+  #hibernate & orm
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    format-sql: true

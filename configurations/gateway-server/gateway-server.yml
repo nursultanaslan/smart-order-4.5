@@ -11,7 +11,11 @@ spring:
             - id: product-service-route
               uri: lb://product-service
               predicates:
-                - Path=/api/v1/product/**
+                - Path=/api/v1/products/**
+            - id: customer-service-route
+              uri: lb://customer-service
+              predicates:
+                - Path=/api/v1/customers/**
 
 server:
   port: 8888

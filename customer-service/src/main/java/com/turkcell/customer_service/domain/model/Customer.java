@@ -66,6 +66,10 @@ public class Customer {
         this.address = newAddress;
     }
 
+    public void addNewAddress(Address newAddress) {
+        this.address = newAddress;
+    }
+
 
     //validate methods
     public static void validateInputs(String firstName, String lastName){
