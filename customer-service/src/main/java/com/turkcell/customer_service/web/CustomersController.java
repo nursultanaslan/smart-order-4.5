@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/vq/customers")
+@RequestMapping("/api/v1/customers")
 public class CustomersController {
 
     private final CreateCustomerUseCase createCustomerUseCase;

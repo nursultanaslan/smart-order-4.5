@@ -1,23 +1,20 @@
 package com.turkcell.product_service.application.mapper;
 
-import com.turkcell.product_service.application.dto.request.CreateProductRequest;
-import com.turkcell.product_service.application.dto.response.DeleteProductResponse;
-import com.turkcell.product_service.application.dto.response.ProductResponse;
+import com.turkcell.product_service.application.command.CreateProductCommand;
+import com.turkcell.product_service.application.dto.ProductResponse;
 import com.turkcell.product_service.domain.model.Money;
 import com.turkcell.product_service.domain.model.Product;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 public class ProductMapper {
 
-    public Product toDomain(CreateProductRequest request) {
+    public Product toDomain(CreateProductCommand command) {
         return Product.create(
-                request.name(),
-                new Money(request.amount(), request.currency()),
-                request.description(),
-                request.stock()
+                command.name(),
+                new Money(command.amount(), command.currency()),
+                command.description(),
+                command.stock()
         );
     }
 

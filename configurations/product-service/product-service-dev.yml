@@ -5,11 +5,6 @@ eureka:
       defaultZone : http://localhost:8761/eureka
 
 spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8585/realms/turkcell-p1-dev
   datasource:
     url: jdbc:postgresql://localhost:5433/product_service
     username: postgres
@@ -21,19 +16,3 @@ spring:
       ddl-auto: update
     show-sql: true
     format-sql: true
-
-  kafka:
-    bootstrap-servers: localhost:9094
-  cloud:
-    stream:
-      kafka:
-        binders:
-          brokers: localhost:9094
-      bindings:
-        orderCreated-in-0:    #gelen mesajı yakalayacaksam in.
-          destination: order-topic #hangi topicten mesajı yakalayacağım?
-          group: product-service
-
-#grup adı vermezsek o service'in tüm instanceları mesajı alır.
-#fakat birinin alması yeterlidir bu yüzden group id veririz.
-#mesajın birden fazla kez işlenmesinin önüne geçeriz.

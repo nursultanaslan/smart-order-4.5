@@ -23,7 +23,7 @@ public record Address(String country, String city, String street, String postalC
         if (postalCode.isBlank()){
             throw new IllegalArgumentException("Postal Code cannot be blank");
         }
-        if (postalCode.length()<6){
+        if (postalCode.length()>5){
             throw new IllegalArgumentException("Postal Code length should be min 5 chars");
         }
         if (houseNumber <= 0){

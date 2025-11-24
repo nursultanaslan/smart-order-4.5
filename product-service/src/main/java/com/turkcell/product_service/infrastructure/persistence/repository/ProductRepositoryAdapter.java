@@ -5,7 +5,9 @@ import com.turkcell.product_service.domain.model.ProductId;
 import com.turkcell.product_service.domain.repository.ProductRepository;
 import com.turkcell.product_service.infrastructure.persistence.mapper.ProductEntityMapper;
 import com.turkcell.product_service.infrastructure.persistence.model.JpaProductEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -63,4 +65,11 @@ public class ProductRepositoryAdapter implements ProductRepository {
         JpaProductEntity entity = productMapper.toEntity(product);
         productRepository.delete(entity);
     }
+
+    @Override
+    public Page<Product> findByName(String productName, Pageable pageable) {
+        return productRepository.findByName(productName, pageable)
+                .map(productMapper::toDomain);
+    }
+
 }

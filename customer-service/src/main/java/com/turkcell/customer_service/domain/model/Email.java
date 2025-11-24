@@ -9,7 +9,7 @@ public record Email(String value) {
         if (value.isBlank()){
             throw new IllegalArgumentException("Email cannot be blank");
         }
-        if (!value.matches("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$")){
+        if (!value.matches("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")){
             throw new IllegalArgumentException("Email contains invalid characters");
         }
     }

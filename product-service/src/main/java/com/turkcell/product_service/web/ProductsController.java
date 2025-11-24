@@ -1,37 +1,25 @@
 package com.turkcell.product_service.web;
 
-import com.turkcell.product_service.application.dto.request.CreateProductRequest;
-import com.turkcell.product_service.application.dto.response.DeleteProductResponse;
-import com.turkcell.product_service.application.dto.response.ProductResponse;
-import com.turkcell.product_service.application.service.CreateProductUseCase;
-import com.turkcell.product_service.application.service.DeleteProductUseCase;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import com.turkcell.product_service.application.command.CreateProductCommand;
+import com.turkcell.product_service.application.dto.ProductResponse;
+import com.turkcell.product_service.core.cqrs.CommandHandler;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductsController {
 
-    private final CreateProductUseCase createProduct;
-    private final DeleteProductUseCase deleteProduct;
+    private final CommandHandler<CreateProductCommand, ProductResponse>  createProductCommandHandler;
 
-    public ProductsController(CreateProductUseCase createProduct, DeleteProductUseCase deleteProduct) {
-        this.createProduct = createProduct;
-        this.deleteProduct = deleteProduct;
+    public ProductsController(CommandHandler<CreateProductCommand, ProductResponse> createProductCommandHandler) {
+        this.createProductCommandHandler = createProductCommandHandler;
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ProductResponse create(@RequestBody @Valid CreateProductRequest createProductRequest) {
-        return createProduct.create(createProductRequest);
+    public ProductResponse createProduct(@RequestBody CreateProductCommand command) {
+        return createProductCommandHandler.handle(command);
     }
 
-    @DeleteMapping("/{id}")
-    public DeleteProductResponse delete(@PathVariable UUID id){
-        return deleteProduct.delete(id);
-    }
 
 }
