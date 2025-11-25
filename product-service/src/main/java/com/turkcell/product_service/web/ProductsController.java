@@ -58,7 +58,7 @@ public class ProductsController {
         return findProductsByNameQueryHandler.handle(new FindProductsByNameQuery(productName, pageIndex, pageSize));
     }
 
-    @PatchMapping("/{productId}")
+    @PutMapping("/{productId}")
     public ProductResponse updateProduct(@PathVariable UUID productId, @RequestBody UpdateProductCommand command) {
         return updateProductCommandHandler.handle(command);
     }

@@ -1,4 +1,5 @@
 services:
+#databases
   productsv_db:
     image: postgres:16
     environment:
@@ -50,6 +51,85 @@ services:
       - "5433:5432"
     networks:
       - postgres
+
+#services
+
+  config-server:
+    image: tcell-config-server
+    container_name: config-server
+    ports:
+      - "8787:8787"
+    networks:
+      - spring
+
+  discovery-server:
+    image: tcell-discovery-server
+    container_name: discovery-server
+    ports:
+      - "8761:8761"
+    environment:
+      - CONFIG_URI=http://config-server:8787
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+    depends_on:
+      - config-server
+
+  gateway-server:
+    image: tcell-gateway-server
+    container_name: gateway-server
+    ports:
+      - "8888:8888"
+    environment:
+      - CONFIG_URI=http://config-server:8787
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+    depends_on:
+      - config-server
+      - discovery-server
+
+  product-service:
+    image: tcell-product-service
+    container_name: product-service
+    ports:
+      - "8080:8080"
+    environment:
+      - CONFIG_URI=http://config-server:8787
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+    depends_on:
+      - config-server
+      - discovery-server
+
+  order-service:
+    image: tcell-order-service
+    container_name: order-service
+    ports:
+      - "8081:8081"
+    environment:
+      - CONFIG_URI=http://config-server:8787
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+    depends_on:
+      - config-server
+      - discovery-server
+
+  customer-service:
+    image: tcell-customer-service
+    container_name: customer-service
+    ports:
+      - "8086:8086"
+    environment:
+      - CONFIG_URI=http://config-server:8787
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+    depends_on:
+      - config-server
+      - discovery-server
 
   kafka:
     image: apache/kafka:3.8.0
@@ -158,3 +238,5 @@ volumes:
 networks:
   kafkanet:
   postgres:
+  spring:
+    driver: bridge

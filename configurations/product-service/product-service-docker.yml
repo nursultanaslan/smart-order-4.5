@@ -1,12 +1,11 @@
-#bu link development'a özel.
 eureka:
   client:
     service-url:
-      defaultZone : http://localhost:8761/eureka
+      defaultZone: http://discovery-server:8761/eureka
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/product_service
+    url: jdbc:postgresql://productsv_db:5433/product_service
     username: postgres
     password: productservice_db_password
 

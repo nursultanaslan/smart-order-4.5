@@ -1,9 +1,21 @@
 eureka:
   client:
     service-url:
-      defaultZone : http://localhost:8761/eureka
+      defaultZone : http://discovery-server:8761/eureka
 
 spring:
+  datasource:
+    url: jdbc:postgresql://ordersv_db:5433/order_service
+    username: postgres
+    password: orderservice_db_password
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    format-sql: true
+
   kafka:
     bootstrap-servers: kafka:9092
   cloud:
