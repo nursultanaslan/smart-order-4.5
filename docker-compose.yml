@@ -99,6 +99,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     networks:
       - spring
+      - postgres
     depends_on:
       - config-server
       - discovery-server
