@@ -27,7 +27,7 @@ public class FindProductsByNameQueryHandler implements QueryHandler<FindProducts
     public PageableProductResponse handle(FindProductsByNameQuery query) {
 
         Page<Product> product = productRepository
-                .findByNameIgnoreCase(query.productName(), PageRequest.of(query.pageIndex(), query.pageSize()));
+                .findByProductNameIgnoreCase(query.productName(), PageRequest.of(query.pageIndex(), query.pageSize()));
 
         List<ProductDto> products = product
                 .getContent()

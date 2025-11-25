@@ -15,27 +15,30 @@ public class JpaProductEntity {
     @Id
     @Column(columnDefinition = "uuid")
     private UUID id;
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "product_name", nullable = false)
+    private String productName;
     @Column(name = "amount", nullable = false, precision = 18, scale = 2)
     private BigDecimal amount;
     @Column(name = "currency", nullable = false)
     private String currency;
+    @Column(name = "brand_name", nullable = false)
+    private String brandName;
     @Column(name = "description", nullable = false)
     private String description;
     @Column(name = "stock", nullable = false)
     private Integer stock;
 
-    public JpaProductEntity(UUID id, String name, BigDecimal amount, String currency, String description, Integer stock) {
-        this.id = id;
-        this.name = name;
-        this.amount = amount;
-        this.currency = currency;
-        this.description = description;
-        this.stock = stock;
+    public JpaProductEntity() {
     }
 
-    public JpaProductEntity() {
+    public JpaProductEntity(UUID id, String productName, BigDecimal amount, String currency, String brandName, String description, Integer stock) {
+        this.id = id;
+        this.productName = productName;
+        this.amount = amount;
+        this.currency = currency;
+        this.brandName = brandName;
+        this.description = description;
+        this.stock = stock;
     }
 
     public UUID id() {
@@ -46,12 +49,12 @@ public class JpaProductEntity {
         this.id = id;
     }
 
-    public String name() {
-        return name;
+    public String productName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public BigDecimal amount() {
@@ -68,6 +71,14 @@ public class JpaProductEntity {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public String brandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
     public String description() {

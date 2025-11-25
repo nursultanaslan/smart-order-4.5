@@ -12,8 +12,9 @@ public class ProductEntityMapper {
     public Product toDomain(JpaProductEntity entity){
         return Product.rehydrate(
                 new ProductId(entity.id()),
-                entity.name(),
+                entity.productName(),
                 new Money(entity.amount(), entity.currency()),
+                entity.brandName(),
                 entity.description(),
                 entity.stock()
         );
@@ -23,9 +24,10 @@ public class ProductEntityMapper {
     public JpaProductEntity toEntity(Product product){
         return new JpaProductEntity(
                 product.id().value(),
-                product.name(),
+                product.productName(),
                 product.price().amount(),
                 product.price().currency(),
+                product.brandName(),
                 product.description(),
                 product.stock()
         );

@@ -17,5 +17,5 @@ public interface ProductRepository {
     void deleteById(ProductId productId);
     void delete(Product product);
 
-    Page<Product> findByNameIgnoreCase(String productName, Pageable pageable);
+    Page<Product> findByProductNameIgnoreCase(String productName, Pageable pageable);
 }

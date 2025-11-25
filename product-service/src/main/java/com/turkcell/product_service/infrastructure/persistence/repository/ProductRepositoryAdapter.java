@@ -67,8 +67,8 @@ public class ProductRepositoryAdapter implements ProductRepository {
     }
 
     @Override
-    public Page<Product> findByNameIgnoreCase(String productName, Pageable pageable) {
-        return productRepository.findByNameIgnoreCase(productName, pageable)
+    public Page<Product> findByProductNameIgnoreCase(String productName, Pageable pageable) {
+        return productRepository.findByProductNameIgnoreCase(productName, pageable)
                 .map(productMapper::toDomain);
     }
 }

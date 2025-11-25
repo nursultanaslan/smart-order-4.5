@@ -6,9 +6,10 @@ import com.turkcell.product_service.core.cqrs.Command;
 import java.math.BigDecimal;
 
 public record CreateProductCommand(
-        String name,
+        String productName,
         BigDecimal amount,
         String currency,
+        String brandName,
         String description,
         Integer stock
 ) implements Command<ProductResponse> {

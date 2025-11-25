@@ -10,7 +10,6 @@ import com.turkcell.product_service.domain.model.ProductId;
 import com.turkcell.product_service.domain.repository.ProductRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
 
 @Component
 public class UpdateProductCommandHandler implements CommandHandler<UpdateProductCommand, ProductResponse> {
@@ -31,7 +30,7 @@ public class UpdateProductCommandHandler implements CommandHandler<UpdateProduct
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
-        product.updateProduct(command.name(), command.description());
+        product.updateProduct(command.productName(), command.description());
 
         if(command.amount() != null){
             Money money = new Money(command.amount(),  command.currency());

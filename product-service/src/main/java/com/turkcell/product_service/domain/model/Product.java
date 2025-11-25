@@ -5,45 +5,49 @@ import java.util.Objects;
 public class Product {
 
     private final ProductId id;
-    private String name;
+    private String productName;
     private Money price;
+    private String brandName;
     private String description;
     private Integer stock;
 
-    private Product(ProductId id, String name, Money money, String description, Integer stock) {
+    private Product(ProductId id, String productName, Money money, String brandName, String description, Integer stock) {
         this.id = id;
-        this.name = name;
+        this.productName = productName;
         this.price = money;
+        this.brandName = brandName;
         this.description = description;
         this.stock = stock;
     }
 
-    public static Product create(String name, Money money, String description, Integer stock ) {
+    public static Product create(String productName, Money money, String brandName, String description, Integer stock ) {
         return new Product(
                 ProductId.generate(),
-                name,
+                productName,
                 money,
+                brandName,
                 description,
                 stock
         );
     }
 
-    public static Product rehydrate(ProductId id, String name, Money money, String description, Integer stock) {
+    public static Product rehydrate(ProductId id, String productName, Money money, String brandName, String description, Integer stock) {
         return new Product(
                 id,
-                name,
+                productName,
                 money,
+                brandName,
                 description,
                 stock
         );
     }
 
     //validations
-    public static void validateName(String name){
-        if (name == null || name.trim().isEmpty()){
+    public static void validateProductName(String productName){
+        if (productName == null || productName.trim().isEmpty()){
             throw new IllegalArgumentException("name cannot be null");
         }
-        if (name.length() > 120){
+        if (productName.length() > 120){
             throw new IllegalArgumentException("Name length cannot be larger than 120 characters");
         }
     }
@@ -69,10 +73,10 @@ public class Product {
         this.price = newPrice;
     }
 
-    public void updateProduct(String name, String description){
-        validateName(name);
+    public void updateProduct(String productName, String description){
+        validateProductName(productName);
         validateDescription(description);
-        this.name = name.trim();
+        this.productName = productName.trim();
         this.description = description.trim();
     }
 
@@ -102,16 +106,21 @@ public class Product {
     }
 
     //getters
+
     public ProductId id() {
         return id;
     }
 
-    public String name() {
-        return name;
+    public String productName() {
+        return productName;
     }
 
     public Money price() {
         return price;
+    }
+
+    public String brandName() {
+        return brandName;
     }
 
     public String description() {

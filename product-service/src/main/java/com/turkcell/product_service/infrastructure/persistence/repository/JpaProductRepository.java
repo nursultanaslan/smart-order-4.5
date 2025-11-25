@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface JpaProductRepository extends JpaRepository<JpaProductEntity, UUID> {
 
-    Page<JpaProductEntity> findByNameIgnoreCase(String productName, Pageable pageable);
+    Page<JpaProductEntity> findByProductNameIgnoreCase(String productName, Pageable pageable);
 }
