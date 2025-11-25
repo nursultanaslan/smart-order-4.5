@@ -8,7 +8,6 @@ import com.turkcell.product_service.domain.model.ProductId;
 import com.turkcell.product_service.domain.repository.ProductRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
 
 @Component
 public class GetProductByIdQueryHandler implements QueryHandler<GetProductByIdQuery, ProductResponse> {

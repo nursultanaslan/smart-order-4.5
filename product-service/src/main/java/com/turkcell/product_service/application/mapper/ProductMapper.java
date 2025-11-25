@@ -1,6 +1,8 @@
 package com.turkcell.product_service.application.mapper;
 
 import com.turkcell.product_service.application.command.CreateProductCommand;
+import com.turkcell.product_service.application.command.UpdateProductCommand;
+import com.turkcell.product_service.application.dto.ProductDto;
 import com.turkcell.product_service.application.dto.ProductResponse;
 import com.turkcell.product_service.domain.model.Money;
 import com.turkcell.product_service.domain.model.Product;
@@ -27,6 +29,16 @@ public class ProductMapper {
                 product.price().currency(),
                 product.description(),
                 product.stock()
+        );
+    }
+
+    public ProductDto toDto(Product product) {
+        return new ProductDto(
+                product.id().value(),
+                product.name(),
+                product.stock(),
+                product.price().amount(),
+                product.price().currency()
         );
     }
 

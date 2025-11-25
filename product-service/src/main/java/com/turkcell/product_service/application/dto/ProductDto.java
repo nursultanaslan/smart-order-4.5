@@ -3,12 +3,11 @@ package com.turkcell.product_service.application.dto;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record ProductResponse(
+public record ProductDto(
         UUID productId,
-        String name,
+        String productName,
+        Integer stock,
         BigDecimal amount,
-        String currency,
-        String description,
-        Integer stock
+        String currency
 ) {
 }

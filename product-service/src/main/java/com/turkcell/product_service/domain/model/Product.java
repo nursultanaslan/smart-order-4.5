@@ -40,7 +40,7 @@ public class Product {
 
     //validations
     public static void validateName(String name){
-        if (name == null || name.isEmpty()){
+        if (name == null || name.trim().isEmpty()){
             throw new IllegalArgumentException("name cannot be null");
         }
         if (name.length() > 120){
@@ -49,7 +49,7 @@ public class Product {
     }
 
     public static void validateDescription(String description){
-        if (description == null || description.isEmpty()){
+        if (description == null || description.trim().isEmpty()){
             throw new IllegalArgumentException("Description cannot be null");
         }
         if (description.length() >= 255){
@@ -64,19 +64,21 @@ public class Product {
     }
 
     //worker methods
-    public void rename(String name){
-        validateName(name);
-        this.name = name;
-    }
-
     public void changePrice(Money newPrice){
         Objects.requireNonNull(newPrice, "Price cannot be null");
         this.price = newPrice;
     }
 
-    public void changeDescription(String description){
+    public void updateProduct(String name, String description){
+        validateName(name);
         validateDescription(description);
-        this.description = description;
+        this.name = name.trim();
+        this.description = description.trim();
+    }
+
+    public void updateStock(Integer newStock){
+        validateStock(newStock);
+        this.stock = newStock;
     }
 
     //stok azalt
@@ -96,7 +98,6 @@ public class Product {
         if (quantityToRestock == null || quantityToRestock < 0){
             throw new IllegalArgumentException("Quantity to restock must be positive");
         }
-
         this.stock += quantityToRestock;
     }
 

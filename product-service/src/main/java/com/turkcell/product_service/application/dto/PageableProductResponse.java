@@ -1,4 +1,7 @@
 package com.turkcell.product_service.application.dto;
 
-public record PageableProductResponse(String productName) {
+import java.util.List;
+
+public record PageableProductResponse(
+        List<ProductDto> products) {
 }
