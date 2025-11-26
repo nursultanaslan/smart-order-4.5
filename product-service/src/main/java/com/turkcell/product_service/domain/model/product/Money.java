@@ -1,4 +1,4 @@
-package com.turkcell.product_service.domain.model;
+package com.turkcell.product_service.domain.model.product;
 
 import java.math.BigDecimal;
 import java.util.Objects;

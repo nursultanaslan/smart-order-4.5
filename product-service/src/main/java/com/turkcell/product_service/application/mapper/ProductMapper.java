@@ -3,8 +3,11 @@ package com.turkcell.product_service.application.mapper;
 import com.turkcell.product_service.application.command.CreateProductCommand;
 import com.turkcell.product_service.application.dto.ProductDto;
 import com.turkcell.product_service.application.dto.ProductResponse;
-import com.turkcell.product_service.domain.model.Money;
-import com.turkcell.product_service.domain.model.Product;
+import com.turkcell.product_service.domain.model.brand.Brand;
+import com.turkcell.product_service.domain.model.brand.BrandId;
+import com.turkcell.product_service.domain.model.category.CategoryId;
+import com.turkcell.product_service.domain.model.product.Money;
+import com.turkcell.product_service.domain.model.product.Product;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,9 +17,10 @@ public class ProductMapper {
         return Product.create(
                 command.productName(),
                 new Money(command.amount(), command.currency()),
-                command.brandName(),
                 command.description(),
-                command.stock()
+                command.stock(),
+                new BrandId(command.brandId()),
+                new CategoryId(command.categoryId())
         );
     }
 

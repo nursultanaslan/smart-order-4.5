@@ -4,13 +4,15 @@ import com.turkcell.product_service.application.dto.ProductResponse;
 import com.turkcell.product_service.core.cqrs.Command;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public record CreateProductCommand(
         String productName,
         BigDecimal amount,
         String currency,
-        String brandName,
         String description,
-        Integer stock
+        Integer stock,
+        UUID brandId,
+        UUID categoryId
 ) implements Command<ProductResponse> {
 }

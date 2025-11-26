@@ -1,7 +1,7 @@
 package com.turkcell.product_service.application.mapper;
 
 import com.turkcell.product_service.application.dto.DeletedProductResponse;
-import com.turkcell.product_service.domain.model.Product;
+import com.turkcell.product_service.domain.model.product.Product;
 import org.springframework.stereotype.Component;
 
 @Component

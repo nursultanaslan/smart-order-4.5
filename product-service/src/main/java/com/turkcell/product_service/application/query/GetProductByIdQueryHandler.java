@@ -4,8 +4,8 @@ import com.turkcell.product_service.application.dto.ProductResponse;
 import com.turkcell.product_service.application.exception.ProductNotFoundException;
 import com.turkcell.product_service.application.mapper.ProductMapper;
 import com.turkcell.product_service.core.cqrs.QueryHandler;
-import com.turkcell.product_service.domain.model.Product;
-import com.turkcell.product_service.domain.model.ProductId;
+import com.turkcell.product_service.domain.model.product.Product;
+import com.turkcell.product_service.domain.model.product.ProductId;
 import com.turkcell.product_service.domain.repository.ProductRepository;
 import org.springframework.stereotype.Component;
 

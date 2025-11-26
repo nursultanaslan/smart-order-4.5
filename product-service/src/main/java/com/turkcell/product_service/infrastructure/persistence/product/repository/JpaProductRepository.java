@@ -1,6 +1,6 @@
-package com.turkcell.product_service.infrastructure.persistence.repository;
+package com.turkcell.product_service.infrastructure.persistence.product.repository;
 
-import com.turkcell.product_service.infrastructure.persistence.model.JpaProductEntity;
+import com.turkcell.product_service.infrastructure.persistence.product.model.JpaProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

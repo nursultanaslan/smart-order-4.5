@@ -9,7 +9,7 @@ services:
     volumes:
       - productdb_vol:/var/lib/postgresql/data #postgrenin dosyaları yazdıgı konum pg16 icin volume bu dizine baglanır
     ports:
-      - "5433:5432"
+      - "5432:5432"
     networks:
       - postgres
 

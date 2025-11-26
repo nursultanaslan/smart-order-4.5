@@ -1,9 +1,6 @@
-package com.turkcell.product_service.infrastructure.persistence.model;
+package com.turkcell.product_service.infrastructure.persistence.product.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -21,24 +18,28 @@ public class JpaProductEntity {
     private BigDecimal amount;
     @Column(name = "currency", nullable = false)
     private String currency;
-    @Column(name = "brand_name", nullable = false)
-    private String brandName;
     @Column(name = "description", nullable = false)
     private String description;
     @Column(name = "stock", nullable = false)
     private Integer stock;
 
+    @Column(name = "brand_id",  nullable = false)
+    private UUID brandId;
+    @Column(name = "category_id",  nullable = false)
+    private UUID categoryId;
+
     public JpaProductEntity() {
     }
 
-    public JpaProductEntity(UUID id, String productName, BigDecimal amount, String currency, String brandName, String description, Integer stock) {
+    public JpaProductEntity(UUID id, String productName, BigDecimal amount, String currency, String description, Integer stock, UUID brandId, UUID categoryId) {
         this.id = id;
         this.productName = productName;
         this.amount = amount;
         this.currency = currency;
-        this.brandName = brandName;
         this.description = description;
         this.stock = stock;
+        this.brandId = brandId;
+        this.categoryId = categoryId;
     }
 
     public UUID id() {
@@ -73,14 +74,6 @@ public class JpaProductEntity {
         this.currency = currency;
     }
 
-    public String brandName() {
-        return brandName;
-    }
-
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
-    }
-
     public String description() {
         return description;
     }
@@ -95,5 +88,21 @@ public class JpaProductEntity {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public UUID brandId() {
+        return brandId;
+    }
+
+    public void setBrandId(UUID brandId) {
+        this.brandId = brandId;
+    }
+
+    public UUID categoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
     }
 }

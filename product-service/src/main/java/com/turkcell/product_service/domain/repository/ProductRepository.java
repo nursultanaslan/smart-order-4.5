@@ -1,7 +1,7 @@
 package com.turkcell.product_service.domain.repository;
 
-import com.turkcell.product_service.domain.model.Product;
-import com.turkcell.product_service.domain.model.ProductId;
+import com.turkcell.product_service.domain.model.product.Product;
+import com.turkcell.product_service.domain.model.product.ProductId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

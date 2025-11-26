@@ -4,8 +4,8 @@ import com.turkcell.product_service.application.dto.DeletedProductResponse;
 import com.turkcell.product_service.application.exception.ProductNotFoundException;
 import com.turkcell.product_service.application.mapper.DeletedProductMapper;
 import com.turkcell.product_service.core.cqrs.CommandHandler;
-import com.turkcell.product_service.domain.model.Product;
-import com.turkcell.product_service.domain.model.ProductId;
+import com.turkcell.product_service.domain.model.product.Product;
+import com.turkcell.product_service.domain.model.product.ProductId;
 import com.turkcell.product_service.domain.repository.ProductRepository;
 import org.springframework.stereotype.Component;
 

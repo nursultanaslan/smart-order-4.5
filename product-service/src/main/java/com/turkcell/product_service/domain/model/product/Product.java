@@ -1,44 +1,59 @@
-package com.turkcell.product_service.domain.model;
+package com.turkcell.product_service.domain.model.product;
+
+import com.turkcell.product_service.domain.model.brand.BrandId;
+import com.turkcell.product_service.domain.model.category.CategoryId;
 
 import java.util.Objects;
 
+//aggregate root
 public class Product {
 
     private final ProductId id;
     private String productName;
     private Money price;
-    private String brandName;
     private String description;
     private Integer stock;
 
-    private Product(ProductId id, String productName, Money money, String brandName, String description, Integer stock) {
+    private BrandId brandId;
+    private CategoryId categoryId;
+
+    private Product(ProductId id, String productName, Money money,
+                    String description, Integer stock, BrandId brandId, CategoryId categoryId) {
         this.id = id;
         this.productName = productName;
         this.price = money;
-        this.brandName = brandName;
         this.description = description;
         this.stock = stock;
+        this.brandId = brandId;
+        this.categoryId = categoryId;
     }
 
-    public static Product create(String productName, Money money, String brandName, String description, Integer stock ) {
+    public static Product create(
+            String productName, Money money,
+            String description, Integer stock,
+            BrandId brandId, CategoryId categoryId) {
         return new Product(
                 ProductId.generate(),
                 productName,
                 money,
-                brandName,
                 description,
-                stock
+                stock,
+                brandId,
+                categoryId
         );
     }
 
-    public static Product rehydrate(ProductId id, String productName, Money money, String brandName, String description, Integer stock) {
+    public static Product rehydrate(
+            ProductId id, String productName, Money money,
+            String description, Integer stock, BrandId brandId, CategoryId categoryId) {
         return new Product(
                 id,
                 productName,
                 money,
-                brandName,
                 description,
-                stock
+                stock,
+                brandId,
+                categoryId
         );
     }
 
@@ -119,15 +134,19 @@ public class Product {
         return price;
     }
 
-    public String brandName() {
-        return brandName;
-    }
-
     public String description() {
         return description;
     }
 
     public Integer stock() {
         return stock;
+    }
+
+    public BrandId brandId() {
+        return brandId;
+    }
+
+    public CategoryId categoryId() {
+        return categoryId;
     }
 }
