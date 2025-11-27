@@ -1,6 +1,6 @@
-package com.turkcell.product_service.application.query;
+package com.turkcell.product_service.application.product.query;
 
-import com.turkcell.product_service.application.dto.ProductResponse;
+import com.turkcell.product_service.application.product.dto.ProductResponse;
 import com.turkcell.product_service.core.cqrs.Query;
 
 import java.util.UUID;

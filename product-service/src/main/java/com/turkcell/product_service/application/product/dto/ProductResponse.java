@@ -1,4 +1,4 @@
-package com.turkcell.product_service.application.dto;
+package com.turkcell.product_service.application.product.dto;
 
 import java.math.BigDecimal;
 import java.util.UUID;

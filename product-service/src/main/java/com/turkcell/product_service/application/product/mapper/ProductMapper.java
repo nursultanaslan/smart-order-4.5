@@ -1,9 +1,8 @@
-package com.turkcell.product_service.application.mapper;
+package com.turkcell.product_service.application.product.mapper;
 
-import com.turkcell.product_service.application.command.CreateProductCommand;
-import com.turkcell.product_service.application.dto.ProductDto;
-import com.turkcell.product_service.application.dto.ProductResponse;
-import com.turkcell.product_service.domain.model.brand.Brand;
+import com.turkcell.product_service.application.product.command.CreateProductCommand;
+import com.turkcell.product_service.application.product.dto.ProductDto;
+import com.turkcell.product_service.application.product.dto.ProductResponse;
 import com.turkcell.product_service.domain.model.brand.BrandId;
 import com.turkcell.product_service.domain.model.category.CategoryId;
 import com.turkcell.product_service.domain.model.product.Money;

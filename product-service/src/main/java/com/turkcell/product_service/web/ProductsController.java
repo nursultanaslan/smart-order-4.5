@@ -1,13 +1,13 @@
 package com.turkcell.product_service.web;
 
-import com.turkcell.product_service.application.command.CreateProductCommand;
-import com.turkcell.product_service.application.command.DeleteProductCommand;
-import com.turkcell.product_service.application.command.UpdateProductCommand;
-import com.turkcell.product_service.application.dto.DeletedProductResponse;
-import com.turkcell.product_service.application.dto.PageableProductResponse;
-import com.turkcell.product_service.application.dto.ProductResponse;
-import com.turkcell.product_service.application.query.FindProductsByNameQuery;
-import com.turkcell.product_service.application.query.GetProductByIdQuery;
+import com.turkcell.product_service.application.product.command.CreateProductCommand;
+import com.turkcell.product_service.application.product.command.DeleteProductCommand;
+import com.turkcell.product_service.application.product.command.UpdateProductCommand;
+import com.turkcell.product_service.application.product.dto.DeletedProductResponse;
+import com.turkcell.product_service.application.product.dto.PageableProductResponse;
+import com.turkcell.product_service.application.product.dto.ProductResponse;
+import com.turkcell.product_service.application.product.query.FindProductsByNameQuery;
+import com.turkcell.product_service.application.product.query.GetProductByIdQuery;
 import com.turkcell.product_service.core.cqrs.CommandHandler;
 import com.turkcell.product_service.core.cqrs.QueryHandler;
 import org.springframework.http.HttpStatus;

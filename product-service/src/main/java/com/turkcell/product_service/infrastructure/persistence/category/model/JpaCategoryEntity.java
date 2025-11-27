@@ -15,6 +15,14 @@ public class JpaCategoryEntity {
     @Column(name = "category_name")
     private String categoryName;
 
+    public JpaCategoryEntity() {
+    }
+
+    public JpaCategoryEntity(UUID id, String categoryName) {
+        this.id = id;
+        this.categoryName = categoryName;
+    }
+
     public UUID id() {
         return id;
     }

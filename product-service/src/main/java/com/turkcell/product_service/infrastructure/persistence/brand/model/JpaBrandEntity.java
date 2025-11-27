@@ -14,6 +14,14 @@ public class JpaBrandEntity {
     @Column(name = "brand_name")
     private String brandName;
 
+    public JpaBrandEntity() {
+    }
+
+    public JpaBrandEntity(UUID id, String brandName) {
+        this.id = id;
+        this.brandName = brandName;
+    }
+
     public UUID id() {
         return id;
     }

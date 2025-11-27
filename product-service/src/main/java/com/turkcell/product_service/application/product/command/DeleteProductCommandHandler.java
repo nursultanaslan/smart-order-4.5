@@ -1,8 +1,8 @@
-package com.turkcell.product_service.application.command;
+package com.turkcell.product_service.application.product.command;
 
-import com.turkcell.product_service.application.dto.DeletedProductResponse;
-import com.turkcell.product_service.application.exception.ProductNotFoundException;
-import com.turkcell.product_service.application.mapper.DeletedProductMapper;
+import com.turkcell.product_service.application.product.dto.DeletedProductResponse;
+import com.turkcell.product_service.application.product.exception.ProductNotFoundException;
+import com.turkcell.product_service.application.product.mapper.DeletedProductMapper;
 import com.turkcell.product_service.core.cqrs.CommandHandler;
 import com.turkcell.product_service.domain.model.product.Product;
 import com.turkcell.product_service.domain.model.product.ProductId;

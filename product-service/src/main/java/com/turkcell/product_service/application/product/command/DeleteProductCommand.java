@@ -1,6 +1,6 @@
-package com.turkcell.product_service.application.command;
+package com.turkcell.product_service.application.product.command;
 
-import com.turkcell.product_service.application.dto.DeletedProductResponse;
+import com.turkcell.product_service.application.product.dto.DeletedProductResponse;
 import com.turkcell.product_service.core.cqrs.Command;
 
 import java.util.UUID;

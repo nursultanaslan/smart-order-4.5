@@ -1,8 +1,8 @@
-package com.turkcell.product_service.application.command;
+package com.turkcell.product_service.application.product.command;
 
-import com.turkcell.product_service.application.dto.ProductResponse;
-import com.turkcell.product_service.application.exception.ProductNotFoundException;
-import com.turkcell.product_service.application.mapper.ProductMapper;
+import com.turkcell.product_service.application.product.dto.ProductResponse;
+import com.turkcell.product_service.application.product.exception.ProductNotFoundException;
+import com.turkcell.product_service.application.product.mapper.ProductMapper;
 import com.turkcell.product_service.core.cqrs.CommandHandler;
 import com.turkcell.product_service.domain.model.product.Money;
 import com.turkcell.product_service.domain.model.product.Product;
