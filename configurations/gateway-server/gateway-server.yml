@@ -9,7 +9,7 @@ spring:
         - id: product-service-route
           uri: lb://product-service
           predicates:
-            - Path=Path=/api/v1/products/**, /api/v1/brands/**, /api/v1/categories/**
+            - Path=/api/v1/products/**, /api/v1/brands/**, /api/v1/categories/**
         - id: customer-service-route
           uri: lb://customer-service
           predicates:
