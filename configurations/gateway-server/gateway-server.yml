@@ -3,9 +3,6 @@ spring:
     gateway:
       server:
         webflux:
-          discovery:
-            locator:
-              enabled: true
           routes:
             - id: order-service-route
               uri: lb://order-service
