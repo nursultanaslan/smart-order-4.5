@@ -1,29 +1,31 @@
 package com.turkcell.product_service.application.brand.usecases;
 
 import com.turkcell.product_service.application.brand.dto.response.BrandResponse;
-import com.turkcell.product_service.application.brand.dto.request.CreateBrandRequest;
+import com.turkcell.product_service.application.brand.exception.BrandNotFoundException;
 import com.turkcell.product_service.application.brand.mapper.BrandMapper;
 import com.turkcell.product_service.domain.model.brand.Brand;
+import com.turkcell.product_service.domain.model.brand.BrandId;
 import com.turkcell.product_service.domain.repository.BrandRepository;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
+
+import java.util.UUID;
 
 @Service
-@Validated
-public class CreateBrandUseCase {
+public class GetBrandByIdUseCase {
 
     private final BrandRepository brandRepository;
     private final BrandMapper brandMapper;
 
-    public CreateBrandUseCase(BrandRepository brandRepository, BrandMapper brandMapper) {
+    public GetBrandByIdUseCase(BrandRepository brandRepository, BrandMapper brandMapper) {
         this.brandRepository = brandRepository;
         this.brandMapper = brandMapper;
     }
 
-    public BrandResponse createBrand(@Valid CreateBrandRequest request) {
-        Brand brand = brandMapper.toDomain(request);
-        brand = brandRepository.save(brand);
+    public BrandResponse getBrandById(UUID brandId) {
+        Brand brand = brandRepository.findById(new BrandId(brandId))
+                .orElseThrow(() -> new BrandNotFoundException("Brand not found!"));
+
         return brandMapper.toResponse(brand);
+
     }
 }

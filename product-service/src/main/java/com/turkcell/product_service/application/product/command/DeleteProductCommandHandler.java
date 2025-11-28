@@ -2,7 +2,7 @@ package com.turkcell.product_service.application.product.command;
 
 import com.turkcell.product_service.application.product.dto.DeletedProductResponse;
 import com.turkcell.product_service.application.product.exception.ProductNotFoundException;
-import com.turkcell.product_service.application.product.mapper.DeletedProductMapper;
+import com.turkcell.product_service.application.product.mapper.ProductMapper;
 import com.turkcell.product_service.core.cqrs.CommandHandler;
 import com.turkcell.product_service.domain.model.product.Product;
 import com.turkcell.product_service.domain.model.product.ProductId;
@@ -13,11 +13,12 @@ import org.springframework.stereotype.Component;
 public class DeleteProductCommandHandler implements CommandHandler<DeleteProductCommand, DeletedProductResponse> {
 
     private final ProductRepository productRepository;
-    private final DeletedProductMapper deletedProductMapper;
+    private final ProductMapper productMapper;
 
-    public DeleteProductCommandHandler(ProductRepository productRepository, DeletedProductMapper deletedProductMapper) {
+    public DeleteProductCommandHandler(ProductRepository productRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
-        this.deletedProductMapper = deletedProductMapper;
+        this.productMapper = productMapper;
+
     }
 
     @Override
@@ -27,6 +28,6 @@ public class DeleteProductCommandHandler implements CommandHandler<DeleteProduct
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
         productRepository.delete(product);
-        return deletedProductMapper.toResponse(product);
+        return productMapper.toDeletedResponse(product);
     }
 }

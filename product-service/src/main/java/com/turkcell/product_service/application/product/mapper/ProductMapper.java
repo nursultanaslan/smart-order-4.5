@@ -1,6 +1,7 @@
 package com.turkcell.product_service.application.product.mapper;
 
 import com.turkcell.product_service.application.product.command.CreateProductCommand;
+import com.turkcell.product_service.application.product.dto.DeletedProductResponse;
 import com.turkcell.product_service.application.product.dto.ProductDto;
 import com.turkcell.product_service.application.product.dto.ProductResponse;
 import com.turkcell.product_service.domain.model.brand.BrandId;
@@ -42,6 +43,12 @@ public class ProductMapper {
                 product.stock(),
                 product.price().amount(),
                 product.price().currency()
+        );
+    }
+
+    public DeletedProductResponse toDeletedResponse(Product product){
+        return new DeletedProductResponse(
+                product.id().value()
         );
     }
 

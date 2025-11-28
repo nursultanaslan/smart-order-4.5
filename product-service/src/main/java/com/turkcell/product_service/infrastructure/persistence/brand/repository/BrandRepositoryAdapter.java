@@ -26,14 +26,14 @@ public class BrandRepositoryAdapter implements BrandRepository {
         //domain modeli db işlemleri yapmaz bilmez
         JpaBrandEntity entity = brandMapper.toEntity(brand);
         entity = brandRepository.save(entity);
-        return brandMapper.toDomain(entity);
+        return brandMapper.toDomain(entity);  //rehydrate kullanır
     }
 
     @Override
     public Optional<Brand> findById(BrandId id) {
         return brandRepository
                 .findById(id.value())
-                .map(brandMapper::toDomain);
+                .map(brandMapper::toDomain);   //rehydrate kullanır
     }
 
     @Override
