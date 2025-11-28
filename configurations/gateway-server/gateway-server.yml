@@ -9,9 +9,11 @@ spring:
               predicates:
                 - Path=/api/v1/orders/**
             - id: product-service-route
-              uri: lb://product-service
+              uri: lb://PRODUCT-SERVICE
               predicates:
-                - Path=/api/v1/products/**,/api/v1/brands/**,/api/v1/categories/**
+                - Path=/api/v1/products/**
+                - Path=/api/v1/brands/**
+                - Path=/api/v1/categories/**
             - id: customer-service-route
               uri: lb://customer-service
               predicates:
