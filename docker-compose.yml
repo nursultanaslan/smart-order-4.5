@@ -59,6 +59,8 @@ services:
     container_name: config-server
     ports:
       - "8787:8787"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     networks:
       - spring
 

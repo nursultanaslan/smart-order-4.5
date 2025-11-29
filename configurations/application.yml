@@ -6,4 +6,5 @@ management:
         include: "*"
   endpoint:
     gateway:
+      enabled: true
       access: read-only
