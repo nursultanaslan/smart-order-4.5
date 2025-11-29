@@ -3,19 +3,27 @@ spring:
     gateway:
       routes:
         - id: order-service-route
-          uri: lb://ORDER-SERVICE
+          uri: lb://order-service
           predicates:
             - Path=/api/v1/orders/**
 
         - id: product-service-route
-          uri: lb://PRODUCT-SERVICE
+          uri: lb://product-service
           predicates:
             - Path=/api/v1/products/**
+
+        - id: product-service-brand-route
+          uri: lb://product-service
+          predicates:
             - Path=/api/v1/brands/**
+
+        - id: product-service-category-route
+          uri: lb://product-service
+          predicates:
             - Path=/api/v1/categories/**
 
         - id: customer-service-route
-          uri: lb://CUSTOMER-SERVICE
+          uri: lb://customer-service
           predicates:
             - Path=/api/v1/customers/**
 
