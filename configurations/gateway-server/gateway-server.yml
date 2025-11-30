@@ -1,21 +1,23 @@
 spring:
   cloud:
     gateway:
-      routes:
-        - id: product-service-route
-          uri: lb://product-service
-          predicates:
-            - Path=/api/v1/products/**,/api/v1/brands/**,/api/v1/categories/**
+      server:
+        webflux:
+          routes:
+            - id: product-service-route
+              uri: lb://product-service
+              predicates:
+                - Path=/api/v1/products/**,/api/v1/brands/**,/api/v1/categories/**
 
-        - id: order-service-route
-          uri: lb://order-service
-          predicates:
-            - Path=/api/v1/orders/**
+            - id: order-service-route
+              uri: lb://order-service
+              predicates:
+                - Path=/api/v1/orders/**
 
-        - id: customer-service-route
-          uri: lb://customer-service
-          predicates:
-            - Path=/api/v1/customers/**
+            - id: customer-service-route
+              uri: lb://customer-service
+              predicates:
+                - Path=/api/v1/customers/**
 
 
 server:
