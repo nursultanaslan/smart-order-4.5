@@ -5,7 +5,7 @@ eureka:
 
 spring:
   datasource:
-    url: jdbc:postgresql://customersv_db:5433/customer_service
+    url: jdbc:postgresql://customersv_db:5432/customer_service
     username: postgres
     password: customerservice_db_password
 
