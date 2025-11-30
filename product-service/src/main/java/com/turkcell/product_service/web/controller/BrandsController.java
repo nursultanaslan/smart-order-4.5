@@ -1,4 +1,4 @@
-package com.turkcell.product_service.web;
+package com.turkcell.product_service.web.controller;
 
 import com.turkcell.product_service.application.brand.dto.request.DeleteBrandRequest;
 import com.turkcell.product_service.application.brand.dto.response.BrandResponse;
