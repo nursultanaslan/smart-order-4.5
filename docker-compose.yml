@@ -3,7 +3,7 @@ services:
   productsv_db:
     image: postgres:16
     environment:
-      POSTGRES_DB: product_service
+      POSTGRES_DB: product_service_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: productservice_db_password
     volumes:
@@ -16,7 +16,7 @@ services:
   ordersv_db:
     image: postgres:16
     environment:
-      POSTGRES_DB: order_service
+      POSTGRES_DB: order_service_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: orderservice_db_password
     volumes:
@@ -29,28 +29,42 @@ services:
   customersv_db:
     image: postgres:16
     environment:
-      POSTGRES_DB: customer_service
+      POSTGRES_DB: customer_service_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: customerservice_db_password
     volumes:
       - customerdb_vol:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+      - "5434:5432"
     networks:
       - postgres
 
   cartsv_db:
     image: postgres:16
     environment:
-      POSTGRES_DB: cart_service
+      POSTGRES_DB: cart_service_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: cartservice_db_password
     volumes:
       - cartdb_vol:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+      - "5435:5432"
     networks:
       - postgres
+
+  notificationsv_db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: notification_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: notificationservice_db_password
+    volumes:
+      - notificationdb_vol:/var/lib/postgresql/data
+    ports:
+      - "5436:5432"
+    networks:
+      - postgres
+
 
 #services
 
@@ -237,6 +251,7 @@ volumes:
   orderdb_vol: {}
   customerdb_vol: {}
   cartdb_vol: {}
+  notificationdb_vol: {}
   kafka-data: {}
   keycloakdb_vol: {}
 

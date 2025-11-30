@@ -5,7 +5,7 @@ eureka:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/notification_service
+    url: jdbc:postgresql://localhost:5436/notification_service_db
     username: postgres
     password: notificationservice_db_password
 
