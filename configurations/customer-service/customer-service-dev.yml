@@ -6,7 +6,7 @@ eureka:
 spring:
   #db config (postgresql)
   datasource:
-    url: jdbc:postgresql://localhost:5433/customer_service
+    url: jdbc:postgresql://localhost:5432/customer_service
     username: postgres
     password: customerservice_db_password
   #hibernate & orm
