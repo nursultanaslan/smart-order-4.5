@@ -5,7 +5,7 @@ eureka:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/order_service_db
+    url: jdbc:postgresql://localhost:5432/order_service_db
     username: postgres
     password: orderservice_db_password
 
