@@ -1,12 +1,15 @@
 package com.turkcell.product_service.web.controller;
 
+import com.turkcell.product_service.application.brand.dto.response.BrandResponse;
 import com.turkcell.product_service.application.category.dto.request.CreateCategoryRequest;
 import com.turkcell.product_service.application.category.dto.request.DeleteCategoryRequest;
+import com.turkcell.product_service.application.category.dto.request.UpdateCategoryRequest;
 import com.turkcell.product_service.application.category.dto.response.CategoryResponse;
 import com.turkcell.product_service.application.category.dto.response.DeletedCategoryResponse;
 import com.turkcell.product_service.application.category.usecases.CreateCategoryUseCase;
 import com.turkcell.product_service.application.category.usecases.DeleteCategoryUseCase;
 import com.turkcell.product_service.application.category.usecases.GetCategoryByIdUseCase;
+import com.turkcell.product_service.application.category.usecases.UpdateCategoryUseCase;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +23,13 @@ public class CategoriesController {
     private final CreateCategoryUseCase createCategoryUseCase;
     private final DeleteCategoryUseCase deleteCategoryUseCase;
     private final GetCategoryByIdUseCase getCategoryByIdUseCase;
+    private final UpdateCategoryUseCase updateCategoryUseCase;
 
-    public CategoriesController(CreateCategoryUseCase createCategoryUseCase, DeleteCategoryUseCase deleteCategoryUseCase, GetCategoryByIdUseCase getCategoryByIdUseCase) {
+    public CategoriesController(CreateCategoryUseCase createCategoryUseCase, DeleteCategoryUseCase deleteCategoryUseCase, GetCategoryByIdUseCase getCategoryByIdUseCase, UpdateCategoryUseCase updateCategoryUseCase) {
         this.createCategoryUseCase = createCategoryUseCase;
         this.deleteCategoryUseCase = deleteCategoryUseCase;
         this.getCategoryByIdUseCase = getCategoryByIdUseCase;
+        this.updateCategoryUseCase = updateCategoryUseCase;
     }
 
     @PostMapping
@@ -41,5 +46,10 @@ public class CategoriesController {
     @DeleteMapping("/{categoryId}")
     public DeletedCategoryResponse deleteById(@PathVariable("categoryId") @Valid UUID categoryId) {
         return deleteCategoryUseCase.deleteCategory(new DeleteCategoryRequest(categoryId));
+    }
+
+    @PutMapping("/update/{categoryId}")
+    public CategoryResponse update(@PathVariable("categoryId") UUID categoryId, @RequestBody @Valid UpdateCategoryRequest request) {
+        return updateCategoryUseCase.updateCategory(new UpdateCategoryRequest(categoryId, request.categoryName()));
     }
 }

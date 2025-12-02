@@ -1,5 +1,6 @@
 package com.turkcell.product_service.application.brand.mapper;
 
+import com.turkcell.product_service.application.brand.dto.request.UpdateBrandRequest;
 import com.turkcell.product_service.application.brand.dto.response.BrandResponse;
 import com.turkcell.product_service.application.brand.dto.request.CreateBrandRequest;
 import com.turkcell.product_service.application.brand.dto.response.DeletedBrandResponse;
@@ -25,6 +26,13 @@ public class BrandMapper {
     public DeletedBrandResponse toDeletedResponse(Brand brand) {
         return new DeletedBrandResponse(
                 brand.id().value()
+        );
+    }
+
+    public BrandResponse toBrandResponse(UpdateBrandRequest request) {
+        return new BrandResponse(
+                request.brandId(),
+                request.brandName()
         );
     }
 }

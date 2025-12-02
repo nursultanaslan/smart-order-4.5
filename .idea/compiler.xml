@@ -20,15 +20,15 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="bff-service" options="-parameters" />
-      <module name="cart-service" options="-parameters" />
-      <module name="config-server" options="-parameters" />
-      <module name="customer-service" options="-parameters" />
-      <module name="discovery-server" options="-parameters" />
-      <module name="gateway-server" options="-parameters" />
-      <module name="notification-service" options="-parameters" />
-      <module name="order-service" options="-parameters" />
-      <module name="product-service" options="-parameters" />
+      <module name="bff-service" options="" />
+      <module name="cart-service" options="" />
+      <module name="config-server" options="" />
+      <module name="customer-service" options="" />
+      <module name="discovery-server" options="" />
+      <module name="gateway-server" options="" />
+      <module name="notification-service" options="" />
+      <module name="order-service" options="" />
+      <module name="product-service" options="" />
     </option>
   </component>
 </project>
