@@ -32,8 +32,8 @@ public class Category {
         if (categoryName == null || categoryName.isBlank()) {
             throw new IllegalArgumentException("categoryName cannot be null or empty");
         }
-        if (categoryName.length() < 5) {
-            throw new IllegalArgumentException("categoryName cannot be less than 5");
+        if (categoryName.length() < 2) {
+            throw new IllegalArgumentException("categoryName cannot be less than 2");
         }
     }
 

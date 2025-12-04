@@ -1,15 +1,12 @@
 package com.turkcell.product_service.web.controller;
 
-import com.turkcell.product_service.application.brand.dto.response.BrandResponse;
 import com.turkcell.product_service.application.category.dto.request.CreateCategoryRequest;
 import com.turkcell.product_service.application.category.dto.request.DeleteCategoryRequest;
 import com.turkcell.product_service.application.category.dto.request.UpdateCategoryRequest;
+import com.turkcell.product_service.application.category.dto.response.CategoryListResponse;
 import com.turkcell.product_service.application.category.dto.response.CategoryResponse;
 import com.turkcell.product_service.application.category.dto.response.DeletedCategoryResponse;
-import com.turkcell.product_service.application.category.usecases.CreateCategoryUseCase;
-import com.turkcell.product_service.application.category.usecases.DeleteCategoryUseCase;
-import com.turkcell.product_service.application.category.usecases.GetCategoryByIdUseCase;
-import com.turkcell.product_service.application.category.usecases.UpdateCategoryUseCase;
+import com.turkcell.product_service.application.category.usecases.*;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +21,14 @@ public class CategoriesController {
     private final DeleteCategoryUseCase deleteCategoryUseCase;
     private final GetCategoryByIdUseCase getCategoryByIdUseCase;
     private final UpdateCategoryUseCase updateCategoryUseCase;
+    private final GetAllCategoriesUseCase getAllCategoriesUseCase;
 
-    public CategoriesController(CreateCategoryUseCase createCategoryUseCase, DeleteCategoryUseCase deleteCategoryUseCase, GetCategoryByIdUseCase getCategoryByIdUseCase, UpdateCategoryUseCase updateCategoryUseCase) {
+    public CategoriesController(CreateCategoryUseCase createCategoryUseCase, DeleteCategoryUseCase deleteCategoryUseCase, GetCategoryByIdUseCase getCategoryByIdUseCase, UpdateCategoryUseCase updateCategoryUseCase, GetAllCategoriesUseCase getAllCategoriesUseCase) {
         this.createCategoryUseCase = createCategoryUseCase;
         this.deleteCategoryUseCase = deleteCategoryUseCase;
         this.getCategoryByIdUseCase = getCategoryByIdUseCase;
         this.updateCategoryUseCase = updateCategoryUseCase;
+        this.getAllCategoriesUseCase = getAllCategoriesUseCase;
     }
 
     @PostMapping
@@ -51,5 +50,10 @@ public class CategoriesController {
     @PutMapping("/update/{categoryId}")
     public CategoryResponse update(@PathVariable("categoryId") UUID categoryId, @RequestBody @Valid UpdateCategoryRequest request) {
         return updateCategoryUseCase.updateCategory(new UpdateCategoryRequest(categoryId, request.categoryName()));
+    }
+
+    @GetMapping
+    public CategoryListResponse getAll() {
+        return getAllCategoriesUseCase.findAllCategories();
     }
 }

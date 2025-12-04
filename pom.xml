@@ -37,7 +37,7 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- Spring Boot Dependencies BOM -->
+            <!-- Spring Boot Dependencies BOM (versiyon yönetimi)-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>

@@ -54,4 +54,9 @@ public class CategoryRepositoryAdapter implements CategoryRepository {
         JpaCategoryEntity entity = categoryMapper.toEntity(category);
         categoryRepository.delete(entity);
     }
+
+    @Override
+    public boolean existsByCategoryNameIgnoreCase(String categoryName) {
+        return categoryRepository.existsByCategoryNameIgnoreCase(categoryName);
+    }
 }

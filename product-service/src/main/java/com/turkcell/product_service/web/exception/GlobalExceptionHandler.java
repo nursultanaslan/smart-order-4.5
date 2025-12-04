@@ -1,6 +1,8 @@
-package com.turkcell.product_service.web.exceltion;
+package com.turkcell.product_service.web.exception;
 
+import com.turkcell.product_service.application.brand.exception.BrandNameAlreadyExistsException;
 import com.turkcell.product_service.application.brand.exception.BrandNotFoundException;
+import com.turkcell.product_service.application.category.exception.CategoryNameAlreadyExistsException;
 import com.turkcell.product_service.application.category.exception.CategoryNotFoundException;
 import com.turkcell.product_service.application.product.exception.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -26,5 +28,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
+    @ExceptionHandler(BrandNameAlreadyExistsException.class)
+    public ResponseEntity<String> handleAlreadyExistsException(BrandNameAlreadyExistsException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
 
+    @ExceptionHandler(CategoryNameAlreadyExistsException.class)
+    public ResponseEntity<String> handleAlreadyExistsException(CategoryNameAlreadyExistsException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
 }

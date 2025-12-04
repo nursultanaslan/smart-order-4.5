@@ -55,4 +55,9 @@ public class BrandRepositoryAdapter implements BrandRepository {
         JpaBrandEntity entity = brandMapper.toEntity(brand);
         brandRepository.delete(entity);
     }
+
+    @Override
+    public boolean existsByBrandNameIgnoreCase(String brandName) {
+        return brandRepository.existsByBrandNameIgnoreCase(brandName);
+    }
 }

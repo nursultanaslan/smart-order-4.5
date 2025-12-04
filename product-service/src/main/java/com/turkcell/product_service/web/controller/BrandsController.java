@@ -2,13 +2,11 @@ package com.turkcell.product_service.web.controller;
 
 import com.turkcell.product_service.application.brand.dto.request.DeleteBrandRequest;
 import com.turkcell.product_service.application.brand.dto.request.UpdateBrandRequest;
+import com.turkcell.product_service.application.brand.dto.response.BrandListResponse;
 import com.turkcell.product_service.application.brand.dto.response.BrandResponse;
 import com.turkcell.product_service.application.brand.dto.request.CreateBrandRequest;
 import com.turkcell.product_service.application.brand.dto.response.DeletedBrandResponse;
-import com.turkcell.product_service.application.brand.usecases.CreateBrandUseCase;
-import com.turkcell.product_service.application.brand.usecases.DeleteBrandUseCase;
-import com.turkcell.product_service.application.brand.usecases.GetBrandByIdUseCase;
-import com.turkcell.product_service.application.brand.usecases.UpdateBrandUseCase;
+import com.turkcell.product_service.application.brand.usecases.*;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +21,14 @@ public class BrandsController {
     private final GetBrandByIdUseCase getBrandByIdUseCase;
     private final DeleteBrandUseCase  deleteBrandUseCase;
     private final UpdateBrandUseCase updateBrandUseCase;
+    private final GetAllBrandsUseCase getAllBrandsUseCase;
 
-    public BrandsController(CreateBrandUseCase createBrandUseCase, GetBrandByIdUseCase getBrandByIdUseCase, DeleteBrandUseCase deleteBrandUseCase, UpdateBrandUseCase updateBrandUseCase) {
+    public BrandsController(CreateBrandUseCase createBrandUseCase, GetBrandByIdUseCase getBrandByIdUseCase, DeleteBrandUseCase deleteBrandUseCase, UpdateBrandUseCase updateBrandUseCase, GetAllBrandsUseCase getAllBrandsUseCase) {
         this.createBrandUseCase = createBrandUseCase;
         this.getBrandByIdUseCase = getBrandByIdUseCase;
         this.deleteBrandUseCase = deleteBrandUseCase;
         this.updateBrandUseCase = updateBrandUseCase;
+        this.getAllBrandsUseCase = getAllBrandsUseCase;
     }
 
     @PostMapping
@@ -50,6 +50,11 @@ public class BrandsController {
     @PutMapping("/update/{brandId}")
     public BrandResponse update(@PathVariable("brandId") UUID brandId, @RequestBody @Valid UpdateBrandRequest request) {
         return updateBrandUseCase.updateBrand(new UpdateBrandRequest(brandId, request.brandName()));
+    }
+
+    @GetMapping
+    public BrandListResponse findAll() {
+        return getAllBrandsUseCase.getAllBrands();
     }
 
 }
