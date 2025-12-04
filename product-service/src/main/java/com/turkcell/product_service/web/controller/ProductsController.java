@@ -1,6 +1,7 @@
 package com.turkcell.product_service.web.controller;
 
 import com.turkcell.product_service.application.product.command.CreateProductCommand;
+import com.turkcell.product_service.application.product.command.DecreaseProductStockCommand;
 import com.turkcell.product_service.application.product.command.DeleteProductCommand;
 import com.turkcell.product_service.application.product.command.UpdateProductCommand;
 import com.turkcell.product_service.application.product.dto.DeletedProductResponse;
@@ -22,16 +23,18 @@ public class ProductsController {
 
     private final CommandHandler<CreateProductCommand, ProductResponse>  createProductCommandHandler;
     private final CommandHandler<DeleteProductCommand, DeletedProductResponse>  deleteProductCommandHandler;
-    private final QueryHandler<GetProductByIdQuery, ProductResponse>   getProductByIdQueryHandler;
-    private final QueryHandler<FindProductsByNameQuery, PageableProductResponse>   findProductsByNameQueryHandler;
-    private final CommandHandler<UpdateProductCommand, ProductResponse>   updateProductCommandHandler;
+    private final QueryHandler<GetProductByIdQuery, ProductResponse>  getProductByIdQueryHandler;
+    private final QueryHandler<FindProductsByNameQuery, PageableProductResponse>  findProductsByNameQueryHandler;
+    private final CommandHandler<UpdateProductCommand, ProductResponse>  updateProductCommandHandler;
+    private final CommandHandler<DecreaseProductStockCommand, ProductResponse>  decreaseProductStockCommand;
 
-    public ProductsController(CommandHandler<CreateProductCommand, ProductResponse> createProductCommandHandler, CommandHandler<DeleteProductCommand, DeletedProductResponse> deleteProductCommandHandler, QueryHandler<GetProductByIdQuery, ProductResponse> getProductByIdQueryHandler, QueryHandler<FindProductsByNameQuery, PageableProductResponse> findProductsByNameQueryHandler, CommandHandler<UpdateProductCommand, ProductResponse> updateProductCommandHandler) {
+    public ProductsController(CommandHandler<CreateProductCommand, ProductResponse> createProductCommandHandler, CommandHandler<DeleteProductCommand, DeletedProductResponse> deleteProductCommandHandler, QueryHandler<GetProductByIdQuery, ProductResponse> getProductByIdQueryHandler, QueryHandler<FindProductsByNameQuery, PageableProductResponse> findProductsByNameQueryHandler, CommandHandler<UpdateProductCommand, ProductResponse> updateProductCommandHandler, CommandHandler<DecreaseProductStockCommand, ProductResponse> decreaseProductStockCommand) {
         this.createProductCommandHandler = createProductCommandHandler;
         this.deleteProductCommandHandler = deleteProductCommandHandler;
         this.getProductByIdQueryHandler = getProductByIdQueryHandler;
         this.findProductsByNameQueryHandler = findProductsByNameQueryHandler;
         this.updateProductCommandHandler = updateProductCommandHandler;
+        this.decreaseProductStockCommand = decreaseProductStockCommand;
     }
 
     @PostMapping
@@ -61,6 +64,11 @@ public class ProductsController {
     @PutMapping("/{productId}")
     public ProductResponse updateProduct(@PathVariable UUID productId, @RequestBody UpdateProductCommand command) {
         return updateProductCommandHandler.handle(command);
+    }
+
+    @PutMapping("/{productId}/stock/decrease")
+    public ProductResponse decreaseStock(@PathVariable("productId") UUID productId, @RequestParam("decreaseQuantity") Integer decreaseQuantity) {
+        return decreaseProductStockCommand.handle(new DecreaseProductStockCommand(productId, decreaseQuantity));
     }
 
 }
