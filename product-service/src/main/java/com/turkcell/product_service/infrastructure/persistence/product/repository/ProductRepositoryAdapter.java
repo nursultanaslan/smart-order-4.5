@@ -1,5 +1,6 @@
 package com.turkcell.product_service.infrastructure.persistence.product.repository;
 
+import com.turkcell.product_service.domain.model.category.CategoryId;
 import com.turkcell.product_service.domain.model.product.Product;
 import com.turkcell.product_service.domain.model.product.ProductId;
 import com.turkcell.product_service.domain.repository.ProductRepository;
@@ -69,6 +70,12 @@ public class ProductRepositoryAdapter implements ProductRepository {
     @Override
     public Page<Product> findByProductNameIgnoreCase(String productName, Pageable pageable) {
         return productRepository.findByProductNameIgnoreCase(productName, pageable)
+                .map(productMapper::toDomain);
+    }
+
+    @Override
+    public Page<Product> findByCategoryId(CategoryId categoryId, Pageable pageable) {
+        return productRepository.findByCategoryId(categoryId.value(), pageable)
                 .map(productMapper::toDomain);
     }
 }

@@ -5,7 +5,7 @@ import com.turkcell.product_service.domain.model.category.CategoryId;
 
 import java.util.Objects;
 
-//aggregate root
+//aggregate root-rich domain model
 public class Product {
 
     private final ProductId id;

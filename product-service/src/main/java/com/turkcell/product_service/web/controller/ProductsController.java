@@ -1,13 +1,11 @@
 package com.turkcell.product_service.web.controller;
 
-import com.turkcell.product_service.application.product.command.CreateProductCommand;
-import com.turkcell.product_service.application.product.command.DecreaseProductStockCommand;
-import com.turkcell.product_service.application.product.command.DeleteProductCommand;
-import com.turkcell.product_service.application.product.command.UpdateProductCommand;
+import com.turkcell.product_service.application.product.command.*;
 import com.turkcell.product_service.application.product.dto.DeletedProductResponse;
 import com.turkcell.product_service.application.product.dto.PageableProductResponse;
 import com.turkcell.product_service.application.product.dto.ProductResponse;
 import com.turkcell.product_service.application.product.query.FindProductsByNameQuery;
+import com.turkcell.product_service.application.product.query.GetAllProductsByCategoryIdQuery;
 import com.turkcell.product_service.application.product.query.GetProductByIdQuery;
 import com.turkcell.product_service.core.cqrs.CommandHandler;
 import com.turkcell.product_service.core.cqrs.QueryHandler;
@@ -27,14 +25,18 @@ public class ProductsController {
     private final QueryHandler<FindProductsByNameQuery, PageableProductResponse>  findProductsByNameQueryHandler;
     private final CommandHandler<UpdateProductCommand, ProductResponse>  updateProductCommandHandler;
     private final CommandHandler<DecreaseProductStockCommand, ProductResponse>  decreaseProductStockCommand;
+    private final CommandHandler<IncreaseProductStockCommand,  ProductResponse>  increaseProductStockCommand;
+    private final QueryHandler<GetAllProductsByCategoryIdQuery, PageableProductResponse>   getProductsByCategoryIdQuery;
 
-    public ProductsController(CommandHandler<CreateProductCommand, ProductResponse> createProductCommandHandler, CommandHandler<DeleteProductCommand, DeletedProductResponse> deleteProductCommandHandler, QueryHandler<GetProductByIdQuery, ProductResponse> getProductByIdQueryHandler, QueryHandler<FindProductsByNameQuery, PageableProductResponse> findProductsByNameQueryHandler, CommandHandler<UpdateProductCommand, ProductResponse> updateProductCommandHandler, CommandHandler<DecreaseProductStockCommand, ProductResponse> decreaseProductStockCommand) {
+    public ProductsController(CommandHandler<CreateProductCommand, ProductResponse> createProductCommandHandler, CommandHandler<DeleteProductCommand, DeletedProductResponse> deleteProductCommandHandler, QueryHandler<GetProductByIdQuery, ProductResponse> getProductByIdQueryHandler, QueryHandler<FindProductsByNameQuery, PageableProductResponse> findProductsByNameQueryHandler, CommandHandler<UpdateProductCommand, ProductResponse> updateProductCommandHandler, CommandHandler<DecreaseProductStockCommand, ProductResponse> decreaseProductStockCommand, CommandHandler<IncreaseProductStockCommand, ProductResponse> increaseProductStockCommand, QueryHandler<GetAllProductsByCategoryIdQuery, PageableProductResponse> getProductsByCategoryIdQuery) {
         this.createProductCommandHandler = createProductCommandHandler;
         this.deleteProductCommandHandler = deleteProductCommandHandler;
         this.getProductByIdQueryHandler = getProductByIdQueryHandler;
         this.findProductsByNameQueryHandler = findProductsByNameQueryHandler;
         this.updateProductCommandHandler = updateProductCommandHandler;
         this.decreaseProductStockCommand = decreaseProductStockCommand;
+        this.increaseProductStockCommand = increaseProductStockCommand;
+        this.getProductsByCategoryIdQuery = getProductsByCategoryIdQuery;
     }
 
     @PostMapping
@@ -55,7 +57,7 @@ public class ProductsController {
 
     @GetMapping()
     public PageableProductResponse findProductsByNameQuery(
-            @RequestParam() String productName,
+            @RequestParam("productName") String productName,
             @RequestParam(defaultValue = "0") Integer pageIndex,
             @RequestParam(defaultValue = "10") Integer pageSize ) {
         return findProductsByNameQueryHandler.handle(new FindProductsByNameQuery(productName, pageIndex, pageSize));
@@ -71,4 +73,17 @@ public class ProductsController {
         return decreaseProductStockCommand.handle(new DecreaseProductStockCommand(productId, decreaseQuantity));
     }
 
+    @PutMapping("/{productId}/stock/increase")
+    public ProductResponse increaseStock(@PathVariable("productId") UUID productId, @RequestParam("increaseQuantity") Integer increaseQuantity) {
+        return increaseProductStockCommand.handle(new IncreaseProductStockCommand(productId, increaseQuantity));
+    }
+
+    @GetMapping
+    public PageableProductResponse getProductsByCategoryIdQuery(
+            @RequestParam("categoryId") UUID categoryId,
+            @RequestParam(defaultValue = "0") Integer pageIndex,
+            @RequestParam(defaultValue = "10") Integer pageSize) {
+        return getProductsByCategoryIdQuery.handle(new GetAllProductsByCategoryIdQuery(categoryId, pageIndex,pageSize));
+
+    }
 }

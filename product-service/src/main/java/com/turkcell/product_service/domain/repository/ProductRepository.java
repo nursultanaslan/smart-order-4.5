@@ -1,5 +1,6 @@
 package com.turkcell.product_service.domain.repository;
 
+import com.turkcell.product_service.domain.model.category.CategoryId;
 import com.turkcell.product_service.domain.model.product.Product;
 import com.turkcell.product_service.domain.model.product.ProductId;
 import org.springframework.data.domain.Page;
@@ -18,4 +19,5 @@ public interface ProductRepository {
     void delete(Product product);
 
     Page<Product> findByProductNameIgnoreCase(String productName, Pageable pageable);
+    Page<Product> findByCategoryId(CategoryId categoryId,  Pageable pageable);
 }
