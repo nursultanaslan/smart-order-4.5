@@ -21,4 +21,9 @@ public class OrdersController {
     public OrderResponse createOrder(@RequestBody CreateOrderCommand command){
         return createOrderCommandHandler.handle(command);
     }
+
+    @GetMapping
+    public String getOrders(){
+        return "welcome order service";
+    }
 }
