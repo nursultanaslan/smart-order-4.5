@@ -17,21 +17,5 @@
         <module name="notification-service" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="smart-order-4.5" target="21" />
-    </bytecodeTargetLevel>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="bff-service" options="" />
-      <module name="cart-service" options="" />
-      <module name="config-server" options="" />
-      <module name="customer-service" options="" />
-      <module name="discovery-server" options="" />
-      <module name="gateway-server" options="" />
-      <module name="notification-service" options="" />
-      <module name="order-service" options="" />
-      <module name="product-service" options="" />
-    </option>
   </component>
 </project>

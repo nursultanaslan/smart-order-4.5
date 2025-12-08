@@ -30,11 +30,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BrandNameAlreadyExistsException.class)
     public ResponseEntity<String> handleAlreadyExistsException(BrandNameAlreadyExistsException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 
     @ExceptionHandler(CategoryNameAlreadyExistsException.class)
     public ResponseEntity<String> handleAlreadyExistsException(CategoryNameAlreadyExistsException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 }

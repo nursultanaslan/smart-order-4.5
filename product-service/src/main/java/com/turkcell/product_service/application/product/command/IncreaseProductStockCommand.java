@@ -8,6 +8,6 @@ import jakarta.validation.constraints.Positive;
 import java.util.UUID;
 
 public record IncreaseProductStockCommand(
-        @NotNull UUID productId,
-        @Positive @NotNull Integer quantity) implements Command<ProductResponse> {
+        UUID productId,
+        Integer quantity) implements Command<ProductResponse> {
 }

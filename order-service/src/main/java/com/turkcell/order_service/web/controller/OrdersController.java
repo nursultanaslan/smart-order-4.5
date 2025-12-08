@@ -22,8 +22,4 @@ public class OrdersController {
         return createOrderCommandHandler.handle(command);
     }
 
-    @GetMapping
-    public String getOrders(){
-        return "welcome order service";
-    }
 }

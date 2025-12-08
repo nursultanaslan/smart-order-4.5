@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 @Component
-@Validated
 public class IncreaseProductStockCommandHandler implements CommandHandler<IncreaseProductStockCommand, ProductResponse> {
 
     private final ProductRepository productRepository;
@@ -24,7 +23,7 @@ public class IncreaseProductStockCommandHandler implements CommandHandler<Increa
     }
 
     @Override
-    public ProductResponse handle(@Valid IncreaseProductStockCommand command) {
+    public ProductResponse handle(IncreaseProductStockCommand command) {
         Product product = productRepository.findById(new ProductId(command.productId()))
                 .orElseThrow(() -> new ProductNotFoundException("Product not found!"));
 
