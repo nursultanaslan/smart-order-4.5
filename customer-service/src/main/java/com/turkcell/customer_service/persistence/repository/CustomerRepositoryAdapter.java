@@ -29,8 +29,9 @@ public class CustomerRepositoryAdapter implements CustomerRepository {
     }
 
     @Override
-    public Optional<Customer> findById(CustomerId id) {
-        return Optional.empty();
+    public Optional<Customer> findById(CustomerId customerId) {
+        return customerRepository.findById(customerId.value())
+                .map(customerEntityMapper::toDomain);
     }
 
     @Override
@@ -40,11 +41,12 @@ public class CustomerRepositoryAdapter implements CustomerRepository {
 
     @Override
     public void deleteById(CustomerId id) {
-
+        customerRepository.deleteById(id.value());
     }
 
     @Override
     public void delete(Customer customer) {
-
+        JpaCustomerEntity entity = customerEntityMapper.toEntity(customer);
+        customerRepository.delete(entity);
     }
 }

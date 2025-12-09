@@ -88,10 +88,13 @@ public class Product {
         this.price = newPrice;
     }
 
-    public void updateProduct(String productName, String description){
+    public void updateProductName(String productName){
         validateProductName(productName);
-        validateDescription(description);
         this.productName = productName.trim();
+    }
+
+    public void updateDescription(String description){
+        validateDescription(description);
         this.description = description.trim();
     }
 

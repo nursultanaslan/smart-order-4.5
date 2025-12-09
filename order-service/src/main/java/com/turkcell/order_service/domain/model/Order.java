@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 
+//aggregate-root
 public class Order {
 
     private final OrderId id;
@@ -97,7 +98,7 @@ public class Order {
         this.orderStatus = OrderStatus.CLAIMED;
     }
 
-    // validate methods
+    // validate methods - invariants
     public static void validateTotalPrice(BigDecimal totalPrice) {
         if (totalPrice.signum() < 0) {
             throw new IllegalArgumentException("Total price cannot be negative");

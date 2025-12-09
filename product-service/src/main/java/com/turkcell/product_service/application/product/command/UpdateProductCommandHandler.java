@@ -30,7 +30,13 @@ public class UpdateProductCommandHandler implements CommandHandler<UpdateProduct
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
-        product.updateProduct(command.productName(), command.description());
+        if (command.productName() != null) {
+            product.updateProductName(command.productName());
+        }
+
+        if (command.description() != null) {
+            product.updateDescription(command.description());
+        }
 
         if(command.amount() != null){
             Money money = new Money(command.amount(),  command.currency());

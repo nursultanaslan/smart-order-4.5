@@ -2,6 +2,8 @@ package com.turkcell.customer_service.application.mapper;
 
 import com.turkcell.customer_service.application.dto.request.CreateCustomerRequest;
 import com.turkcell.customer_service.application.dto.response.CustomerResponse;
+import com.turkcell.customer_service.application.dto.response.DeletedCustomerResponse;
+import com.turkcell.customer_service.application.dto.response.GetCustomerByIdResponse;
 import com.turkcell.customer_service.domain.model.Address;
 import com.turkcell.customer_service.domain.model.Customer;
 import com.turkcell.customer_service.domain.model.Email;
@@ -27,6 +29,18 @@ public class CustomerMapper {
     public CustomerResponse toResponse(Customer customer) {
         return new CustomerResponse(
                 customer.id().value(),
+                customer.firstName(),
+                customer.lastName()
+        );
+    }
+
+    public DeletedCustomerResponse toDeletedResponse(Customer customer) {
+        return new DeletedCustomerResponse(
+                customer.id().value());
+    }
+
+    public GetCustomerByIdResponse toGetByIdResponse(Customer customer) {
+        return new GetCustomerByIdResponse(
                 customer.firstName(),
                 customer.lastName()
         );

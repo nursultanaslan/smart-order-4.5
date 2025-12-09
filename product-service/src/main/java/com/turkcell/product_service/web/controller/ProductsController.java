@@ -45,13 +45,13 @@ public class ProductsController {
         return createProductCommandHandler.handle(command);
     }
 
-    @DeleteMapping("/{productId}")
-    public DeletedProductResponse deleteProduct(@PathVariable("productId") UUID productId) {
+    @DeleteMapping("/{id}")
+    public DeletedProductResponse deleteProduct(@PathVariable("id") UUID productId) {
         return  deleteProductCommandHandler.handle(new DeleteProductCommand(productId));
     }
 
-    @GetMapping("/{productId}")
-    public ProductResponse getProductById(@PathVariable("productId") UUID productId) {
+    @GetMapping("/{id}")
+    public ProductResponse getProductById(@PathVariable("id") UUID productId) {
         return getProductByIdQueryHandler.handle(new GetProductByIdQuery(productId));
     }
 
@@ -72,18 +72,26 @@ public class ProductsController {
 
     }
 
-    @PutMapping("/{productId}")
-    public ProductResponse updateProduct(@PathVariable UUID productId, @RequestBody UpdateProductCommand command) {
-        return updateProductCommandHandler.handle(command);
+    @PutMapping("/{id}")
+    public ProductResponse updateProduct(@PathVariable("id") UUID productId, @RequestBody UpdateProductCommand command) {
+        UpdateProductCommand finalCommand = new UpdateProductCommand(
+                productId,
+                command.productName(),
+                command.amount(),
+                command.currency(),
+                command.description(),
+                command.stock()
+        );
+        return updateProductCommandHandler.handle(finalCommand);
     }
 
-    @PutMapping("/{productId}/stock/decrease")
-    public ProductResponse decreaseStock(@PathVariable("productId") UUID productId, @RequestParam("decreaseQuantity") Integer decreaseQuantity) {
+    @PutMapping("/{id}/stock/decrease")
+    public ProductResponse decreaseStock(@PathVariable("id") UUID productId, @RequestParam("decreaseQuantity") Integer decreaseQuantity) {
         return decreaseProductStockCommand.handle(new DecreaseProductStockCommand(productId, decreaseQuantity));
     }
 
-    @PutMapping("/{productId}/stock/increase")
-    public ProductResponse increaseStock(@PathVariable("productId") UUID productId, @RequestParam("increaseQuantity") Integer increaseQuantity) {
+    @PutMapping("/{id}/stock/increase")
+    public ProductResponse increaseStock(@PathVariable("id") UUID productId, @RequestParam("increaseQuantity") Integer increaseQuantity) {
         return increaseProductStockCommand.handle(new IncreaseProductStockCommand(productId, increaseQuantity));
     }
 }
