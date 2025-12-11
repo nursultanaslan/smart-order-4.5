@@ -2,12 +2,10 @@ package com.turkcell.customer_service.web;
 
 import com.turkcell.customer_service.application.dto.request.CreateCustomerRequest;
 import com.turkcell.customer_service.application.dto.request.DeleteCustomerRequest;
-import com.turkcell.customer_service.application.dto.response.CustomerResponse;
-import com.turkcell.customer_service.application.dto.response.DeletedCustomerResponse;
-import com.turkcell.customer_service.application.dto.response.GetCustomerByIdResponse;
-import com.turkcell.customer_service.application.usecase.CreateCustomerUseCase;
-import com.turkcell.customer_service.application.usecase.DeleteCustomerUseCase;
-import com.turkcell.customer_service.application.usecase.GetCustomerByIdUseCase;
+import com.turkcell.customer_service.application.dto.request.UpdateAddressRequest;
+import com.turkcell.customer_service.application.dto.request.UpdatePersonalDetailsRequest;
+import com.turkcell.customer_service.application.dto.response.*;
+import com.turkcell.customer_service.application.usecase.*;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +13,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/customers")
+@RequestMapping("/api/v1/profile/myAccount")
 public class CustomersController {
 
     private final CreateCustomerUseCase createCustomerUseCase;
     private final DeleteCustomerUseCase deleteCustomerUseCase;
     private final GetCustomerByIdUseCase getCustomerByIdUseCase;
+    private final UpdatePersonalDetailsUseCase updatePersonalDetailsUseCase;
+    private final UpdateAddressUseCase updateAddressUseCase;
 
-    public CustomersController(CreateCustomerUseCase createCustomerUseCase, DeleteCustomerUseCase deleteCustomerUseCase, GetCustomerByIdUseCase getCustomerByIdUseCase) {
+    public CustomersController(CreateCustomerUseCase createCustomerUseCase, DeleteCustomerUseCase deleteCustomerUseCase, GetCustomerByIdUseCase getCustomerByIdUseCase, UpdatePersonalDetailsUseCase updatePersonalDetailsUseCase, UpdateAddressUseCase updateAddressUseCase) {
         this.createCustomerUseCase = createCustomerUseCase;
         this.deleteCustomerUseCase = deleteCustomerUseCase;
         this.getCustomerByIdUseCase = getCustomerByIdUseCase;
+        this.updatePersonalDetailsUseCase = updatePersonalDetailsUseCase;
+        this.updateAddressUseCase = updateAddressUseCase;
     }
 
     @PostMapping()
@@ -42,5 +44,31 @@ public class CustomersController {
     @GetMapping("/{id}")
     public GetCustomerByIdResponse getById(@PathVariable("id") UUID customerId) {
         return getCustomerByIdUseCase.getCustomerById(customerId);
+    }
+
+    @PutMapping("/{id}")
+    public UpdatedPersonalDetailsResponse updatePersonalDetails(@PathVariable("id") UUID customerId, @RequestBody UpdatePersonalDetailsRequest request) {
+        UpdatePersonalDetailsRequest finalRequest = new UpdatePersonalDetailsRequest(
+                customerId,
+                request.firstName(),
+                request.lastName(),
+                request.email(),
+                request.phone()
+        );
+        return updatePersonalDetailsUseCase.updateCustomer(finalRequest);
+    }
+
+    @PutMapping("/{id}")
+    public UpdatedAddressResponse updateAddress(@PathVariable("id") UUID customerId, @RequestBody UpdateAddressRequest request) {
+        UpdateAddressRequest finalRequest = new UpdateAddressRequest(
+                customerId,
+                request.country(),
+                request.city(),
+                request.street(),
+                request.postalCode(),
+                request.houseNumber()
+        );
+
+        return updateAddressUseCase.updateAddress(finalRequest);
     }
 }

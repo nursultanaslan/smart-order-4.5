@@ -2,3 +2,13 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+#gelen tum isteklerde jwt dogrulaması yapılsın
+#jwt'nin issuer'i keycloak
+#bff'ten gelen jwt burada dogrulanır
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8585/realms/turkcell-p1-dev

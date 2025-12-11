@@ -9,17 +9,17 @@ spring:
   security:     #bff-service'i keycloak'a tanitiyoruz
     oauth2:
       client:
-        provider:
+        provider:  #keycloak bir provider (auth providerı)
           keycloak:
             issuer-uri: http://localhost:8585/realms/turkcell-p1-dev #keycloak'ın çalıştığı adres
             user-name-attribute: preferred-username
         registration:
           keycloak:
             client-id: bff-service    #keycloak'ta olusturdugumuz client'in id'si.
-            client-secret: CMhPKlDDXgwwSLXWh1wMbrSDTCtwAlQo  #client'e atanmıs secret
+            client-secret: E1iaoXHesUe1165j1Q6dI2vzGZbmCPVk  #client'e atanmıs secret
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             authorization-grant-type: authorization_code
             scope:          #giriş yapmıs kullanıcıdan hangi bilgileri alalım
-              - openid
+              - openid      #jwt bilgileri icin gerekli
               - profile
               - email

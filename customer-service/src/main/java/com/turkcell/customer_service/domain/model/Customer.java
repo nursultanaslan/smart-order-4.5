@@ -14,7 +14,6 @@ public class Customer {
     private Address address;
 
     private Customer(CustomerId id,  String firstName, String lastName, Email email, Phone phoneNumber, Address address) {
-        validateInputs(firstName,lastName);
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,10 +47,12 @@ public class Customer {
 
     //behaviors
     public void updateFirstName(String newFirstName) {
+        validateFirstName(newFirstName);
         this.firstName = newFirstName;
     }
 
     public void updateLastName(String newLastName) {
+        validateLastName(newLastName);
         this.lastName = newLastName;
     }
 
@@ -72,10 +73,13 @@ public class Customer {
 
 
     //validate methods
-    public static void validateInputs(String firstName, String lastName){
+    public static void validateFirstName(String firstName){
         if (firstName == null || firstName.isEmpty()){
             throw new IllegalArgumentException("First name is null or empty");
         }
+    }
+
+    public static void validateLastName(String lastName){
         if (lastName == null || lastName.isEmpty()){
             throw new IllegalArgumentException("Last name is null or empty");
         }

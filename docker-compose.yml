@@ -9,7 +9,7 @@ services:
     volumes:
       - productdb_vol:/var/lib/postgresql/data #postgrenin dosyaları yazdıgı konum pg16 icin volume bu dizine baglanır
     ports:
-      - "5432:5432"
+      - "5437:5432"
     networks:
       - postgres
 
@@ -209,6 +209,8 @@ services:
     networks:
       - kafkanet
 
+#keycloak default olarak postgresql ile calısacak sekilde tasarlanmıstır.
+#sadece keycloak servisinin kullanacagı db.
   keycloak_db:   #dışarıya açmıyoruz sadece keycloak kullanacak
     image: postgres:16
     container_name: keycloak-db
@@ -223,9 +225,13 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+    networks:
+      - postgres
+      - keycloak
 
+#merkezi kimlik ve erişim yönetimi sağlar (users,roles,authority).
   keycloak:
-    image: quay.io/keycloak/keycloak:24.0.5
+    image: quay.io/keycloak/keycloak:26.4.6
     depends_on:
       keycloak_db:
         condition: service_healthy
@@ -243,6 +249,9 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_HEALTH_ENABLED: "true"
       KC_METRICS_ENABLED: "true"
+    networks:
+      - postgres
+      - keycloak
 
 #her container kapandiginda o containerda calısan veriler kapatıldıgında kaybolur (kalıcı veri icin)
 #ve tekrar baslatildiginda sifirdan olusur. bunun onune gecmek icin volume tanımlarız.
@@ -260,3 +269,4 @@ networks:
   postgres:
   spring:
     driver: bridge
+  keycloak:

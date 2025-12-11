@@ -4,6 +4,12 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8585/realms/turkcell-p1-dev
+
   #db config (postgresql)
   datasource:
     url: jdbc:postgresql://localhost:5434/customer_service_db
