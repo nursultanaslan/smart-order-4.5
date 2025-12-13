@@ -105,6 +105,20 @@ services:
       - config-server
       - discovery-server
 
+  bff-service:
+    image: tcell-bff-service
+    container_name: bff-service
+    ports:
+      - "8989:8989"
+    environment:
+      - CONFIG_URI=http://config-server:8787
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+    depends_on:
+      - config-server
+      - discovery-server
+
   product-service:
     image: tcell-product-service
     container_name: product-service

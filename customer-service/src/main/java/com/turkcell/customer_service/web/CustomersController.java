@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/profile/myAccount")
+@RequestMapping("/api/v1/customer")
 public class CustomersController {
 
     private final CreateCustomerUseCase createCustomerUseCase;
@@ -22,7 +22,9 @@ public class CustomersController {
     private final UpdatePersonalDetailsUseCase updatePersonalDetailsUseCase;
     private final UpdateAddressUseCase updateAddressUseCase;
 
-    public CustomersController(CreateCustomerUseCase createCustomerUseCase, DeleteCustomerUseCase deleteCustomerUseCase, GetCustomerByIdUseCase getCustomerByIdUseCase, UpdatePersonalDetailsUseCase updatePersonalDetailsUseCase, UpdateAddressUseCase updateAddressUseCase) {
+    public CustomersController(CreateCustomerUseCase createCustomerUseCase, DeleteCustomerUseCase deleteCustomerUseCase,
+            GetCustomerByIdUseCase getCustomerByIdUseCase, UpdatePersonalDetailsUseCase updatePersonalDetailsUseCase,
+            UpdateAddressUseCase updateAddressUseCase) {
         this.createCustomerUseCase = createCustomerUseCase;
         this.deleteCustomerUseCase = deleteCustomerUseCase;
         this.getCustomerByIdUseCase = getCustomerByIdUseCase;
@@ -36,7 +38,7 @@ public class CustomersController {
         return createCustomerUseCase.createCustomer(request);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public DeletedCustomerResponse delete(@PathVariable("id") UUID customerId) {
         return deleteCustomerUseCase.deleteCustomer(new DeleteCustomerRequest(customerId));
     }
@@ -46,28 +48,28 @@ public class CustomersController {
         return getCustomerByIdUseCase.getCustomerById(customerId);
     }
 
-    @PutMapping("/{id}")
-    public UpdatedPersonalDetailsResponse updatePersonalDetails(@PathVariable("id") UUID customerId, @RequestBody UpdatePersonalDetailsRequest request) {
+    @PutMapping("/info/{id}")
+    public UpdatedPersonalDetailsResponse updatePersonalDetails(@PathVariable("id") UUID customerId,
+            @RequestBody UpdatePersonalDetailsRequest request) {
         UpdatePersonalDetailsRequest finalRequest = new UpdatePersonalDetailsRequest(
                 customerId,
                 request.firstName(),
                 request.lastName(),
                 request.email(),
-                request.phone()
-        );
+                request.phone());
         return updatePersonalDetailsUseCase.updateCustomer(finalRequest);
     }
 
-    @PutMapping("/{id}")
-    public UpdatedAddressResponse updateAddress(@PathVariable("id") UUID customerId, @RequestBody UpdateAddressRequest request) {
+    @PutMapping("/address/{id}")
+    public UpdatedAddressResponse updateAddress(@PathVariable("id") UUID customerId,
+            @RequestBody UpdateAddressRequest request) {
         UpdateAddressRequest finalRequest = new UpdateAddressRequest(
                 customerId,
                 request.country(),
                 request.city(),
                 request.street(),
                 request.postalCode(),
-                request.houseNumber()
-        );
+                request.houseNumber());
 
         return updateAddressUseCase.updateAddress(finalRequest);
     }

@@ -2,3 +2,10 @@ eureka:
   client:
     service-url:
       defaultZone: http://discovery-server:8761/eureka
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://bff-service:8585/realms/turkcell-p1-docker

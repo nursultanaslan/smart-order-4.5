@@ -1,7 +1,7 @@
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://discovery-server:8761/eureka
 
 spring:
   security:     #bff-service'i keycloak'a tanitiyoruz
@@ -9,12 +9,12 @@ spring:
       client:
         provider:  #keycloak bir provider (auth providerı)
           keycloak:
-            issuer-uri: http://localhost:8585/realms/turkcell-p1-dev #keycloak'ın çalıştığı adres
+            issuer-uri: http://localhost:8585/realms/turkcell-p1-docker #keycloak'ın çalıştığı adres
             user-name-attribute: preferred-username
         registration:
           keycloak:
             client-id: bff-service    #keycloak'ta olusturdugumuz client'in id'si.
-            client-secret: 5zkIwbvh60joBTPH8YDm99KeZ4JsWXhB  #client'e atanmıs secret
+            client-secret: NzFwaEKoC3jYc1EcC4ySj89iPr8UBhO5  #client'e atanmıs secret
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             authorization-grant-type: authorization_code
             scope:          #giriş yapmıs kullanıcıdan hangi bilgileri alalım

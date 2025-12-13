@@ -17,7 +17,7 @@ spring:
             - id: customer-service
               uri: lb://customer-service
               predicates:
-                - Path=/api/v1/profile/myAccount/**
+                - Path=/api/v1/customer/**
 
 
 server:

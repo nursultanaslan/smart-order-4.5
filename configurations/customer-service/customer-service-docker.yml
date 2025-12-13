@@ -4,6 +4,12 @@ eureka:
       defaultZone: http://discovery-server:8761/eureka
 
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://bff-service:8585/realms/turkcell-p1-docker
+
   datasource:
     url: jdbc:postgresql://customersv_db:5432/customer_service_db
     username: postgres
