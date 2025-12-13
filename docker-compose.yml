@@ -246,6 +246,7 @@ services:
 #merkezi kimlik ve erişim yönetimi sağlar (users,roles,authority).
   keycloak:
     image: quay.io/keycloak/keycloak:26.4.6
+    container_name: keycloak
     depends_on:
       keycloak_db:
         condition: service_healthy

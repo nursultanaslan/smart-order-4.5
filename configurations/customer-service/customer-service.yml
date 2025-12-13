@@ -3,5 +3,5 @@ server:
 
 eureka:
   client:
-    fetch-registry: true
-    register-with-eureka: true
+    fetch-registry: true        #eurekadaki service listesini alacağım
+    register-with-eureka: true  #eurekaya kendimi kaydedecegim

@@ -15,7 +15,7 @@ public class SecurityConfig {
     SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange(ex -> ex.anyExchange().authenticated())
+                .authorizeExchange(ex -> ex.anyExchange().authenticated())  //requestMatchers
                 .oauth2Login(Customizer.withDefaults())
                 .oauth2Client(Customizer.withDefaults())
                 .logout(l -> l.logoutUrl("/logout"))

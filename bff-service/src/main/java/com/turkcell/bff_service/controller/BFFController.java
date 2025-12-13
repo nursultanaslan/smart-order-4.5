@@ -13,7 +13,7 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class BFFController {
 
-    @GetMapping("me")
+    @GetMapping("me")                 //AuthenticationPrincipal: giriş yapmış kullanıcının user bilgisi buradaki user ile dolsun
     public Mono<Map<String, Object>> get(@AuthenticationPrincipal OidcUser user) {
         return Mono.just(
                 Map.of(

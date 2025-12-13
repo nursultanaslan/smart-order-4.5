@@ -1,6 +1,6 @@
 eureka:
   client:
-    service-url:
+    service-url:  #customer service bu adresten eurekaya kayıt olur
       defaultZone: http://localhost:8761/eureka/
 
 spring:
