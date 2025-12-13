@@ -18,12 +18,15 @@ public class SecurityConfig {
                 return http
                                 .csrf(AbstractHttpConfigurer::disable) // csrf devredısı
                                 // hangi isteklere izin verilsin? hangileri dogrulama gerektirsin?
+                                //actuator dışındaki tüm istekler doğrulama gerektirsin.
                                 .authorizeHttpRequests(
                                                 req -> req
                                                                 .requestMatchers("/actuator/**").permitAll()
                                                                 .anyRequest().authenticated())
+                                //gateway server
                                 // jwt filter yerine oauth2 kullanıyoruz (jwt validation)
-                                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                                .oauth2ResourceServer(oauth2 ->
+                                        oauth2.jwt(Customizer.withDefaults()))
                                 .build();
         }
 
