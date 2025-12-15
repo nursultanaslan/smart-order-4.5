@@ -7,6 +7,7 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
+//OAuthClient + Session
 @Configuration
 @EnableWebFlux
 public class SecurityConfig {
