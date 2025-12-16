@@ -14,7 +14,7 @@ import java.util.Map;
 public class BFFController {
 
     @GetMapping("/me")                 //AuthenticationPrincipal: giriş yapmış kullanıcının user bilgisi buradaki user ile dolsun
-    public Mono<Map<String, Object>> get(@AuthenticationPrincipal OidcUser user) {
+    public Mono<Map<String, Object>> get(@AuthenticationPrincipal OidcUser user) {  //ID token
         return Mono.just(
                 Map.of(
                         "username", user.getPreferredUsername(),

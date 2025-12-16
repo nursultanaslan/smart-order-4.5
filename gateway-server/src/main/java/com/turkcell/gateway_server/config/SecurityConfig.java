@@ -23,7 +23,7 @@ public class SecurityConfig {
                                                 req -> req
                                                                 .requestMatchers("/actuator/**").permitAll()
                                                                 .anyRequest().authenticated())
-                                //gateway server
+                                //(access token validate)
                                 // jwt filter yerine oauth2 kullanıyoruz (jwt validation)
                                 .oauth2ResourceServer(oauth2 ->
                                         oauth2.jwt(Customizer.withDefaults()))
