@@ -8,4 +8,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://bff-service:8585/realms/turkcell-p1-docker
+          issuer-uri: http://keycloak:8585/realms/turkcell-p1-docker
