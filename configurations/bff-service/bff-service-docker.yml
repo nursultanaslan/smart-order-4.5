@@ -14,7 +14,7 @@ spring:
         registration:
           keycloak:
             client-id: bff-service    #keycloak'ta olusturdugumuz client'in id'si.     (confidential-client)
-            client-secret: 7HsdDmDiHtZkpOr87cmZI6YGWlWD5b40  #client'e atanmıs secret
+            client-secret: FQZHZtZHnYvf4oGAEIsfhNdYgW08MDdP  #client'e atanmıs secret
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"   #baseUrl:http://localhost:8989, registrationId:keycloak
             authorization-grant-type: authorization_code
             scope:          #giriş yapmıs kullanıcıdan hangi bilgileri alalım
