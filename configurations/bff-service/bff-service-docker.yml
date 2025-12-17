@@ -9,7 +9,7 @@ spring:
       client:
         provider:  #keycloak bir provider (auth providerı)
           keycloak:
-            issuer-uri: http://keycloak:8585/realms/turkcell-p1-docker #keycloak'ın çalıştığı adres
+            issuer-uri: http://localhost:8585/realms/turkcell-p1-docker #keycloak'ın çalıştığı adres
             user-name-attribute: preferred-username
         registration:
           keycloak:
