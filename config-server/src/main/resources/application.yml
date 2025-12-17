@@ -2,7 +2,7 @@ spring:
   application:
     name: config-server
   profiles:
-    active: docker
+    active: dev
   cloud:
     config:
       server:
