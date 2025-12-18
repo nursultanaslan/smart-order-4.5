@@ -21,7 +21,7 @@ public class SecurityConfig {
                                 .authorizeExchange(
                                                 req -> req
                                                                 .pathMatchers("/actuator/**").permitAll()
-                                                                .anyExchange().authenticated())
+                                                                .anyExchange().permitAll())
                                 //(access token validate)
                                 // jwt filter yerine oauth2 kullanıyoruz (jwt validation)
                                 .oauth2ResourceServer(oauth2 ->

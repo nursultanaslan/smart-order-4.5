@@ -4,20 +4,20 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 
 spring:
-  security:     #bff-service'i keycloak'a tanitiyoruz
+  security:
     oauth2:
       client:
-        provider:  #keycloak bir provider (auth providerı)
+        provider:
           keycloak:
-            issuer-uri: http://localhost:8585/realms/smartorder-bff #keycloak'ın çalıştığı adres
+            issuer-uri: http://localhost:8585/realms/smartorder-bff
             user-name-attribute: preferred-username
         registration:
           keycloak:
-            client-id: bff-web    #keycloak'ta olusturdugumuz client'in id'si.
-            client-secret: PjBXL5URha1gL97vsYZrBWbMhMOKFOVy  #client'e atanmıs secret
+            client-id: bff-web
+            client-secret: PjBXL5URha1gL97vsYZrBWbMhMOKFOVy
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             authorization-grant-type: authorization_code
-            scope:          #giriş yapmıs kullanıcıdan hangi bilgileri alalım
-              - openid      #jwt bilgileri icin gerekli
+            scope:
+              - openid
               - profile
               - email
