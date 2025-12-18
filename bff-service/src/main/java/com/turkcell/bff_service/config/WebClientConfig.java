@@ -19,10 +19,11 @@ public class WebClientConfig {
     }
 
     @Bean
-    WebClient webClient(@Qualifier("loadBalancedWebClient") WebClient.Builder builder,
-                        // Ekstra oauth2 gereksinimleri:
-                        ReactiveClientRegistrationRepository client,
-                        ServerOAuth2AuthorizedClientRepository authorizedClientRepository) {
+    WebClient webClient(
+            @Qualifier("loadBalancedWebClient") WebClient.Builder builder,
+            // Ekstra oauth2 gereksinimleri:
+            ReactiveClientRegistrationRepository client,
+            ServerOAuth2AuthorizedClientRepository authorizedClientRepository) {
 
             var oauth = new ServerOAuth2AuthorizedClientExchangeFilterFunction(client, authorizedClientRepository);
             oauth.setDefaultClientRegistrationId("keycloak");
