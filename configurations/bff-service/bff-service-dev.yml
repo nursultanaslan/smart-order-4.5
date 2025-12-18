@@ -10,7 +10,7 @@ spring:
         provider:
           keycloak:
             issuer-uri: http://localhost:8585/realms/smartorder-bff
-            user-name-attribute: preferred-username
+            user-name-attribute: preferred_username
         registration:
           keycloak:
             client-id: bff-web

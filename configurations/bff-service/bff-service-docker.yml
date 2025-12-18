@@ -10,7 +10,7 @@ spring:
         provider:  #keycloak bir provider (auth providerı)
           keycloak:
             issuer-uri: http://keycloak:8585/realms/turkcell-p1-docker #keycloak'ın çalıştığı adres
-            user-name-attribute: preferred-username
+            user-name-attribute: preferred_username
         registration:
           keycloak:
             client-id: bff-service    #keycloak'ta olusturdugumuz client'in id'si.     (confidential-client)
