@@ -9,12 +9,12 @@ spring:
       client:
         provider:  #keycloak bir provider (auth providerı)
           keycloak:
-            issuer-uri: http://keycloak:8585/realms/turkcell-p1-docker #keycloak'ın çalıştığı adres
+            issuer-uri: http://keycloak:8585/realms/smartorder-bff-docker #keycloak'ın çalıştığı adres
             user-name-attribute: preferred_username
         registration:
           keycloak:
-            client-id: bff-service    #keycloak'ta olusturdugumuz client'in id'si.     (confidential-client)
-            client-secret: FQZHZtZHnYvf4oGAEIsfhNdYgW08MDdP  #client'e atanmıs secret
+            client-id: bff-web    #keycloak'ta olusturdugumuz client'in id'si.     (confidential-client)
+            client-secret: lUxLa3yEqJSQ1d8Ek7K41MoHh2ReDZXV  #client'e atanmıs secret
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"   #baseUrl:http://localhost:8989, registrationId:keycloak
             authorization-grant-type: authorization_code
             scope:          #giriş yapmıs kullanıcıdan hangi bilgileri alalım
