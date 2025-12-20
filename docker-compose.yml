@@ -250,7 +250,8 @@ services:
       keycloak_db:
         condition: service_healthy
     command:
-      - start-dev
+      - start-dev   #localde http serbest
+      - --http-enabled=true
       - --http-port=8585
     ports:
       - "8585:8585"
@@ -264,6 +265,10 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_HEALTH_ENABLED: "true"
       KC_METRICS_ENABLED: "true"
+
+      KC_PROXY: edge
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
     networks:
       - postgres
       - keycloak

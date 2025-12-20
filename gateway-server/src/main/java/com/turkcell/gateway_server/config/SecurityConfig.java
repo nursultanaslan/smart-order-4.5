@@ -17,7 +17,7 @@ public class SecurityConfig {
                 return http
                                 .csrf(ServerHttpSecurity.CsrfSpec::disable) // csrf devredısı
                                 // hangi isteklere izin verilsin? hangileri dogrulama gerektirsin?
-                                //actuator dışındaki tüm istekler doğrulama gerektirsin.
+                                // gateway domain bilmez bu yüzden authorization backend servicelere bırakılır.
                                 .authorizeExchange(
                                                 req -> req
                                                                 .pathMatchers("/actuator/**").permitAll()

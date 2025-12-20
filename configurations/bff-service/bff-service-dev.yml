@@ -9,12 +9,12 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: http://localhost:8585/realms/smartorder-bff
+            issuer-uri: http://localhost:8585/realms/smartorder-bff-dev
             user-name-attribute: preferred_username
         registration:
           keycloak:
             client-id: bff-web
-            client-secret: PjBXL5URha1gL97vsYZrBWbMhMOKFOVy
+            client-secret: elGMuGWwXZybKGGrCp3ECKPHr4usmVsU
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             authorization-grant-type: authorization_code
             scope:
