@@ -9,9 +9,9 @@ spring:
       client:
         provider:  #keycloak bir provider (auth providerı)
           keycloak:
-            authorization-uri: http://localhost:8585/realms/smartorder-bff-docker/protocol/openid-connect/auth
-            token-uri: http://keycloak:8585/realms/smartorder-bff-docker/protocol/openid-connect/token
-            jwk-set-uri: http://keycloak:8585/realms/smartorder-bff-docker/protocol/openid-connect/certs
+            authorization-uri: http://localhost:8585/realms/smartorder-bff-docker/protocol/openid-connect/auth #browser-routing (external)
+            token-uri: http://keycloak:8585/realms/smartorder-bff-docker/protocol/openid-connect/token  #bff: token almak icin dockerdaki keycloaka gider (internal)
+            jwk-set-uri: http://keycloak:8585/realms/smartorder-bff-docker/protocol/openid-connect/certs #bff: jwt imzalarını dogrulamak icin keycloaka gider (internal)
             user-name-attribute: preferred_username
         registration:
           keycloak:
