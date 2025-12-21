@@ -9,7 +9,6 @@ spring:
       client:
         provider:  #keycloak bir provider (auth providerı)
           keycloak:
-            issuer-uri: http://keycloak:8585/realms/smartorder-bff-docker #keycloak'ın çalıştığı adres
             authorization-uri: http://localhost:8585/realms/smartorder-bff-docker/protocol/openid-connect/auth
             token-uri: http://keycloak:8585/realms/smartorder-bff-docker/protocol/openid-connect/token
             jwk-set-uri: http://keycloak:8585/realms/smartorder-bff-docker/protocol/openid-connect/certs
