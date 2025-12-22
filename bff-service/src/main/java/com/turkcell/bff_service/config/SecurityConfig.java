@@ -17,12 +17,7 @@ public class SecurityConfig {
     @Bean
     SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
         return http
-                .csrf(csrf ->
-                        csrf
-                                //tokeni bir cookie icerisinde sakla.
-                                .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
-                                // webflux icin tokenin her istekte handle edilmesini sağla.c
-                                .csrfTokenRequestHandler(new ServerCsrfTokenRequestAttributeHandler()))
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(ex -> ex.anyExchange().authenticated())  //requestMatchers
                 .oauth2Login(Customizer.withDefaults())
                 .oauth2Client(Customizer.withDefaults())

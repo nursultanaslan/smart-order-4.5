@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.client.web.reactive.function.client.S
 import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
 import org.springframework.web.reactive.function.client.WebClient;
 
+//diger servicelere token taşır.
 @Configuration
 public class WebClientConfig {
 
@@ -19,12 +20,12 @@ public class WebClientConfig {
     }
 
     @Bean
-    WebClient webClient(
-            @Qualifier("loadBalancedWebClient") WebClient.Builder builder,
-            // Ekstra oauth2 gereksinimleri:
-            ReactiveClientRegistrationRepository client,
-            ServerOAuth2AuthorizedClientRepository authorizedClientRepository) {
+    WebClient webClient(@Qualifier("loadBalancedWebClient") WebClient.Builder builder,
+                        ReactiveClientRegistrationRepository client,
+                        ServerOAuth2AuthorizedClientRepository authorizedClientRepository) {
 
+            //her istekte bff'e gelen kullanıcının tokenini alıp gideceği microservisin headerına ekler.
+            //Session'daki bilgiyi alır, Keycloak'tan JWT'yi bulur atacagı istegin header'ına ekler
             var oauth = new ServerOAuth2AuthorizedClientExchangeFilterFunction(client, authorizedClientRepository);
             oauth.setDefaultClientRegistrationId("keycloak");
             oauth.setDefaultOAuth2AuthorizedClient(true);
