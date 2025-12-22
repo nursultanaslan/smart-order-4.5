@@ -9,19 +9,20 @@ import org.springframework.security.oauth2.client.web.reactive.function.client.S
 import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
 import org.springframework.web.reactive.function.client.WebClient;
 
-//diger servicelere token taşır.
+//diger servicelere token taşır. (for gatewayRelayerController)
 @Configuration
 public class WebClientConfig {
 
+    //webclientı loadbalanced hale getiriyorum ki discovery servis ile calısabilsin.
     @Bean
     @LoadBalanced
     WebClient.Builder loadBalancedWebClient() {
         return WebClient.builder();
     }
 
-    @Bean
+    @Bean               //yukarıdaki builderi okuduk
     WebClient webClient(@Qualifier("loadBalancedWebClient") WebClient.Builder builder,
-                        ReactiveClientRegistrationRepository client,
+                        ReactiveClientRegistrationRepository client,  //yonlendirme icin metadataları alır.
                         ServerOAuth2AuthorizedClientRepository authorizedClientRepository) {
 
             //her istekte bff'e gelen kullanıcının tokenini alıp gideceği microservisin headerına ekler.

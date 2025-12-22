@@ -16,9 +16,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                //product servise atılan bütün istekler doğrulama gerektirsin.
                 .authorizeHttpRequests(
                         req -> req.anyRequest().authenticated()
                 )
+
                 .oauth2ResourceServer( oauth2 ->
                         oauth2.jwt(Customizer.withDefaults()))
                 .build();

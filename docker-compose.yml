@@ -269,9 +269,6 @@ services:
       KC_PROXY: edge
       KC_HOSTNAME_STRICT: "false"
       KC_HOSTNAME_STRICT_HTTPS: "false"
-
-      KC_HOSTNAME: localhost
-      KC_HOSTNAME_PORT: 8585
     networks:
       - postgres
       - keycloak
