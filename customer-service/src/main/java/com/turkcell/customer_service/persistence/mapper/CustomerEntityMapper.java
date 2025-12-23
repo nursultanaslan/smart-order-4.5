@@ -12,13 +12,16 @@ public class CustomerEntityMapper {
                 customer.id().value(),
                 customer.firstName(),
                 customer.lastName(),
+                customer.password(),
                 customer.email().value(),
                 customer.phoneNumber().value(),
                 customer.address().country(),
                 customer.address().city(),
                 customer.address().street(),
                 customer.address().postalCode(),
-                customer.address().houseNumber());
+                customer.address().houseNumber()
+        );
+
     }
 
     public Customer toDomain(JpaCustomerEntity entity) {
@@ -26,8 +29,16 @@ public class CustomerEntityMapper {
                 new CustomerId(entity.id()),
                 entity.firstName(),
                 entity.lastName(),
+                entity.password(),
                 new Email(entity.email()),
                 new Phone(entity.phoneNumber()),
-                entity.password
+                new Address(
+                        entity.country(),
+                        entity.city(),
+                        entity.street(),
+                        entity.postalCode(),
+                        entity.houseNumber())
+        );
+
     }
 }
