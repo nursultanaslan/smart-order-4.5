@@ -1,5 +1,6 @@
 package com.turkcell.customer_service.application.mapper;
 
+import com.turkcell.customer_service.application.dto.request.CreateAddressRequest;
 import com.turkcell.customer_service.application.dto.request.CreateCustomerRequest;
 import com.turkcell.customer_service.application.dto.response.*;
 import com.turkcell.customer_service.domain.model.Address;
@@ -15,13 +16,11 @@ public class CustomerMapper {
         return Customer.create(
                 request.firstName(),
                 request.lastName(),
+                request.password(),
                 new Email(request.email()),
-                new Phone(request.phoneNumber()),
-                new Address(request.country(),
-                        request.city(),
-                        request.street(),
-                        request.postalCode(),
-                        request.houseNumber()));
+                new Phone(request.phoneNumber())
+
+        );
     }
 
     public CustomerResponse toResponse(Customer customer) {
@@ -51,6 +50,16 @@ public class CustomerMapper {
                 customer.address().street(),
                 customer.address().postalCode(),
                 customer.address().houseNumber()
+        );
+    }
+
+    public Address toAddress(CreateAddressRequest request) {
+        return new Address(
+                request.country(),
+                request.city(),
+                request.street(),
+                request.postalCode(),
+                request.houseNumber()
         );
     }
 

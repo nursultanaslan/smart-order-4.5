@@ -1,9 +1,6 @@
 package com.turkcell.customer_service.web;
 
-import com.turkcell.customer_service.application.dto.request.CreateCustomerRequest;
-import com.turkcell.customer_service.application.dto.request.DeleteCustomerRequest;
-import com.turkcell.customer_service.application.dto.request.UpdateAddressRequest;
-import com.turkcell.customer_service.application.dto.request.UpdatePersonalDetailsRequest;
+import com.turkcell.customer_service.application.dto.request.*;
 import com.turkcell.customer_service.application.dto.response.*;
 import com.turkcell.customer_service.application.usecase.*;
 import jakarta.validation.Valid;
@@ -20,15 +17,17 @@ public class CustomersController {
     private final DeleteCustomerUseCase deleteCustomerUseCase;
     private final GetCustomerByIdUseCase getCustomerByIdUseCase;
     private final UpdatePersonalDetailsUseCase updatePersonalDetailsUseCase;
+    private final CreateAddressUseCase createAddressUseCase;
     private final UpdateAddressUseCase updateAddressUseCase;
 
     public CustomersController(CreateCustomerUseCase createCustomerUseCase, DeleteCustomerUseCase deleteCustomerUseCase,
-            GetCustomerByIdUseCase getCustomerByIdUseCase, UpdatePersonalDetailsUseCase updatePersonalDetailsUseCase,
-            UpdateAddressUseCase updateAddressUseCase) {
+                               GetCustomerByIdUseCase getCustomerByIdUseCase, UpdatePersonalDetailsUseCase updatePersonalDetailsUseCase, CreateAddressUseCase createAddressUseCase,
+                               UpdateAddressUseCase updateAddressUseCase) {
         this.createCustomerUseCase = createCustomerUseCase;
         this.deleteCustomerUseCase = deleteCustomerUseCase;
         this.getCustomerByIdUseCase = getCustomerByIdUseCase;
         this.updatePersonalDetailsUseCase = updatePersonalDetailsUseCase;
+        this.createAddressUseCase = createAddressUseCase;
         this.updateAddressUseCase = updateAddressUseCase;
     }
 
@@ -58,6 +57,11 @@ public class CustomersController {
                 request.email(),
                 request.phone());
         return updatePersonalDetailsUseCase.updateCustomer(finalRequest);
+    }
+
+    @PostMapping
+    public CreatedAddressResponse createAddress(@RequestBody @Valid CreateAddressRequest request) {
+        return createAddressUseCase.createAddress(request);
     }
 
     @PutMapping("/address/{id}")

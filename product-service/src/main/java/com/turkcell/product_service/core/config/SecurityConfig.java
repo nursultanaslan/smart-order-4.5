@@ -18,7 +18,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 //product servise atılan bütün istekler doğrulama gerektirsin.
                 .authorizeHttpRequests(
-                        req -> req.anyRequest().authenticated()
+                        req -> req
+                                //prodda swagger kapat!
+                                .requestMatchers(
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui.html"
+                                ).permitAll()
+                                .anyRequest().authenticated()
                 )
 
                 .oauth2ResourceServer( oauth2 ->

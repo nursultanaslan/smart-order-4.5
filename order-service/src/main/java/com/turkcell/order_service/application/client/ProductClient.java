@@ -11,7 +11,7 @@ import java.util.UUID;
 @FeignClient(name = "product-service", path = "/api/v1/products")
 public interface ProductClient {
 
-    @PutMapping("/{productId}/stock/decrease")
-    ProductResponse decreaseStock(@PathVariable("productId") UUID productId, @RequestParam("decreaseQuantity") Integer decreaseQuantity);
+    @PutMapping("/{id}/stock/decrease")
+    ProductResponse decreaseStock(@PathVariable("id") UUID productId, @RequestParam("decreaseQuantity") Integer decreaseQuantity);
 
 }

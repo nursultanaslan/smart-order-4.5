@@ -8,7 +8,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://bff-service:8585/realms/turkcell-p1-docker
+          jwk-set-uri: http://keycloak:8585/realms/smartorder-bff-docker/protocol/openid-connect/certs
 
   datasource:
     url: jdbc:postgresql://customersv_db:5432/customer_service_db

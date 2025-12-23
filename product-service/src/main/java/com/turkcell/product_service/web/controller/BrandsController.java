@@ -37,18 +37,18 @@ public class BrandsController {
         return createBrandUseCase.createBrand(request);
     }
 
-    @GetMapping("/{brandId}")
-    public BrandResponse findById(@PathVariable("brandId") UUID brandId) {
+    @GetMapping("/{id}")
+    public BrandResponse findById(@PathVariable("id") UUID brandId) {
         return getBrandByIdUseCase.getBrandById(brandId);
     }
 
-    @DeleteMapping("/{brandId}")
-    public DeletedBrandResponse delete(@PathVariable("brandId") @Valid UUID brandId) {
+    @DeleteMapping("/{id}")
+    public DeletedBrandResponse delete(@PathVariable("id") @Valid UUID brandId) {
         return deleteBrandUseCase.deleteBrand(new DeleteBrandRequest(brandId));
     }
 
-    @PutMapping("/update/{brandId}")
-    public BrandResponse update(@PathVariable("brandId") UUID brandId, @RequestBody @Valid UpdateBrandRequest request) {
+    @PutMapping("/update/{id}")
+    public BrandResponse update(@PathVariable("id") UUID brandId, @RequestBody @Valid UpdateBrandRequest request) {
         return updateBrandUseCase.updateBrand(new UpdateBrandRequest(brandId, request.brandName()));
     }
 

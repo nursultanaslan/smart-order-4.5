@@ -28,10 +28,6 @@ public class CustomerEntityMapper {
                 entity.lastName(),
                 new Email(entity.email()),
                 new Phone(entity.phoneNumber()),
-                new Address(entity.country(),
-                        entity.city(),
-                        entity.street(),
-                        entity.postalCode(),
-                        entity.houseNumber()));
+                entity.password
     }
 }

@@ -19,6 +19,8 @@ public class JpaCustomerEntity {
     private String firstName;
     @Column(name = "last_name", nullable = false)
     private String lastName;
+    @Column(name = "password", nullable = false)
+    private String password;
     @Column(name = "email", nullable = false)
     private String email;
     @Column(name = "phone_number", nullable = false)
@@ -38,10 +40,11 @@ public class JpaCustomerEntity {
     public JpaCustomerEntity() {
     }
 
-    public JpaCustomerEntity(UUID id, String firstName, String lastName, String email, String phoneNumber, String country, String city, String street, String postalCode, Integer houseNumber) {
+    public JpaCustomerEntity(UUID id, String firstName, String lastName, String password, String email, String phoneNumber, String country, String city, String street, String postalCode, Integer houseNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.country = country;
@@ -73,6 +76,14 @@ public class JpaCustomerEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String password() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String email() {

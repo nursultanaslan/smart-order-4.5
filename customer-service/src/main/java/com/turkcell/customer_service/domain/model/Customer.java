@@ -8,37 +8,40 @@ public class Customer {
 
     private String firstName;
     private String lastName;
+    private String password;
 
     private Email email;
     private Phone phoneNumber;
     private Address address;
 
-    private Customer(CustomerId id,  String firstName, String lastName, Email email, Phone phoneNumber, Address address) {
+    private Customer(CustomerId id,  String firstName, String lastName, String password, Email email, Phone phoneNumber, Address address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
     }
 
-    public static Customer create(String firstName, String lastName, Email email, Phone phoneNumber, Address address) {
+    public static Customer create(String firstName, String lastName, String password, Email email, Phone phoneNumber) {
         return new Customer(
                 CustomerId.generate(),
                 firstName,
+                password,
                 lastName,
                 email,
                 phoneNumber,
-                address
-        );
+                null);
     }
 
-    public static Customer rehydrate(CustomerId id, String firstName, String lastName, Email email, Phone phoneNumber, Address address) {
+    public static Customer rehydrate(CustomerId id, String firstName, String lastName, String password, Email email, Phone phoneNumber, Address address) {
 
         return new Customer(
                 id,
                 firstName,
                 lastName,
+                password,
                 email,
                 phoneNumber,
                 address
@@ -97,6 +100,10 @@ public class Customer {
 
     public String lastName() {
         return lastName;
+    }
+
+    public String password() {
+        return password;
     }
 
     public Email email() {

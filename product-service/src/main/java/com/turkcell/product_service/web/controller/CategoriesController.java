@@ -37,18 +37,18 @@ public class CategoriesController {
         return createCategoryUseCase.create(request);
     }
 
-    @GetMapping("/{categoryId}")
-    public CategoryResponse getById(@PathVariable("categoryId") UUID categoryId) {
+    @GetMapping("/{id}")
+    public CategoryResponse getById(@PathVariable("id") UUID categoryId) {
         return getCategoryByIdUseCase.getCategoryById(categoryId);
     }
 
-    @DeleteMapping("/{categoryId}")
-    public DeletedCategoryResponse deleteById(@PathVariable("categoryId") @Valid UUID categoryId) {
+    @DeleteMapping("/{id}")
+    public DeletedCategoryResponse deleteById(@PathVariable("id") @Valid UUID categoryId) {
         return deleteCategoryUseCase.deleteCategory(new DeleteCategoryRequest(categoryId));
     }
 
-    @PutMapping("/update/{categoryId}")
-    public CategoryResponse update(@PathVariable("categoryId") UUID categoryId, @RequestBody @Valid UpdateCategoryRequest request) {
+    @PutMapping("/update/{id}")
+    public CategoryResponse update(@PathVariable("id") UUID categoryId, @RequestBody @Valid UpdateCategoryRequest request) {
         return updateCategoryUseCase.updateCategory(new UpdateCategoryRequest(categoryId, request.categoryName()));
     }
 
