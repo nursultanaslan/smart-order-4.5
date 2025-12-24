@@ -8,9 +8,14 @@ import com.turkcell.customer_service.domain.model.Address;
 import com.turkcell.customer_service.domain.model.Customer;
 import com.turkcell.customer_service.domain.model.CustomerId;
 import com.turkcell.customer_service.domain.port.CustomerRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.UUID;
 
 @Service
+@Validated
 public class CreateAddressUseCase {
 
     private final CustomerMapper customerMapper;
@@ -21,11 +26,17 @@ public class CreateAddressUseCase {
         this.customerRepository = customerRepository;
     }
 
-    public CreatedAddressResponse createAddress(CreateAddressRequest request) {
-        Customer customer = customerRepository.findById(new CustomerId(request.customerId()))
-                .orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
+    public CreatedAddressResponse createAddress(UUID customerId, @Valid CreateAddressRequest request) {
+        Customer customer = customerRepository.findById(new CustomerId(customerId))
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found!"));
 
-        Address address = customerMapper.toAddress(request);
+        Address address = new Address(
+                request.country(),
+                request.city(),
+                request.street(),
+                request.postalCode(),
+                request.houseNumber()
+        );
 
         customer.addNewAddress(address);
         customerRepository.save(customer);

@@ -59,9 +59,10 @@ public class CustomersController {
         return updatePersonalDetailsUseCase.updateCustomer(finalRequest);
     }
 
-    @PostMapping
-    public CreatedAddressResponse createAddress(@RequestBody @Valid CreateAddressRequest request) {
-        return createAddressUseCase.createAddress(request);
+    @PostMapping("/address/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreatedAddressResponse createAddress(@PathVariable("id") UUID customerId, @RequestBody @Valid CreateAddressRequest request) {
+        return createAddressUseCase.createAddress(customerId, request);
     }
 
     @PutMapping("/address/{id}")

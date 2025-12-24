@@ -53,15 +53,6 @@ public class CustomerMapper {
         );
     }
 
-    public Address toAddress(CreateAddressRequest request) {
-        return new Address(
-                request.country(),
-                request.city(),
-                request.street(),
-                request.postalCode(),
-                request.houseNumber()
-        );
-    }
 
     public UpdatedPersonalDetailsResponse toUpdatedPersonalDetailsResponse(Customer customer){
         return new UpdatedPersonalDetailsResponse(
