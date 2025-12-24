@@ -10,8 +10,12 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-
-//Frontend'den gelen istekleri al, gateway-server üzerinden uygun ms'e yönlendir
+/**
+ * Minimal proxy: herhangi bir /api/** ile başlayan isteği, lb://gateway'e  yonlendirir.
+ * Access token WebClient OAuth2 filter tarafından otomatik eklenir.
+ *
+ * Frontend'den gelen istekleri al, gateway-server üzerinden uygun ms'e yönlendir
+ */
 @RestController
 @RequestMapping("/api")
 public class GatewayRelayerController {
@@ -35,7 +39,7 @@ public class GatewayRelayerController {
         String pathWithQuery = query != null ? downStreamPath + "?" + query : downStreamPath;
 
         //gateway-server'a göndereceği adresi kurdu.
-        String fullRequestPath = "http://gateway-server/" + pathWithQuery;
+        String fullRequestPath = "http://gateway-server" + pathWithQuery;
 
 
         //webClient ile isteği gönder.
