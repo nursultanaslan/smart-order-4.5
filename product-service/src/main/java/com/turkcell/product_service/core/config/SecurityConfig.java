@@ -2,11 +2,21 @@ package com.turkcell.product_service.core.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -25,11 +35,43 @@ public class SecurityConfig {
                                         "/v3/api-docs/**",
                                         "/swagger-ui.html"
                                 ).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/brands/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
                                 .anyRequest().authenticated()
                 )
-
-                .oauth2ResourceServer( oauth2 ->
-                        oauth2.jwt(Customizer.withDefaults()))
+                //jwt doğrula ve authority'i çıkar
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2
+                                .jwt(jwtConfigurer -> jwtConfigurer
+                                        .jwtAuthenticationConverter(jwtAuthenticationConverter())))
                 .build();
+    }
+
+    @Bean
+    JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(this::extractAuthorities);
+        return converter;
+    }
+
+    private Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        //jwt claimlerini al.
+        var claims = jwt.getClaims();
+        //realm_access.roles oku.
+        Map<String, Object> realmAccess = jwt.getClaim("realm_access");
+
+        if (realmAccess != null) {
+            //rolleri authority'e çevir (GrantedAuthority)
+            //Spring security artık bu rolleri tanır.
+            List<String> roles = (List<String>) realmAccess.get("roles");
+
+            roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
+        }
+
+        return authorities;
     }
 }
