@@ -242,7 +242,7 @@ services:
       - postgres
       - keycloak
 
-#merkezi kimlik ve erişim yönetimi sağlar (users,roles,authority).
+#merkezi kimlik ve erişim yönetimi sağlar (users,roles,authority). (authorization-server)
   keycloak:
     image: quay.io/keycloak/keycloak:26.4.6
     container_name: keycloak
