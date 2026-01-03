@@ -3,7 +3,7 @@ package com.turkcell.product_service.core.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity //resource-level security
 public class SecurityConfig {
 
     @Bean
@@ -38,7 +38,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/v1/brands/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/api/v1/brands/**").hasAnyAuthority("BRAND_DELETE")
+                                .requestMatchers(HttpMethod.POST, "/api/v1/brands/**").hasAnyAuthority("BRAND_CREATE")
+                                .requestMatchers(HttpMethod.PUT, "/api/v1/brands/**").hasAnyAuthority("BRAND_UPDATE")
                 )
                 //jwt doğrula ve authority'i çıkar
                 .oauth2ResourceServer(oauth2 ->
@@ -51,6 +53,7 @@ public class SecurityConfig {
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        //gelen jwt'yi extractAuthorities methodu ile authority listesini üret.
         converter.setJwtGrantedAuthoritiesConverter(this::extractAuthorities);
         return converter;
     }
