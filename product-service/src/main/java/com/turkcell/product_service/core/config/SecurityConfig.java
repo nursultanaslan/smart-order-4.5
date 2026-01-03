@@ -20,6 +20,7 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSecurity //resource-level security
+@EnableMethodSecurity //method-level security
 public class SecurityConfig {
 
     @Bean
@@ -38,9 +39,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/v1/brands/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
-                                .requestMatchers(HttpMethod.DELETE, "/api/v1/brands/**").hasAnyAuthority("BRAND_DELETE")
-                                .requestMatchers(HttpMethod.POST, "/api/v1/brands/**").hasAnyAuthority("BRAND_CREATE")
-                                .requestMatchers(HttpMethod.PUT, "/api/v1/brands/**").hasAnyAuthority("BRAND_UPDATE")
+                                .anyRequest().authenticated()
+                                //.requestMatchers(HttpMethod.DELETE, "/api/v1/brands/**").hasAnyAuthority("BRAND_DELETE")
+                                //.requestMatchers(HttpMethod.POST, "/api/v1/brands/**").hasAnyAuthority("BRAND_CREATE")
+                                //.requestMatchers(HttpMethod.PUT, "/api/v1/brands/**").hasAnyAuthority("BRAND_UPDATE")
                 )
                 //jwt doğrula ve authority'i çıkar
                 .oauth2ResourceServer(oauth2 ->
