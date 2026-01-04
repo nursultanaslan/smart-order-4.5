@@ -7,6 +7,7 @@ import com.turkcell.product_service.application.brand.mapper.BrandMapper;
 import com.turkcell.product_service.domain.model.brand.Brand;
 import com.turkcell.product_service.domain.model.brand.BrandId;
 import com.turkcell.product_service.domain.repository.BrandRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 
@@ -21,6 +22,7 @@ public class UpdateBrandUseCase {
         this.brandMapper = brandMapper;
     }
 
+    @PreAuthorize("hasAnyAuthority('BRAND_UPDATE')")
     public BrandResponse updateBrand(UpdateBrandRequest request) {
 
         Brand brand = brandRepository.findById(new BrandId(request.brandId()))

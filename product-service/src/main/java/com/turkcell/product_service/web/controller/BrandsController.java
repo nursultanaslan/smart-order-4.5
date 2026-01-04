@@ -9,7 +9,6 @@ import com.turkcell.product_service.application.brand.dto.response.DeletedBrandR
 import com.turkcell.product_service.application.brand.usecases.*;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -33,20 +32,17 @@ public class BrandsController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('BRAND_CREATE')")
     @ResponseStatus(HttpStatus.CREATED)
     public BrandResponse create(@RequestBody @Valid CreateBrandRequest request) {
         return createBrandUseCase.createBrand(request);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('BRAND_DELETE')")
     public DeletedBrandResponse delete(@PathVariable("id") @Valid UUID brandId) {
         return deleteBrandUseCase.deleteBrand(new DeleteBrandRequest(brandId));
     }
 
     @PutMapping("/update/{id}")
-    @PreAuthorize("hasAnyAuthority('BRAND_UPDATE')")
     public BrandResponse update(@PathVariable("id") UUID brandId, @RequestBody @Valid UpdateBrandRequest request) {
         return updateBrandUseCase.updateBrand(new UpdateBrandRequest(brandId, request.brandName()));
     }

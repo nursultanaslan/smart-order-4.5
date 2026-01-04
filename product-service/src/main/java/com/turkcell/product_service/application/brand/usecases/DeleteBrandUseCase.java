@@ -8,6 +8,7 @@ import com.turkcell.product_service.domain.model.brand.Brand;
 import com.turkcell.product_service.domain.model.brand.BrandId;
 import com.turkcell.product_service.domain.repository.BrandRepository;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -24,6 +25,7 @@ public class DeleteBrandUseCase {
         this.brandMapper = brandMapper;
     }
 
+    @PreAuthorize("hasAnyAuthority('BRAND_DELETE')")
     public DeletedBrandResponse deleteBrand(@Valid DeleteBrandRequest request) {
         Brand brand = brandRepository.findById(new BrandId(request.brandId()))
                 .orElseThrow(() -> new BrandNotFoundException("Brand not found."));

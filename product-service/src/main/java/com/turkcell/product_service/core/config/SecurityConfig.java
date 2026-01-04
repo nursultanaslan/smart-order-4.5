@@ -40,9 +40,6 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
                                 .anyRequest().authenticated()
-                                //.requestMatchers(HttpMethod.DELETE, "/api/v1/brands/**").hasAnyAuthority("BRAND_DELETE")
-                                //.requestMatchers(HttpMethod.POST, "/api/v1/brands/**").hasAnyAuthority("BRAND_CREATE")
-                                //.requestMatchers(HttpMethod.PUT, "/api/v1/brands/**").hasAnyAuthority("BRAND_UPDATE")
                 )
                 //jwt doğrula ve authority'i çıkar
                 .oauth2ResourceServer(oauth2 ->

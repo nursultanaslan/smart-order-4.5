@@ -2,6 +2,7 @@ package com.turkcell.gateway_server.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -20,8 +21,9 @@ public class SecurityConfig {
                                 // gateway domain bilmez bu yüzden authorization backend servicelere bırakılır.
                                 .authorizeExchange(
                                                 req -> req
-                                                                .pathMatchers("/actuator/**").permitAll()
-                                                                .anyExchange().permitAll())
+                                                        .pathMatchers("/actuator/**").permitAll()
+                                                        .pathMatchers(HttpMethod.GET, "/api/v1/brands/**", "/api/v1/categories/**", "/api/v1/products/**").permitAll()
+                                                        .anyExchange().permitAll())
                                 //(access token validate)
                                 // jwt filter yerine oauth2 kullanıyoruz (jwt validation)
                                 .oauth2ResourceServer(oauth2 ->
