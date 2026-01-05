@@ -2,6 +2,7 @@ package com.turkcell.product_service.application.product.mapper;
 
 import com.turkcell.product_service.application.product.command.CreateProductCommand;
 import com.turkcell.product_service.application.product.dto.DeletedProductResponse;
+import com.turkcell.product_service.application.product.dto.GetProductByIdResponse;
 import com.turkcell.product_service.application.product.dto.ProductDto;
 import com.turkcell.product_service.application.product.dto.ProductResponse;
 import com.turkcell.product_service.domain.model.brand.BrandId;
@@ -28,6 +29,16 @@ public class ProductMapper {
     public ProductResponse toResponse(Product product) {
         return new ProductResponse(
                 product.id().value(),
+                product.productName(),
+                product.price().amount(),
+                product.price().currency(),
+                product.description(),
+                product.stock()
+        );
+    }
+
+    public GetProductByIdResponse toGetByIdResponse(Product product) {
+        return new GetProductByIdResponse(
                 product.productName(),
                 product.price().amount(),
                 product.price().currency(),

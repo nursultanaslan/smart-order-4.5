@@ -21,13 +21,16 @@ public class SecurityConfig {
                                 // gateway domain bilmez bu yüzden authorization backend servicelere bırakılır.
                                 .authorizeExchange(
                                                 req -> req
-                                                        .pathMatchers("/actuator/**").permitAll()
-                                                        .pathMatchers(HttpMethod.GET, "/api/v1/brands/**", "/api/v1/categories/**", "/api/v1/products/**").permitAll()
-                                                        .anyExchange().permitAll())
-                                //(access token validate)
+                                                                .pathMatchers("/actuator/**").permitAll()
+                                                                .pathMatchers(HttpMethod.GET,
+                                                                                "/api/v1/brands/**",
+                                                                                "/api/v1/categories/**",
+                                                                                "/api/v1/products/**")
+                                                                .permitAll()
+                                                                .anyExchange().authenticated())
+                                // (access token validate)
                                 // jwt filter yerine oauth2 kullanıyoruz (jwt validation)
-                                .oauth2ResourceServer(oauth2 ->
-                                        oauth2.jwt(Customizer.withDefaults()))
+                                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                                 .build();
         }
 

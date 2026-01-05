@@ -1,5 +1,6 @@
 package com.turkcell.product_service.application.product.query;
 
+import com.turkcell.product_service.application.product.dto.GetProductByIdResponse;
 import com.turkcell.product_service.application.product.dto.ProductResponse;
 import com.turkcell.product_service.application.product.exception.ProductNotFoundException;
 import com.turkcell.product_service.application.product.mapper.ProductMapper;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class GetProductByIdQueryHandler implements QueryHandler<GetProductByIdQuery, ProductResponse> {
+public class GetProductByIdQueryHandler implements QueryHandler<GetProductByIdQuery, GetProductByIdResponse> {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
@@ -22,12 +23,12 @@ public class GetProductByIdQueryHandler implements QueryHandler<GetProductByIdQu
     }
 
     @Override
-    public ProductResponse handle(GetProductByIdQuery query) {
+    public GetProductByIdResponse handle(GetProductByIdQuery query) {
 
         Product product = productRepository.findById(new ProductId(query.productId()))
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
-        return productMapper.toResponse(product);
+        return productMapper.toGetByIdResponse(product);
 
     }
 }

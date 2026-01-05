@@ -13,17 +13,21 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
-    @Bean
-    SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
-        return http
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange(ex -> ex
-                        .pathMatchers(HttpMethod.GET, "/api/v1/brands/**", "/api/v1/categories/**", "/api/v1/products/**").permitAll()
-                        .anyExchange().authenticated())  //requestMatchers
-                // 1. Tarayıcı üzerinden giriş için (Session oluşturur)
-                .oauth2Login(Customizer.withDefaults())
-                .oauth2Client(Customizer.withDefaults())
-                .logout(l -> l.logoutUrl("/logout"))
-                .build();
-    }
+        @Bean
+        public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
+                return http
+                                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                                .authorizeExchange(ex -> ex
+                                                .pathMatchers(HttpMethod.GET,
+                                                                "/api/v1/brands/**",
+                                                                "/api/v1/categories/**",
+                                                                "/api/v1/products/**")
+                                                .permitAll()
+                                                .anyExchange().authenticated())
+                                // 1. Tarayıcı üzerinden giriş için (Session oluşturur)
+                                .oauth2Login(Customizer.withDefaults())
+                                .oauth2Client(Customizer.withDefaults())
+                                .logout(l -> l.logoutUrl("/logout"))
+                                .build();
+        }
 }

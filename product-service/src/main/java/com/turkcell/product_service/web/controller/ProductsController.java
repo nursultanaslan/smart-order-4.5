@@ -2,6 +2,7 @@ package com.turkcell.product_service.web.controller;
 
 import com.turkcell.product_service.application.product.command.*;
 import com.turkcell.product_service.application.product.dto.DeletedProductResponse;
+import com.turkcell.product_service.application.product.dto.GetProductByIdResponse;
 import com.turkcell.product_service.application.product.dto.PageableProductResponse;
 import com.turkcell.product_service.application.product.dto.ProductResponse;
 import com.turkcell.product_service.application.product.query.FindProductsByNameQuery;
@@ -21,14 +22,14 @@ public class ProductsController {
 
     private final CommandHandler<CreateProductCommand, ProductResponse>  createProductCommandHandler;
     private final CommandHandler<DeleteProductCommand, DeletedProductResponse>  deleteProductCommandHandler;
-    private final QueryHandler<GetProductByIdQuery, ProductResponse>  getProductByIdQueryHandler;
+    private final QueryHandler<GetProductByIdQuery, GetProductByIdResponse>  getProductByIdQueryHandler;
     private final QueryHandler<FindProductsByNameQuery, PageableProductResponse>  findProductsByNameQueryHandler;
     private final CommandHandler<UpdateProductCommand, ProductResponse>  updateProductCommandHandler;
     private final CommandHandler<DecreaseProductStockCommand, ProductResponse>  decreaseProductStockCommand;
     private final CommandHandler<IncreaseProductStockCommand,  ProductResponse>  increaseProductStockCommand;
     private final QueryHandler<GetAllProductsByCategoryIdQuery, PageableProductResponse>  getProductsByCategoryIdQuery;
 
-    public ProductsController(CommandHandler<CreateProductCommand, ProductResponse> createProductCommandHandler, CommandHandler<DeleteProductCommand, DeletedProductResponse> deleteProductCommandHandler, QueryHandler<GetProductByIdQuery, ProductResponse> getProductByIdQueryHandler, QueryHandler<FindProductsByNameQuery, PageableProductResponse> findProductsByNameQueryHandler, CommandHandler<UpdateProductCommand, ProductResponse> updateProductCommandHandler, CommandHandler<DecreaseProductStockCommand, ProductResponse> decreaseProductStockCommand, CommandHandler<IncreaseProductStockCommand, ProductResponse> increaseProductStockCommand, QueryHandler<GetProductByIdQuery, ProductResponse> getProductsByCategoryIdQuery, QueryHandler<GetAllProductsByCategoryIdQuery, PageableProductResponse> getProductsByCategoryIdQuery1) {
+    public ProductsController(CommandHandler<CreateProductCommand, ProductResponse> createProductCommandHandler, CommandHandler<DeleteProductCommand, DeletedProductResponse> deleteProductCommandHandler, QueryHandler<GetProductByIdQuery, GetProductByIdResponse> getProductByIdQueryHandler, QueryHandler<FindProductsByNameQuery, PageableProductResponse> findProductsByNameQueryHandler, CommandHandler<UpdateProductCommand, ProductResponse> updateProductCommandHandler, CommandHandler<DecreaseProductStockCommand, ProductResponse> decreaseProductStockCommand, CommandHandler<IncreaseProductStockCommand, ProductResponse> increaseProductStockCommand, QueryHandler<GetAllProductsByCategoryIdQuery, PageableProductResponse> getProductsByCategoryIdQuery) {
         this.createProductCommandHandler = createProductCommandHandler;
         this.deleteProductCommandHandler = deleteProductCommandHandler;
         this.getProductByIdQueryHandler = getProductByIdQueryHandler;
@@ -36,8 +37,9 @@ public class ProductsController {
         this.updateProductCommandHandler = updateProductCommandHandler;
         this.decreaseProductStockCommand = decreaseProductStockCommand;
         this.increaseProductStockCommand = increaseProductStockCommand;
-        this.getProductsByCategoryIdQuery = getProductsByCategoryIdQuery1;
+        this.getProductsByCategoryIdQuery = getProductsByCategoryIdQuery;
     }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -51,7 +53,7 @@ public class ProductsController {
     }
 
     @GetMapping("/{id}")
-    public ProductResponse getProductById(@PathVariable("id") UUID productId) {
+    public GetProductByIdResponse getProductById(@PathVariable("id") UUID productId) {
         return getProductByIdQueryHandler.handle(new GetProductByIdQuery(productId));
     }
 
