@@ -27,7 +27,6 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                //product servise atılan bütün istekler doğrulama gerektirsin.
                 .authorizeHttpRequests(
                         req -> req
                                 //prodda swagger kapat!
