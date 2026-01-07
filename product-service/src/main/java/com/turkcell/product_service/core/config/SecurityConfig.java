@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         req -> req
-                                .requestMatchers(HttpMethod.GET, "/api/v1/public").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/public/**").permitAll()
                                 //prodda swagger kapat!
                                 .requestMatchers(
                                         "/swagger-ui/**",

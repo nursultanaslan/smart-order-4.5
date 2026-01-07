@@ -27,8 +27,9 @@ public class GatewayRelayerController {
     }
 
     @RequestMapping("/**")  //api önekinden sonra gelen her isteği yakalar.
-    public Mono<ResponseEntity<byte[]>> relay(ServerWebExchange exchange,
-                                              @RequestBody(required = false) Mono<byte[]> body) { //Gelen http isteği, bodysi olan istekler
+    public Mono<ResponseEntity<byte[]>> relay(
+            ServerWebExchange exchange,
+            @RequestBody(required = false) Mono<byte[]> body) { //Gelen http isteği, bodysi olan istekler
         //Uri parçalayalım
         URI fullPath = exchange.getRequest().getURI();  //gelen istegin urisini al
         String downStreamPath = fullPath.getPath();     //gelen isteğin urisinden yolunu al
@@ -45,7 +46,7 @@ public class GatewayRelayerController {
         //webClient ile isteği gönder.
         return webClient
                 .method(exchange.getRequest().getMethod()) //istekte gelen method
-                .uri(fullRequestPath)      //uri'sini gateway-server adresi ile deiştiriyor.
+                .uri(fullRequestPath)      //uri'sini gateway-server adresi ile değiştiriyor.
                 //eğer body varsa ekliyor yoksa boş gönderiyor
                 .body(body != null ? BodyInserters.fromPublisher(body, byte[].class) : BodyInserters.empty())
                 .exchangeToMono(response -> response.toEntity(byte[].class)); //dönen cevabı cliente aynı türde gönderiyor.
