@@ -2,14 +2,8 @@ package com.turkcell.product_service.web.controller;
 
 import com.turkcell.product_service.application.product.command.*;
 import com.turkcell.product_service.application.product.dto.DeletedProductResponse;
-import com.turkcell.product_service.application.product.dto.GetProductByIdResponse;
-import com.turkcell.product_service.application.product.dto.PageableProductResponse;
 import com.turkcell.product_service.application.product.dto.ProductResponse;
-import com.turkcell.product_service.application.product.query.FindProductsByNameQuery;
-import com.turkcell.product_service.application.product.query.GetAllProductsByCategoryIdQuery;
-import com.turkcell.product_service.application.product.query.GetProductByIdQuery;
 import com.turkcell.product_service.core.cqrs.CommandHandler;
-import com.turkcell.product_service.core.cqrs.QueryHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,22 +16,20 @@ public class ProductsController {
 
     private final CommandHandler<CreateProductCommand, ProductResponse>  createProductCommandHandler;
     private final CommandHandler<DeleteProductCommand, DeletedProductResponse>  deleteProductCommandHandler;
-    private final QueryHandler<GetProductByIdQuery, GetProductByIdResponse>  getProductByIdQueryHandler;
-    private final QueryHandler<FindProductsByNameQuery, PageableProductResponse>  findProductsByNameQueryHandler;
     private final CommandHandler<UpdateProductCommand, ProductResponse>  updateProductCommandHandler;
     private final CommandHandler<DecreaseProductStockCommand, ProductResponse>  decreaseProductStockCommand;
     private final CommandHandler<IncreaseProductStockCommand,  ProductResponse>  increaseProductStockCommand;
-    private final QueryHandler<GetAllProductsByCategoryIdQuery, PageableProductResponse>  getProductsByCategoryIdQuery;
 
-    public ProductsController(CommandHandler<CreateProductCommand, ProductResponse> createProductCommandHandler, CommandHandler<DeleteProductCommand, DeletedProductResponse> deleteProductCommandHandler, QueryHandler<GetProductByIdQuery, GetProductByIdResponse> getProductByIdQueryHandler, QueryHandler<FindProductsByNameQuery, PageableProductResponse> findProductsByNameQueryHandler, CommandHandler<UpdateProductCommand, ProductResponse> updateProductCommandHandler, CommandHandler<DecreaseProductStockCommand, ProductResponse> decreaseProductStockCommand, CommandHandler<IncreaseProductStockCommand, ProductResponse> increaseProductStockCommand, QueryHandler<GetAllProductsByCategoryIdQuery, PageableProductResponse> getProductsByCategoryIdQuery) {
+    public ProductsController(CommandHandler<CreateProductCommand, ProductResponse> createProductCommandHandler,
+                              CommandHandler<DeleteProductCommand, DeletedProductResponse> deleteProductCommandHandler,
+                              CommandHandler<UpdateProductCommand, ProductResponse> updateProductCommandHandler,
+                              CommandHandler<DecreaseProductStockCommand, ProductResponse> decreaseProductStockCommand,
+                              CommandHandler<IncreaseProductStockCommand, ProductResponse> increaseProductStockCommand) {
         this.createProductCommandHandler = createProductCommandHandler;
         this.deleteProductCommandHandler = deleteProductCommandHandler;
-        this.getProductByIdQueryHandler = getProductByIdQueryHandler;
-        this.findProductsByNameQueryHandler = findProductsByNameQueryHandler;
         this.updateProductCommandHandler = updateProductCommandHandler;
         this.decreaseProductStockCommand = decreaseProductStockCommand;
         this.increaseProductStockCommand = increaseProductStockCommand;
-        this.getProductsByCategoryIdQuery = getProductsByCategoryIdQuery;
     }
 
 
@@ -52,27 +44,7 @@ public class ProductsController {
         return  deleteProductCommandHandler.handle(new DeleteProductCommand(productId));
     }
 
-    @GetMapping("/{id}")
-    public GetProductByIdResponse getProductById(@PathVariable("id") UUID productId) {
-        return getProductByIdQueryHandler.handle(new GetProductByIdQuery(productId));
-    }
 
-    @GetMapping("/search")
-    public PageableProductResponse findProductsByNameQuery(
-            @RequestParam("productName") String productName,
-            @RequestParam("pageIndex") Integer pageIndex,
-            @RequestParam("pageSize") Integer pageSize ) {
-        return findProductsByNameQueryHandler.handle(new FindProductsByNameQuery(productName, pageIndex, pageSize));
-    }
-
-    @GetMapping("/search-by-category")
-    public PageableProductResponse getProductsByCategoryIdQuery(
-            @RequestParam("categoryId") UUID categoryId,
-            @RequestParam("pageIndex") Integer pageIndex,
-            @RequestParam("pageSize") Integer pageSize) {
-       return getProductsByCategoryIdQuery.handle(new GetAllProductsByCategoryIdQuery(categoryId, pageIndex, pageSize));
-
-    }
 
     @PutMapping("/{id}")
     public ProductResponse updateProduct(@PathVariable("id") UUID productId, @RequestBody UpdateProductCommand command) {

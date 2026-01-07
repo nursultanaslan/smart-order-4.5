@@ -29,15 +29,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         req -> req
+                                .requestMatchers(HttpMethod.GET, "/api/v1/public").permitAll()
                                 //prodda swagger kapat!
                                 .requestMatchers(
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
                                         "/swagger-ui.html"
                                 ).permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/brands/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 //jwt doğrula ve authority'i çıkar
