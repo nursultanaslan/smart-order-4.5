@@ -21,7 +21,7 @@ public class WebClientConfig {
     }
 
     @Bean               //yukarıdaki builderi okuduk
-    WebClient webClient(@Qualifier("loadBalancedWebClient") WebClient.Builder builder,
+    WebClient authorizedWebClient(@Qualifier("loadBalancedWebClient") WebClient.Builder builder,
                         ReactiveClientRegistrationRepository client,  //yonlendirme icin metadataları alır.
                         ServerOAuth2AuthorizedClientRepository authorizedClientRepository) {
 
@@ -31,6 +31,11 @@ public class WebClientConfig {
             oauth.setDefaultClientRegistrationId("keycloak");
             oauth.setDefaultOAuth2AuthorizedClient(true);
 
-            return builder.filter(oauth).build();
+            return builder.clone().filter(oauth).build();
+    }
+
+    @Bean
+    WebClient publicWebClient(WebClient.Builder builder) {
+        return builder.clone().build();
     }
 }
