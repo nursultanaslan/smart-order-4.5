@@ -16,20 +16,22 @@ public class ProductsController {
 
     private final CommandHandler<CreateProductCommand, ProductResponse>  createProductCommandHandler;
     private final CommandHandler<DeleteProductCommand, DeletedProductResponse>  deleteProductCommandHandler;
-    private final CommandHandler<UpdateProductCommand, ProductResponse>  updateProductCommandHandler;
+    private final CommandHandler<UpdateProductDetailsCommand, ProductResponse>  updateProductCommandHandler;
     private final CommandHandler<DecreaseProductStockCommand, ProductResponse>  decreaseProductStockCommand;
     private final CommandHandler<IncreaseProductStockCommand,  ProductResponse>  increaseProductStockCommand;
+    private final CommandHandler<UpdateProductPriceCommand, ProductResponse>  updateProductPriceCommand;
 
     public ProductsController(CommandHandler<CreateProductCommand, ProductResponse> createProductCommandHandler,
                               CommandHandler<DeleteProductCommand, DeletedProductResponse> deleteProductCommandHandler,
-                              CommandHandler<UpdateProductCommand, ProductResponse> updateProductCommandHandler,
+                              CommandHandler<UpdateProductDetailsCommand, ProductResponse> updateProductCommandHandler,
                               CommandHandler<DecreaseProductStockCommand, ProductResponse> decreaseProductStockCommand,
-                              CommandHandler<IncreaseProductStockCommand, ProductResponse> increaseProductStockCommand) {
+                              CommandHandler<IncreaseProductStockCommand, ProductResponse> increaseProductStockCommand, CommandHandler<UpdateProductPriceCommand, ProductResponse> updateProductPriceCommand) {
         this.createProductCommandHandler = createProductCommandHandler;
         this.deleteProductCommandHandler = deleteProductCommandHandler;
         this.updateProductCommandHandler = updateProductCommandHandler;
         this.decreaseProductStockCommand = decreaseProductStockCommand;
         this.increaseProductStockCommand = increaseProductStockCommand;
+        this.updateProductPriceCommand = updateProductPriceCommand;
     }
 
 
@@ -47,16 +49,24 @@ public class ProductsController {
 
 
     @PutMapping("/{id}")
-    public ProductResponse updateProduct(@PathVariable("id") UUID productId, @RequestBody UpdateProductCommand command) {
-        UpdateProductCommand finalCommand = new UpdateProductCommand(
+    public ProductResponse updateProduct(@PathVariable("id") UUID productId, @RequestBody UpdateProductDetailsCommand command) {
+        UpdateProductDetailsCommand finalCommand = new UpdateProductDetailsCommand(
                 productId,
                 command.productName(),
-                command.amount(),
-                command.currency(),
                 command.description(),
                 command.stock()
         );
         return updateProductCommandHandler.handle(finalCommand);
+    }
+
+    @PutMapping("/{id}")
+    public ProductResponse updateProductPrice(@PathVariable("id") UUID productId, @RequestBody UpdateProductPriceCommand command) {
+        UpdateProductPriceCommand finalCommand = new UpdateProductPriceCommand(
+                productId,
+                command.newAmount(),
+                command.currency()
+        );
+        return updateProductPriceCommand.handle(finalCommand);
     }
 
     @PutMapping("/{id}/stock/decrease")
