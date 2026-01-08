@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "outbox", indexes = {
-        @Index(name = "ix_outbox_event_id", columnList = "eventId", unique = true), //tekrar eden event üretimini engeller
+        @Index(name = "ix_outbox_event_id", columnList = "eventId", unique = true), //aynı eventin tekrar üretimini engeller
         @Index(name = "ix_outbox_status_created", columnList = "status, createdAt") // status ve createdAt alanları
                                                                                     // öncelikli sıralama (performans
                                                                                     // icin)

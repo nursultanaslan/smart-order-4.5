@@ -113,6 +113,11 @@ public class Cart {
 
     }
 
+    //sipariş tamamlandıktan sonra kafkadan gelen mesajla tetiklenir.
+    public void clearCart() {
+    }
+
+
     // getters
     public CartId id() {
         return id;

@@ -1,4 +1,6 @@
 package com.turkcell.product_service.domain.event;
 
-public record ProductStockDecreasedEvent() {
+import com.turkcell.product_service.domain.model.product.ProductId;
+
+public record ProductStockDecreasedEvent(ProductId id, Integer stock) {
 }

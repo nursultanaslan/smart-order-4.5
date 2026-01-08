@@ -20,8 +20,10 @@ public class WebClientConfig {
         return WebClient.builder();
     }
 
-    @Bean               //yukarıdaki builderi okuduk
-    WebClient authorizedWebClient(@Qualifier("loadBalancedWebClient") WebClient.Builder builder,
+    //protected endpointler icin -> isteğe token ekler downstream servislere giderken
+    @Bean
+    WebClient authorizedWebClient(
+                        @Qualifier("loadBalancedWebClient") WebClient.Builder builder, //yukarıdaki builderi okuduk
                         ReactiveClientRegistrationRepository client,  //yonlendirme icin metadataları alır.
                         ServerOAuth2AuthorizedClientRepository authorizedClientRepository) {
 
@@ -34,8 +36,10 @@ public class WebClientConfig {
             return builder.clone().filter(oauth).build();
     }
 
+    //tokensiz public istekler icin
+    //filtre uygulamaz istekte sessionid aramaz.
     @Bean
-    WebClient publicWebClient(WebClient.Builder builder) {
+    WebClient publicWebClient(@Qualifier("loadBalancedWebClient") WebClient.Builder builder) {
         return builder.clone().build();
     }
 }

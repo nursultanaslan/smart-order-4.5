@@ -4,11 +4,14 @@ import com.turkcell.product_service.application.product.dto.ProductResponse;
 import com.turkcell.product_service.application.product.exception.ProductNotFoundException;
 import com.turkcell.product_service.application.product.mapper.ProductMapper;
 import com.turkcell.product_service.core.cqrs.CommandHandler;
+import com.turkcell.product_service.domain.event.ProductPriceChangedEvent;
 import com.turkcell.product_service.domain.model.product.Money;
 import com.turkcell.product_service.domain.model.product.Product;
 import com.turkcell.product_service.domain.model.product.ProductId;
+import com.turkcell.product_service.domain.repository.DomainEventsPublisher;
 import com.turkcell.product_service.domain.repository.ProductRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Component
@@ -16,13 +19,16 @@ public class UpdateProductCommandHandler implements CommandHandler<UpdateProduct
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final DomainEventsPublisher domainEventsPublisher;
 
-    public UpdateProductCommandHandler(ProductRepository productRepository, ProductMapper productMapper) {
+    public UpdateProductCommandHandler(ProductRepository productRepository, ProductMapper productMapper, DomainEventsPublisher domainEventsPublisher) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
+        this.domainEventsPublisher = domainEventsPublisher;
     }
 
     @Override
+    @Transactional
     public ProductResponse handle (UpdateProductCommand command) {
 
         ProductId id = new ProductId(command.productId());
@@ -48,6 +54,13 @@ public class UpdateProductCommandHandler implements CommandHandler<UpdateProduct
         }
 
         Product updatedProduct =  productRepository.save(product);
+
+        ProductPriceChangedEvent event = new ProductPriceChangedEvent(
+                product.id(),
+                product.price()
+        );
+
+        domainEventsPublisher.publish(event);
 
         return productMapper.toResponse(updatedProduct);
     }

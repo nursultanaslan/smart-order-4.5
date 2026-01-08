@@ -18,7 +18,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) //csrf devre dışı
                 //tüm istekler authenticate edilsin.
                 .authorizeHttpRequests(req ->
-                        req.anyRequest().authenticated()
+                        req.anyRequest().permitAll()
                 )
                 //access-token validate
                 .oauth2ResourceServer(oauth2 ->
