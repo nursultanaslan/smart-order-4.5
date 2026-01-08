@@ -274,6 +274,17 @@ services:
       - keycloak
       - spring
 
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis_cart
+    ports:
+      - "6379:6379"
+    networks:
+      - spring
+    volumes:
+      - redis_data:/data
+
+
 #her container kapandiginda o containerda calısan veriler kapatıldıgında kaybolur (kalıcı veri icin)
 #ve tekrar baslatildiginda sifirdan olusur. bunun onune gecmek icin volume tanımlarız.
 volumes:
@@ -291,3 +302,4 @@ networks:
   spring:
     driver: bridge
   keycloak:
+  redis_data:
