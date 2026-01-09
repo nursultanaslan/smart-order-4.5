@@ -45,6 +45,12 @@
 			<artifactId>spring-cloud-starter-gateway</artifactId>
 		</dependency>
 
+		<!-- Spring Boot Starter Data Redis Reactive -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+		</dependency>
+
         <!-- Spring Cloud Netflix Eureka Client -->
 		<dependency>
     		<groupId>org.springframework.cloud</groupId>

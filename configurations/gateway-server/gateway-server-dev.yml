@@ -12,3 +12,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8585/realms/smartorder-bff-dev
+  data:
+    redis:
+      host: localhost
+      port: 6379
