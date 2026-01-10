@@ -8,6 +8,7 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class RateLimitConfiguration {
 
+    //gateway'e gelen her istekten isteği yapan kişiyi ayırt edecek unique String'i üretir (IP adresini kullanır).
     @Bean
     public KeyResolver ipKeyResolver() {
         return exchange -> {

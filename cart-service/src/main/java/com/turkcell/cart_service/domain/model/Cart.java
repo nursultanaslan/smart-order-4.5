@@ -3,6 +3,7 @@ package com.turkcell.cart_service.domain.model;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.UUID;
 
 //rich domain
 public class Cart {
@@ -60,48 +61,63 @@ public class Cart {
     // selectQuantity + price hesapla
     // cart behaviors
     public void addItemToCart(CartItem item) {
-        // item.productId'si items içerisinde varsa item'in
-        // quantity'si 1 arttırılır yoksa yeni item olarak eklensin
-        boolean itemExists = false;
         for (int i = 0; i < items.size(); i++) {
-            CartItem existingItem = items.get(i);
-            if (existingItem.productId().equals(item.productId())) {
-                // Aynı productId'ye sahip item bulundu, quantity'yi 1 arttır
-                CartItem updatedItem = new CartItem(
-                        existingItem.productId(),
-                        existingItem.quantity() + 1,
-                        existingItem.unitPrice(),
-                        existingItem.currency());
-                items.set(i, updatedItem);
-                itemExists = true;
-                calculatePriceSnapshot(updatedItem);
-                calculateCartTotalPrice(updatedItem);
-                break;
+            CartItem existing = items.get(i);
+            if (existing.productId().equals(item.productId())) {
+                items.set(i, new CartItem(existing.productId(), existing.quantity() + 1, existing.unitPrice()));
+                calculateCartTotalPrice();
+                return;
             }
         }
-
-        if (!itemExists) {
-            // Yeni item olarak ekle
-            items.add(item);
-            calculatePriceSnapshot(item);
-            calculateCartTotalPrice(item);
-        }
+        items.add(item);
+        calculateCartTotalPrice();
     }
 
-    public void removeItemFromCart(CartItem item) {
-
+    public void removeItemFromCart(UUID productId) {
+        items.removeIf(item -> item.productId().equals(productId));
+        calculateCartTotalPrice();
     }
 
     public void increaseItemQuantity(CartItem item) {
-
+        for (int i = 0; i < items.size(); i++) {
+            CartItem cartItem = items.get(i);
+            if (cartItem.productId().equals(item.productId())) {
+                items.set(i, new CartItem(cartItem.productId(), cartItem.quantity() + 1, cartItem.unitPrice()));
+                break;
+            }
+        }
+        calculateCartTotalPrice();
     }
 
     public void decreaseItemQuantity(CartItem item) {
-
+        for (int i = 0; i < items.size(); i++) {
+            CartItem cartItem = items.get(i);
+            if (cartItem.productId().equals(item.productId())) {
+                int newQty = cartItem.quantity() - 1;
+                if (newQty <= 0) {
+                    items.remove(i);
+                } else {
+                    items.set(i, new CartItem(cartItem.productId(), newQty, cartItem.unitPrice()));
+                }
+                break;
+            }
+        }
+        calculateCartTotalPrice();
     }
 
     public void selectQuantity(CartItem item, Integer newQuantity) {
-
+        for (int i = 0; i < items.size(); i++) {
+            CartItem cartItem = items.get(i);
+            if (cartItem.productId().equals(item.productId())) {
+                if (newQuantity <= 0) {
+                    items.remove(i);
+                } else {
+                    items.set(i, new CartItem(cartItem.productId(), newQuantity, cartItem.unitPrice()));
+                }
+                break;
+            }
+        }
+        calculateCartTotalPrice();
     }
 
     public void calculatePriceSnapshot(CartItem item) {
@@ -109,12 +125,19 @@ public class Cart {
                 .multiply(BigDecimal.valueOf(item.quantity()));
     }
 
-    public void calculateCartTotalPrice(CartItem item) {
-
+    public void calculateCartTotalPrice() {
+        this.cartTotalPrice = items.stream()
+            .map(ci -> ci
+                    .unitPrice()
+                    .multiply(BigDecimal.valueOf(ci.quantity())))
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     //sipariş tamamlandıktan sonra kafkadan gelen mesajla tetiklenir.
     public void clearCart() {
+        this.items.clear();
+        this.cartTotalPrice = BigDecimal.ZERO;
+        this.status = CartStatus.getDefault();
     }
 
 
@@ -127,40 +150,20 @@ public class Cart {
         return customerId;
     }
 
-    public void setCustomerId(CustomerId customerId) {
-        this.customerId = customerId;
-    }
-
     public BigDecimal cartTotalPrice() {
         return cartTotalPrice;
-    }
-
-    public void setCartTotalPrice(BigDecimal cartTotalPrice) {
-        this.cartTotalPrice = cartTotalPrice;
     }
 
     public String currency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
     public OffsetDateTime createdAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(OffsetDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public CartStatus status() {
         return status;
-    }
-
-    public void setStatus(CartStatus status) {
-        this.status = status;
     }
 
     public List<CartItem> items() {

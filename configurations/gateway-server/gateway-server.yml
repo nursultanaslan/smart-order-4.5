@@ -15,7 +15,7 @@ spring:
               filters:
                 - name: RequestRateLimiter
                   args:
-                    key-resolver: '#{@ipKeyResolver}'  #javadaki bean'i işaret eder
+                    key-resolver: '#{@ipKeyResolver}'  #javadaki bean'i işaret eder. (key üretecek method)
                     redis-rate-limiter.replenishRate: 10  #Saniyede 10 jeton ekle
                     redis-rate-limiter.burstCapacity: 20  #Kova kapasitesi
                     redis-rate-limiter.requestedTokens: 1 #Her istek 1 jeton harcasın
