@@ -296,6 +296,7 @@ volumes:
   notificationdb_vol: {}
   kafka-data: {}
   keycloakdb_vol: {}
+  redis_data:
 
 networks:
   kafkanet:
@@ -303,4 +304,3 @@ networks:
   spring:
     driver: bridge
   keycloak:
-  redis_data:
