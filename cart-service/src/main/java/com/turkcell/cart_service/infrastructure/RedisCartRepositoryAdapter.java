@@ -1,4 +1,4 @@
-package com.turkcell.cart_service.infrastructure.repository;
+package com.turkcell.cart_service.infrastructure;
 
 import com.turkcell.cart_service.domain.model.Cart;
 import com.turkcell.cart_service.domain.model.CustomerId;
@@ -9,13 +9,6 @@ import java.util.Optional;
 
 @Repository
 public class RedisCartRepositoryAdapter implements CartRepository {
-
-    private final CrudCartRepository cartRepository;
-
-    public RedisCartRepositoryAdapter(CrudCartRepository cartRepository) {
-        this.cartRepository = cartRepository;
-    }
-
 
     @Override
     public Optional<Cart> findByCustomerId(CustomerId customerId) {

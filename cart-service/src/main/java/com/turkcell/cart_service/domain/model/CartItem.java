@@ -8,4 +8,16 @@ public record CartItem(
         Integer quantity,
         BigDecimal unitPrice
 ) {
+    public CartItem {
+        if (quantity <= 0){
+            throw new IllegalArgumentException("Quantity should be greater than 0");
+        }
+        if(unitPrice == null || unitPrice.compareTo(BigDecimal.ZERO) <= 0){
+            throw new IllegalArgumentException("Unit Price cannot be null or negative");
+        }
+    }
+
+    public BigDecimal lineTotal() {
+        return unitPrice.multiply(BigDecimal.valueOf(quantity));
+    }
 }
