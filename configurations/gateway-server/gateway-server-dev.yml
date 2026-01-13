@@ -12,6 +12,34 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8585/realms/smartorder-bff-dev
+  cloud:
+    gateway:
+      server:
+        webflux:
+          forwarded:
+            enabled: true
+          x-forwarded:
+            enabled: true
+          routes:
+            - id: product-service
+              uri: lb://product-service
+              predicates:
+                - Path=/api/v1/products/**,/api/v1/brands/**,/api/v1/categories/**,/api/v1/public/**
+              filters:
+                - name: RequestRateLimiter
+                  args:
+                    key-resolver: "#{@ipKeyResolver}"  #javadaki bean'i işaret eder. (key üretecek method)
+                    redis-rate-limiter.replenishRate: 10  #Saniyede 10 jeton ekle
+                    redis-rate-limiter.burstCapacity: 20  #Kova kapasitesi
+                    redis-rate-limiter.requestedTokens: 1 #Her istek 1 jeton harcasın
+            - id: order-service
+              uri: lb://order-service
+              predicates:
+                - Path=/api/v1/orders/**
+            - id: customer-service
+              uri: lb://customer-service
+              predicates:
+                - Path=/api/v1/customer/**
   data:
     redis:
       host: localhost
