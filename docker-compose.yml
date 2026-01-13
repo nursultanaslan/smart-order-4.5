@@ -102,6 +102,7 @@ services:
     depends_on:
       - config-server
       - discovery-server
+      - redis
 
   bff-service:
     image: tcell-bff-service
@@ -276,7 +277,6 @@ services:
 
   redis:
     image: redis:7.2-alpine
-    container_name: redis_cart
     restart: unless-stopped
     ports:
       - "6379:6379"
