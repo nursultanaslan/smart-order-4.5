@@ -6,8 +6,8 @@ import java.util.UUID;
 public record CartItem(
         UUID productId,
         Integer quantity,
-        BigDecimal unitPrice
-) {
+        BigDecimal unitPrice) {
+
     public CartItem {
         if (quantity <= 0){
             throw new IllegalArgumentException("Quantity should be greater than 0");

@@ -26,7 +26,7 @@ public class Cart {
         this.customerId = customerId;
         this.cartTotalPrice = cartTotalPrice;
         this.currency = currency;
-        this.createdAt = createdAt;
+        this.createdAt = createdAt != null ? createdAt : OffsetDateTime.now();
         this.status = status != null ? status : CartStatus.getDefault();
         this.items = items;
     }
