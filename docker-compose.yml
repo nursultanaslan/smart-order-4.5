@@ -39,19 +39,6 @@ services:
     networks:
       - postgres
 
-  cartsv_db:
-    image: postgres:16
-    environment:
-      POSTGRES_DB: cart_service_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: cartservice_db_password
-    volumes:
-      - cartdb_vol:/var/lib/postgresql/data
-    ports:
-      - "5435:5432"
-    networks:
-      - postgres
-
   notificationsv_db:
     image: postgres:16
     environment:
@@ -160,6 +147,20 @@ services:
     networks:
       - spring
       - postgres
+    depends_on:
+      - config-server
+      - discovery-server
+
+  cart-service:
+    image: tcell-cart-service
+    container_name: cart-service
+    ports:
+      - "8087:8087"
+    environment:
+      - CONFIG_URI=http://config-server:8787
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
     depends_on:
       - config-server
       - discovery-server
@@ -277,6 +278,7 @@ services:
 
   redis:
     image: redis:7.2-alpine
+    container_name: redis
     restart: unless-stopped
     ports:
       - "6379:6379"
