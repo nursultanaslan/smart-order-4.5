@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit;
 @Repository
 public class RedisCartRepositoryAdapter implements CartRepository {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Cart> redisTemplate;
 
-    public RedisCartRepositoryAdapter(RedisTemplate<String, Object> redisTemplate) {
+    public RedisCartRepositoryAdapter(RedisTemplate<String, Cart> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -28,7 +28,7 @@ public class RedisCartRepositoryAdapter implements CartRepository {
     @Override
     public Optional<Cart> findByCustomerId(CustomerId customerId) {
         String key = "cart:" + customerId.value().toString();
-        Cart cart = (Cart) redisTemplate.opsForValue().get(key);
+        Cart cart = redisTemplate.opsForValue().get(key);
         return Optional.ofNullable(cart);
     }
 

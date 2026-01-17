@@ -4,4 +4,4 @@ spring:
   profiles:
     active: docker
   config:
-    import: configserver:http://localhost:8787
+    import: configserver:${CONFIG_URI:http://localhost:8787}
