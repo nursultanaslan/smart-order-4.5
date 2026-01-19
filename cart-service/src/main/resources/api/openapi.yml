@@ -1,0 +1,91 @@
+openapi: 3.0.3   #openapi spec version
+info:  #api hakkında genel bilgiler saglar
+  title: Cart Service Api
+  description: |
+    This API manage cart service operations.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8087
+    description: Local development server
+
+#apinin tüm endpointlerini açıklar
+paths:
+  /api/v1/carts:      #paths object
+    post:             #path item object
+      summary: Add Product to Cart
+      description: Add an item to the cart
+      operationId: add-to-cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CartItemRequest'}
+      responses:
+        '201':
+          description: "ADDED"
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CartItemResponse'}
+
+
+  /api/v1/carts/{customerId}:
+    get:
+      summary: Retrieve the customer's cart
+      parameters:     #parametre nesnelerini tanımla.
+        - name: customerId
+          in: path
+          required: true
+      responses:
+        '200':
+          description: "OK"
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Cart'}
+
+  /api/v1/carts/items/{productId}:
+    delete:
+      summary: Delete product from Cart
+      parameters:
+        - name: productId
+          in: path
+          required: true
+      responses:
+        '200':
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  productId: {type: integer, format: uuid}
+
+
+components:
+  schemas:
+    CartItemRequest:
+      type: object
+      required: [productId, quantity, unitPrice]
+      properties:
+        productId: {type: string, format: uuid}
+        quantity: {type: integer, minimum: 1 }
+        unitPrice: {type: number, format: decimal}
+    CartItemResponse:
+      type: object
+      properties:
+        quantity: { type: integer }
+        unitPrice: {type: number, format: decimal}
+
+    CartItem:
+      type: object
+      properties:
+        productId: {type: integer, format: uuid}
+        quantity: {type: integer}
+        unitPrice: {type: number, format: decimal}
+    Cart:
+      type: object
+      properties:
+        customerId: {type: integer, format: uuid}
+        cartTotalPrice: {type: number, format: decimal}
+        items: {type: array, minItems: 0, items: {$ref: '#/components/schemas/CartItem'} }
+
