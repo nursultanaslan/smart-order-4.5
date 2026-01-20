@@ -28,10 +28,10 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/CartItemResponse'}
 
-
   /api/v1/carts/{customerId}:
     get:
-      summary: Retrieve the customer's cart
+      summary: Get the customer's cart
+      description: Retrieves the current customer's cart state
       parameters:     #parametre nesnelerini tanımla.
         - name: customerId
           in: path
@@ -60,6 +60,31 @@ paths:
                 properties:
                   productId: {type: integer, format: uuid}
 
+  /api/v1/carts/update-quantity/{productId}:
+    patch:
+      tags:
+        - UpdateQuantity
+      summary: Update product quantity
+      description: Updates the quantity of the selected product.
+      parameters:
+        - name: productId
+          in: path
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity: {type: integer, minimum: 1 }
+      responses:
+        '200':
+          description: "OK"
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/CartItemResponse'}
+
 
 components:
   schemas:
@@ -69,23 +94,22 @@ components:
       properties:
         productId: {type: string, format: uuid}
         quantity: {type: integer, minimum: 1 }
-        unitPrice: {type: number, format: decimal}
     CartItemResponse:
       type: object
       properties:
+        productId: {type: string, format: uuid}
         quantity: { type: integer }
         unitPrice: {type: number, format: decimal}
 
     CartItem:
       type: object
       properties:
-        productId: {type: integer, format: uuid}
+        productId: {type: string, format: uuid}
         quantity: {type: integer}
         unitPrice: {type: number, format: decimal}
     Cart:
       type: object
       properties:
-        customerId: {type: integer, format: uuid}
         cartTotalPrice: {type: number, format: decimal}
         items: {type: array, minItems: 0, items: {$ref: '#/components/schemas/CartItem'} }
 
