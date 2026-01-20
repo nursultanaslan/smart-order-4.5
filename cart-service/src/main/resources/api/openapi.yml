@@ -15,7 +15,7 @@ paths:
     post:             #path item object
       summary: Add Product to Cart
       description: Add an item to the cart
-      operationId: add-to-cart
+      operationId: addToCart
       requestBody:
         required: true
         content:
@@ -32,10 +32,14 @@ paths:
     get:
       summary: Get the customer's cart
       description: Retrieves the current customer's cart state
+      operationId: getCartByCustomerId
       parameters:     #parametre nesnelerini tanımla.
         - name: customerId
           in: path
           required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         '200':
           description: "OK"
@@ -46,10 +50,14 @@ paths:
   /api/v1/carts/items/{productId}:
     delete:
       summary: Delete product from Cart
+      operationId: deleteProduct
       parameters:
         - name: productId
           in: path
           required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         '200':
           description: "OK"
@@ -66,18 +74,19 @@ paths:
         - UpdateQuantity
       summary: Update product quantity
       description: Updates the quantity of the selected product.
+      operationId: updateProductQuantity
       parameters:
         - name: productId
           in: path
           required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              type: object
-              properties:
-                quantity: {type: integer, minimum: 1 }
+            schema: { $ref: '#/components/schemas/UpdateQuantityRequest'}
       responses:
         '200':
           description: "OK"
@@ -90,7 +99,7 @@ components:
   schemas:
     CartItemRequest:
       type: object
-      required: [productId, quantity, unitPrice]
+      required: [productId, quantity]
       properties:
         productId: {type: string, format: uuid}
         quantity: {type: integer, minimum: 1 }
@@ -112,4 +121,10 @@ components:
       properties:
         cartTotalPrice: {type: number, format: decimal}
         items: {type: array, minItems: 0, items: {$ref: '#/components/schemas/CartItem'} }
+
+    UpdateQuantityRequest:
+      type: object
+      properties:
+        quantity: { type: integer, minimum: 1 }
+
 
