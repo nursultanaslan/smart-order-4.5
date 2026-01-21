@@ -13,6 +13,8 @@ servers:
 paths:
   /api/v1/carts:      #paths object
     post:             #path item object
+      tags:
+        - carts
       summary: Add Product to Cart
       description: Add an item to the cart
       operationId: addToCart
@@ -30,6 +32,8 @@ paths:
 
   /api/v1/carts/{customerId}:
     get:
+      tags:
+        - carts
       summary: Get the customer's cart
       description: Retrieves the current customer's cart state
       operationId: getCartByCustomerId
@@ -49,6 +53,8 @@ paths:
 
   /api/v1/carts/items/{productId}:
     delete:
+      tags:
+        - carts
       summary: Delete product from Cart
       operationId: deleteProduct
       parameters:
@@ -71,7 +77,7 @@ paths:
   /api/v1/carts/update-quantity/{productId}:
     patch:
       tags:
-        - UpdateQuantity
+        - carts
       summary: Update product quantity
       description: Updates the quantity of the selected product.
       operationId: updateProductQuantity

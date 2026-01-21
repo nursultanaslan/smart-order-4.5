@@ -6,6 +6,7 @@ import java.util.UUID;
 public record CartItemRequest(
         UUID productId,
         Integer quantity,
-        BigDecimal unitPrice
+        BigDecimal unitPrice,
+        String currency
 ) {
 }

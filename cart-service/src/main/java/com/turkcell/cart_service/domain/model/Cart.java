@@ -55,8 +55,11 @@ public class Cart {
                 items);
     }
 
-    // cart behaviors
+    // cart behaviors (business invariants)
     public void addItemToCart(CartItem item) {
+        if (this.status == CartStatus.CHECKED_OUT) {
+            return;
+        }
         items.add(item);
         calculateCartTotalPrice();
     }
@@ -68,15 +71,14 @@ public class Cart {
 
 
     public void selectQuantity(UUID productId, int newQuantity) {
-        if(newQuantity <= 0){
-            removeItemFromCart(productId);
+        if (this.status == CartStatus.CHECKED_OUT) {
             return;
         }
 
         for (int i = 0; i < items.size(); i++) {
             CartItem existingItem = items.get(i);
             if (existingItem.productId().equals(productId)) {
-                items.set(i, new CartItem(existingItem.productId(), newQuantity,  existingItem.unitPrice()));
+                items.set(i, new CartItem(existingItem.productId(), newQuantity,  existingItem.unitPrice(), existingItem.currency()));
                 calculateCartTotalPrice();
                 return;
             }
@@ -124,6 +126,7 @@ public class Cart {
         return status;
     }
 
+    //unmodifiable -> değişim sadece domain metodları üzerinden mümkün. dısardan değil.
     public List<CartItem> items() {
         return java.util.Collections.unmodifiableList(items);
     }

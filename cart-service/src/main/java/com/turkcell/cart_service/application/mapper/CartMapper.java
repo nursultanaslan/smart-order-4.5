@@ -12,7 +12,8 @@ public class CartMapper {
         return new CartItem(
                 cartItemRequest.productId(),
                 cartItemRequest.quantity(),
-                cartItemRequest.unitPrice()
+                cartItemRequest.unitPrice(),
+                cartItemRequest.currency()
         );
     }
 }

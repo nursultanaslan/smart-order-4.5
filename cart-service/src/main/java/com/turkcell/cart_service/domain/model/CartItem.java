@@ -6,7 +6,8 @@ import java.util.UUID;
 public record CartItem(
         UUID productId,
         Integer quantity,
-        BigDecimal unitPrice) {
+        BigDecimal unitPrice,
+        String currency) {
 
     public CartItem {
         if (quantity <= 0){
