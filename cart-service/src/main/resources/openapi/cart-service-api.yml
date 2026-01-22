@@ -49,7 +49,7 @@ paths:
           description: "OK"
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/Cart'}
+              schema: { $ref: '#/components/schemas/CartResponse'}
 
   /api/v1/carts/items/{productId}:
     delete:
@@ -69,10 +69,8 @@ paths:
           description: "OK"
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  productId: {type: integer, format: uuid}
+              schema: { $ref: "#/components/schemas/DeletedResponse"}
+
 
   /api/v1/carts/update-quantity/{productId}:
     patch:
@@ -122,7 +120,7 @@ components:
         productId: {type: string, format: uuid}
         quantity: {type: integer}
         unitPrice: {type: number, format: decimal}
-    Cart:
+    CartResponse:
       type: object
       properties:
         cartTotalPrice: {type: number, format: decimal}
@@ -132,5 +130,11 @@ components:
       type: object
       properties:
         quantity: { type: integer, minimum: 1 }
+
+    DeletedResponse:
+      type: object
+      properties:
+          productId: { type: string, format: uuid }
+
 
 
