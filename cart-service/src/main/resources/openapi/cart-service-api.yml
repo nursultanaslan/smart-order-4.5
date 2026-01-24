@@ -38,12 +38,7 @@ paths:
       description: Retrieves the current customer's cart state
       operationId: getCartByCustomerId
       parameters:     #parametre nesnelerini tanımla.
-        - name: customerId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+        - $ref: '#/components/parameters/CustomerIdPathParam'
       responses:
         '200':
           description: "OK"
@@ -58,19 +53,13 @@ paths:
       summary: Delete product from Cart
       operationId: deleteProduct
       parameters:
-        - name: productId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+        - $ref: '#/components/parameters/ProductIdPathParam'
       responses:
         '200':
           description: "OK"
           content:
             application/json:
               schema: { $ref: "#/components/schemas/DeletedResponse"}
-
 
   /api/v1/carts/update-quantity/{productId}:
     patch:
@@ -80,12 +69,7 @@ paths:
       description: Updates the quantity of the selected product.
       operationId: updateProductQuantity
       parameters:
-        - name: productId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+        - $ref: '#/components/parameters/ProductIdPathParam'
       requestBody:
         required: true
         content:
@@ -136,5 +120,23 @@ components:
       properties:
           productId: { type: string, format: uuid }
 
+  parameters:
+    CustomerIdPathParam:
+      name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      example: "d7cfe047-e53b-49a0-a486-d9c6ae27e8f8"
+
+    ProductIdPathParam:
+      name: productId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      example: "d9aefa38-923e-432a-b0a0-5d0bd8822a25"
 
 
