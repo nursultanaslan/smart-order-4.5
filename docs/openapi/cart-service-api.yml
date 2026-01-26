@@ -12,7 +12,7 @@ servers:
 #apinin tüm endpointlerini açıklar
 paths:
   /api/v1/carts/{customerId}:      #paths object
-    post:             #path item object
+    post:                          #path item object
       tags:
         - carts
       summary: Add Product to Cart
@@ -88,33 +88,63 @@ components:
   schemas:
     CartItemRequest:
       type: object
-      required: [productId, quantity]
+      required:
+        - productId
+        - quantity
       properties:
-        productId: {type: string, format: uuid}
-        quantity: {type: integer, minimum: 1 }
+        productId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          minimum: 1
     CartItemResponse:
       type: object
       properties:
-        productId: {type: string, format: uuid}
-        quantity: { type: integer }
-        unitPrice: {type: number, format: decimal}
+        productId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          format: int32
+        itemTotalPrice:
+          type: number
+          format: decimal
+        currency:
+          type: string
+
 
     CartItem:
       type: object
       properties:
-        productId: {type: string, format: uuid}
-        quantity: {type: integer}
-        unitPrice: {type: number, format: decimal}
+        productId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          format: int32
+        unitPrice:
+          type: number
+          format: decimal
     CartResponse:
       type: object
       properties:
-        cartTotalPrice: {type: number, format: decimal}
-        items: {type: array, minItems: 0, items: {$ref: '#/components/schemas/CartItem'} }
+        cartTotalPrice:
+          type: number
+          format: decimal
+        items:
+          type: array
+          minItems: 0
+          items: {$ref: '#/components/schemas/CartItem'}
+          description: "List of cart items"
 
     UpdateQuantityRequest:
       type: object
       properties:
-        quantity: { type: integer, minimum: 1 }
+        quantity:
+          type: integer
+          format: int32
+          minimum: 1
 
  # Reusable path, query, header and cookie parameters
   parameters:

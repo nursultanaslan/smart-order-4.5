@@ -14,12 +14,12 @@ public class Cart {
 
     private final CartId id;
 
-    private CustomerId customerId;
+    private final CustomerId customerId;
 
     private BigDecimal cartTotalPrice;
-    private String currency;
-    private OffsetDateTime createdAt;
-    private CartStatus status;
+    private final String currency;
+    private final OffsetDateTime createdAt;
+    private final CartStatus status;
 
     private final List<CartItem> items;
 
@@ -59,13 +59,9 @@ public class Cart {
     }
 
     // cart behaviors (business invariants)
-    public void addItem(UUID productId, Integer quantity, BigDecimal unitPrice, Integer availableStock) {
-        if (this.status == CartStatus.CHECKED_OUT) {
-            throw new IllegalStateException("Cannot add an item to a checked out cart.");
-        }
-        if (quantity > availableStock) {
-            throw new InsufficientStockException("Stok yetersiz");
-        }
+
+    public void addItem(UUID productId, int quantity, BigDecimal unitPrice, int availableStock) {
+        validateStock(quantity, availableStock);
         //aynı üründen sepette varsa miktarı güncelle, yoksa yeni ekle.
         items.stream()
                 .filter(item -> item.productId().equals(productId))
@@ -94,7 +90,7 @@ public class Cart {
     }
 
 
-    public void selectQuantity(UUID productId, int newQuantity) {
+    public void updateQuantity(UUID productId, int newQuantity) {
         if (this.status == CartStatus.CHECKED_OUT) {
             return;
         }
@@ -112,7 +108,7 @@ public class Cart {
     public void calculateCartTotalPrice() {
         this.cartTotalPrice = items
                 .stream()
-                .map(CartItem::lineTotal)
+                .map(CartItem::itemTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, RoundingMode.HALF_UP);
     }
@@ -123,6 +119,13 @@ public class Cart {
             this.items.clear();
         }
     }
+
+    private void validateStock(int quantity, int availableStock) {
+        if(quantity > availableStock) {
+            throw new InsufficientStockException("insufficient stock");
+        }
+    }
+
 
 
     // getters

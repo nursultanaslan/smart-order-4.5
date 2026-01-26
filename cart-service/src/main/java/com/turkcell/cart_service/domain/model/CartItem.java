@@ -18,7 +18,7 @@ public record CartItem(
         }
     }
 
-    public BigDecimal lineTotal() {
+    public BigDecimal itemTotalPrice() {
         return unitPrice.multiply(BigDecimal.valueOf(quantity));
     }
 }

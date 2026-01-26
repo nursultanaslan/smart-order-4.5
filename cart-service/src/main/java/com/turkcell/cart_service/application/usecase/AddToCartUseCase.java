@@ -36,6 +36,8 @@ public class AddToCartUseCase {
         //ürünün stoğunu ve o anki güncel fiyatını alır.
         ProductResponse product = productClient.getProductById(productId);
 
+        int quantityToAdd = quantity != null ? quantity : 1;
+
         //kullanıcıya ait sepet var ise getir yoksa yenisini create et.
         Cart cart = cartRepository.findByCustomerId(new CustomerId(customerId))
                 .orElseGet(() ->
@@ -50,7 +52,7 @@ public class AddToCartUseCase {
 
         cart.addItem(
                 productId,
-                quantity,
+                quantityToAdd,
                 product.unitPrice(),
                 product.stock());
 
