@@ -1,14 +1,17 @@
 package com.turkcell.cart_service.application.usecase;
 
 import com.turkcell.cart_service.application.client.ProductClient;
-import com.turkcell.cart_service.web.dto.response.CartItemResponse;
 import com.turkcell.cart_service.application.dto.response.ProductResponse;
 import com.turkcell.cart_service.domain.model.Cart;
+import com.turkcell.cart_service.domain.model.CartStatus;
 import com.turkcell.cart_service.domain.model.CustomerId;
 import com.turkcell.cart_service.domain.repository.CartRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
@@ -35,21 +38,23 @@ public class AddToCartUseCase {
 
         //kullanıcıya ait sepet var ise getir yoksa yenisini create et.
         Cart cart = cartRepository.findByCustomerId(new CustomerId(customerId))
-                .orElse(null);
-        if (cart == null) {
-            Cart.create(
-                    customerId,
+                .orElseGet(() ->
+                        Cart.create(
+                                new CustomerId(customerId),
+                                BigDecimal.ZERO,
+                                product.currency(),
+                                OffsetDateTime.now(),
+                                CartStatus.getDefault(),
+                                new ArrayList<>()
+                        ));
 
-            )
-        }
-
-        cart.addItemToCart(item);
-
-        cartRepository.save(cart);
-        return new CartItemResponse(
+        cart.addItem(
                 productId,
                 quantity,
-                product.quantity()
-        );
+                product.unitPrice(),
+                product.stock());
+
+        return cartRepository.save(cart);
+
     }
 }

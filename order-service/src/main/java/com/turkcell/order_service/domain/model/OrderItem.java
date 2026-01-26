@@ -4,15 +4,15 @@ import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
-public record OrderLine(
+public record OrderItem(
         UUID productId,
         String productName,
         BigDecimal unitPrice,
         String currency,
         Integer quantity,
-        BigDecimal lineTotalPrice) {
+        BigDecimal itemTotalPrice) {
 
-    public OrderLine{
+    public OrderItem {
         Objects.requireNonNull(productId,  "Product Id cannot be null");
         Objects.requireNonNull(productName,  "Product Name cannot be null");
         Objects.requireNonNull(currency,"Currency cannot be null");
@@ -25,7 +25,7 @@ public record OrderLine(
         if (quantity <= 0){
             throw new IllegalArgumentException("Quantity cannot be negative");
         }
-        if (lineTotalPrice.signum() < 0){
+        if (itemTotalPrice.signum() < 0){
             throw new IllegalArgumentException("Line Total Price cannot be negative");
         }
     }

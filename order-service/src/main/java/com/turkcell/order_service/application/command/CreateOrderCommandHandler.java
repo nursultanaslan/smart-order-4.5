@@ -7,7 +7,7 @@ import com.turkcell.order_service.application.mapper.OrderMapper;
 import com.turkcell.order_service.core.cqrs.CommandHandler;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
 import com.turkcell.order_service.domain.model.Order;
-import com.turkcell.order_service.domain.model.OrderLine;
+import com.turkcell.order_service.domain.model.OrderItem;
 import com.turkcell.order_service.domain.port.DomainEventsPublisher;
 import com.turkcell.order_service.domain.port.OrderRepository;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
         // Önce stock kontrolü ve azaltma işlemini yapıyoruz
         // Eğer stock yetersizse, order kaydedilmeden işlem başarısız olur
         try {
-            for (OrderLine line : order.lines()) {
+            for (OrderItem line : order.lines()) {
                 ProductResponse productResponse = productClient.decreaseStock(line.productId(), line.quantity());
 
                 // ProductResponse'u kontrol ediyoruz
@@ -71,7 +71,7 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
                 savedOrder.createdAt(),
                 savedOrder.totalPrice(),
                 savedOrder.currency(),
-                savedOrder.lines());
+                savedOrder.items());
 
         domainEventsPublisher.publish(event);
 

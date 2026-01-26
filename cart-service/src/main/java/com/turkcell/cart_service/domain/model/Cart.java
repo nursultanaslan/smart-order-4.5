@@ -1,8 +1,11 @@
 package com.turkcell.cart_service.domain.model;
 
+import com.turkcell.cart_service.domain.exception.InsufficientStockException;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,11 +39,11 @@ public class Cart {
         return new Cart(
                 CartId.generate(),
                 customerId,
-                cartTotalPrice,
+                BigDecimal.ZERO,
                 currency,
-                createdAt,
-                status,
-                items);
+                OffsetDateTime.now(),
+                CartStatus.getDefault(),
+                new ArrayList<>());
     }
 
     public static Cart rehydrate(CartId id, CustomerId customerId, BigDecimal cartTotalPrice, String currency,
@@ -56,9 +59,12 @@ public class Cart {
     }
 
     // cart behaviors (business invariants)
-    public void addItemToCart(UUID productId, Integer quantity, BigDecimal unitPrice, String currency) {
+    public void addItem(UUID productId, Integer quantity, BigDecimal unitPrice, Integer availableStock) {
         if (this.status == CartStatus.CHECKED_OUT) {
             throw new IllegalStateException("Cannot add an item to a checked out cart.");
+        }
+        if (quantity > availableStock) {
+            throw new InsufficientStockException("Stok yetersiz");
         }
         //aynı üründen sepette varsa miktarı güncelle, yoksa yeni ekle.
         items.stream()

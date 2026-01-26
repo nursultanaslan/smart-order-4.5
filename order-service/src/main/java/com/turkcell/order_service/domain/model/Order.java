@@ -15,14 +15,14 @@ public class Order {
     private final CartId cartId;
 
     private BigDecimal totalPrice;
-    private String currency;
+    private final String currency;
 
-    private OffsetDateTime createdAt;
+    private final OffsetDateTime createdAt;
     private OrderStatus orderStatus;
-    private List<OrderLine> lines;
+    private final List<OrderItem> items;
 
     private Order(OrderId id, CustomerId customerId, CartId cartId, BigDecimal totalPrice, String currency,
-            OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderLine> lines) {
+            OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderItem> items) {
         this.id = id;
         this.customerId = customerId;
         this.cartId = cartId;
@@ -30,26 +30,26 @@ public class Order {
         this.currency = currency;
         this.createdAt = createdAt;
         this.orderStatus = orderStatus != null ? orderStatus : OrderStatus.getDefault();
-        this.lines = lines;
+        this.items = items;
     }
 
-    public static Order create(CustomerId customerId, CartId cartId, OffsetDateTime createdAt, List<OrderLine> lines) {
-        validateCurrencyConsistency(lines);
+    public static Order create(CustomerId customerId, CartId cartId, OffsetDateTime createdAt, List<OrderItem> items) {
+        validateCurrencyConsistency(items);
         Order order = new Order(
                 OrderId.generate(),
                 customerId,
                 cartId,
                 null, // totalPrice will be calculated
-                lines.getFirst().currency(), // currency from first line (all lines have same currency after validation)
+                items.getFirst().currency(), // currency from first item (all items have same currency after validation)
                 createdAt,
                 OrderStatus.getDefault(),
-                lines);
+                items);
         order.calculateTotalPrice();
         return order;
     }
 
     public static Order rehydrate(OrderId id, CustomerId customerId, CartId cartId, BigDecimal totalPrice,
-            String currency, OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderLine> lines) {
+            String currency, OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderItem> items) {
         return new Order(
                 id,
                 customerId,
@@ -58,14 +58,15 @@ public class Order {
                 currency,
                 createdAt,
                 orderStatus,
-                lines);
+                items
+        );
     }
 
     // worker methods
     public void calculateTotalPrice() {
-        this.totalPrice = lines
+        this.totalPrice = items
                 .stream()
-                .map(line -> line.unitPrice().multiply(BigDecimal.valueOf(line.quantity())))
+                .map(item -> item.unitPrice().multiply(BigDecimal.valueOf(item.quantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, RoundingMode.HALF_UP);
         validateTotalPrice(this.totalPrice);
@@ -105,17 +106,17 @@ public class Order {
         }
     }
 
-    public static void validateCurrencyConsistency(List<OrderLine> lines) {
-        if (lines == null || lines.isEmpty()) {
-            throw new IllegalArgumentException("Order lines cannot be null or empty");
+    public static void validateCurrencyConsistency(List<OrderItem> items) {
+        if (items == null || items.isEmpty()) {
+            throw new IllegalArgumentException("Order items cannot be null or empty");
         }
 
-        String firstCurrency = lines.getFirst().currency();
-        boolean allSameCurrency = lines.stream()
-                .allMatch(line -> firstCurrency.equals(line.currency()));
+        String firstCurrency = items.getFirst().currency();
+        boolean allSameCurrency = items.stream()
+                .allMatch(item -> firstCurrency.equals(item.currency()));
 
         if (!allSameCurrency) {
-            throw new IllegalArgumentException("All order lines must have the same currency");
+            throw new IllegalArgumentException("All order items must have the same currency");
         }
     }
 
@@ -148,7 +149,7 @@ public class Order {
         return orderStatus;
     }
 
-    public List<OrderLine> lines() {
-        return Collections.unmodifiableList(lines);
+    public List<OrderItem> items() {
+        return Collections.unmodifiableList(items);
     }
 }

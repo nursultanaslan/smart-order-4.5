@@ -32,7 +32,7 @@ public class JpaOrderEntity {
     private UUID cartId;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderLineEntity> lines = new ArrayList<>();
+    private List<OrderItemEntity> items = new ArrayList<>();
 
     public UUID id() {
         return id;
@@ -90,11 +90,11 @@ public class JpaOrderEntity {
         this.cartId = cartId;
     }
 
-    public List<OrderLineEntity> lines() {
-        return lines;
+    public List<OrderItemEntity> items() {
+        return items;
     }
 
-    public void setLines(List<OrderLineEntity> lines) {
-        this.lines = lines;
+    public void setItems(List<OrderItemEntity> items) {
+        this.items = items;
     }
 }

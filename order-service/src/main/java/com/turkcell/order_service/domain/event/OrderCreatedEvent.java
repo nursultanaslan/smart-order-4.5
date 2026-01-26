@@ -3,7 +3,7 @@ package com.turkcell.order_service.domain.event;
 import com.turkcell.order_service.domain.model.CartId;
 import com.turkcell.order_service.domain.model.CustomerId;
 import com.turkcell.order_service.domain.model.OrderId;
-import com.turkcell.order_service.domain.model.OrderLine;
+import com.turkcell.order_service.domain.model.OrderItem;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -17,5 +17,5 @@ public record OrderCreatedEvent(
         OffsetDateTime createdAt,
         BigDecimal totalPrice,
         String currency,
-        List<OrderLine> lines) {
+        List<OrderItem> items) {
 }

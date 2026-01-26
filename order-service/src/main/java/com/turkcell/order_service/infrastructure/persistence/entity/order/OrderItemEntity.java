@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "order_lines")
-public class OrderLineEntity {
+public class OrderItemEntity {
 
     @Id
     @Column(columnDefinition = "uuid", nullable = false)
@@ -22,23 +22,23 @@ public class OrderLineEntity {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
     @Column(name = "line_total_price", precision = 8, scale = 2)
-    private BigDecimal lineTotalPrice;
+    private BigDecimal itemTotalPrice;
 
     @ManyToOne()
     @JoinColumn(name = "order_id")
     private JpaOrderEntity order;
 
 
-    public OrderLineEntity(UUID productId, String productName, BigDecimal unitPrice, String currency, Integer quantity, BigDecimal lineTotalPrice) {
+    public OrderItemEntity(UUID productId, String productName, BigDecimal unitPrice, String currency, Integer quantity, BigDecimal itemTotalPrice) {
         this.productId = productId;
         this.productName = productName;
         this.unitPrice = unitPrice;
         this.currency = currency;
         this.quantity = quantity;
-        this.lineTotalPrice = lineTotalPrice;
+        this.itemTotalPrice = itemTotalPrice;
     }
 
-    public OrderLineEntity() {
+    public OrderItemEntity() {
 
     }
 
@@ -82,12 +82,12 @@ public class OrderLineEntity {
         this.quantity = quantity;
     }
 
-    public BigDecimal lineTotalPrice() {
-        return lineTotalPrice;
+    public BigDecimal itemTotalPrice() {
+        return itemTotalPrice;
     }
 
-    public void setLineTotalPrice(BigDecimal lineTotalPrice) {
-        this.lineTotalPrice = lineTotalPrice;
+    public void setItemTotalPrice(BigDecimal itemTotalPrice) {
+        this.itemTotalPrice = itemTotalPrice;
     }
 
     public JpaOrderEntity order() {
