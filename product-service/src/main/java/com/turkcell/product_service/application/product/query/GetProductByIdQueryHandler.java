@@ -1,8 +1,7 @@
 package com.turkcell.product_service.application.product.query;
 
 import com.turkcell.product_service.application.product.dto.GetProductByIdResponse;
-import com.turkcell.product_service.application.product.dto.ProductResponse;
-import com.turkcell.product_service.application.product.exception.ProductNotFoundException;
+import com.turkcell.product_service.domain.exception.ProductNotFoundException;
 import com.turkcell.product_service.application.product.mapper.ProductMapper;
 import com.turkcell.product_service.core.cqrs.QueryHandler;
 import com.turkcell.product_service.domain.model.product.Product;

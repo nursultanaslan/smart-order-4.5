@@ -2,7 +2,7 @@ package com.turkcell.product_service.application.category.usecases;
 
 import com.turkcell.product_service.application.category.dto.request.CreateCategoryRequest;
 import com.turkcell.product_service.application.category.dto.response.CategoryResponse;
-import com.turkcell.product_service.application.category.exception.CategoryNameAlreadyExistsException;
+import com.turkcell.product_service.domain.exception.CategoryNameAlreadyExistsException;
 import com.turkcell.product_service.application.category.mapper.CategoryMapper;
 import com.turkcell.product_service.domain.model.category.Category;
 import com.turkcell.product_service.domain.policy.CategoryNameUniquePolicy;

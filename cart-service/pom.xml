@@ -71,6 +71,12 @@
 			<version>0.2.6</version>
 		</dependency>
 
+		<!-- Spring Cloud Starter Open Feign -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -90,7 +96,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/src/main/resources/openapi/cart-service-api.yml</inputSpec>
+							<inputSpec>${project.basedir}/../docs/openapi/cart-service-api.yml</inputSpec>
 							<generatorName>spring</generatorName>
 							<output>${project.build.directory}/generated-sources/openapi</output>
 							<apiPackage>com.turkcell.cart_service.api</apiPackage>

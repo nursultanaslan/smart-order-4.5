@@ -1,4 +1,4 @@
-package com.turkcell.product_service.application.category.exception;
+package com.turkcell.product_service.domain.exception;
 
 public class CategoryNotFoundException extends RuntimeException {
     public CategoryNotFoundException(String message) {

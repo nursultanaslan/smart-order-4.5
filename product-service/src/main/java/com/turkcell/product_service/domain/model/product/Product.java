@@ -72,7 +72,7 @@ public class Product {
             throw new IllegalArgumentException("Description cannot be null");
         }
         if (description.length() >= 255){
-            throw new IllegalArgumentException("Description length must be minimum 255 characters");
+            throw new IllegalArgumentException("Description length must be maximum 255 characters");
         }
     }
 

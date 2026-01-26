@@ -2,7 +2,7 @@ package com.turkcell.product_service.application.brand.usecases;
 
 import com.turkcell.product_service.application.brand.dto.response.BrandResponse;
 import com.turkcell.product_service.application.brand.dto.request.CreateBrandRequest;
-import com.turkcell.product_service.application.brand.exception.BrandNameAlreadyExistsException;
+import com.turkcell.product_service.domain.exception.BrandNameAlreadyExistsException;
 import com.turkcell.product_service.application.brand.mapper.BrandMapper;
 import com.turkcell.product_service.domain.model.brand.Brand;
 import com.turkcell.product_service.domain.policy.BrandNameUniquePolicy;

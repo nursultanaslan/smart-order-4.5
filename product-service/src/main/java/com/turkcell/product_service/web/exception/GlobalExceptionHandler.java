@@ -1,10 +1,10 @@
 package com.turkcell.product_service.web.exception;
 
-import com.turkcell.product_service.application.brand.exception.BrandNameAlreadyExistsException;
-import com.turkcell.product_service.application.brand.exception.BrandNotFoundException;
-import com.turkcell.product_service.application.category.exception.CategoryNameAlreadyExistsException;
-import com.turkcell.product_service.application.category.exception.CategoryNotFoundException;
-import com.turkcell.product_service.application.product.exception.ProductNotFoundException;
+import com.turkcell.product_service.domain.exception.BrandNameAlreadyExistsException;
+import com.turkcell.product_service.domain.exception.BrandNotFoundException;
+import com.turkcell.product_service.domain.exception.CategoryNameAlreadyExistsException;
+import com.turkcell.product_service.domain.exception.CategoryNotFoundException;
+import com.turkcell.product_service.domain.exception.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

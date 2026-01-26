@@ -21,7 +21,7 @@ public class Cart {
     private final List<CartItem> items;
 
     private Cart(CartId id, CustomerId customerId, BigDecimal cartTotalPrice, String currency, OffsetDateTime createdAt,
-            CartStatus status, List<CartItem> items) {
+                 CartStatus status, List<CartItem> items) {
         this.id = id;
         this.customerId = customerId;
         this.cartTotalPrice = cartTotalPrice;
@@ -32,7 +32,7 @@ public class Cart {
     }
 
     public static Cart create(CustomerId customerId, BigDecimal cartTotalPrice, String currency,
-            OffsetDateTime createdAt, CartStatus status, List<CartItem> items) {
+                              OffsetDateTime createdAt, CartStatus status, List<CartItem> items) {
         return new Cart(
                 CartId.generate(),
                 customerId,
@@ -44,7 +44,7 @@ public class Cart {
     }
 
     public static Cart rehydrate(CartId id, CustomerId customerId, BigDecimal cartTotalPrice, String currency,
-            OffsetDateTime createdAt, CartStatus status, List<CartItem> items) {
+                                 OffsetDateTime createdAt, CartStatus status, List<CartItem> items) {
         return new Cart(
                 id,
                 customerId,
@@ -56,12 +56,30 @@ public class Cart {
     }
 
     // cart behaviors (business invariants)
-    public void addItemToCart(CartItem item) {
+    public void addItemToCart(UUID productId, Integer quantity, BigDecimal unitPrice, String currency) {
         if (this.status == CartStatus.CHECKED_OUT) {
-            return;
+            throw new IllegalStateException("Cannot add an item to a checked out cart.");
         }
-        items.add(item);
+        //aynı üründen sepette varsa miktarı güncelle, yoksa yeni ekle.
+        items.stream()
+                .filter(item -> item.productId().equals(productId))
+                .findFirst()
+                .ifPresentOrElse(
+                        existingItem -> updateExistingItemQuantity(existingItem, quantity),
+                        () -> items.add(new CartItem(productId, quantity, unitPrice, currency))
+                );
+
         calculateCartTotalPrice();
+    }
+
+    private void updateExistingItemQuantity(CartItem existingItem, int additionalQuantity) {
+        int index = items.indexOf(existingItem);
+        items.set(index, new CartItem(
+                existingItem.productId(),
+                existingItem.quantity() + additionalQuantity,
+                existingItem.unitPrice(),
+                existingItem.currency()
+        ));
     }
 
     public void removeItemFromCart(UUID productId) {
@@ -78,7 +96,7 @@ public class Cart {
         for (int i = 0; i < items.size(); i++) {
             CartItem existingItem = items.get(i);
             if (existingItem.productId().equals(productId)) {
-                items.set(i, new CartItem(existingItem.productId(), newQuantity,  existingItem.unitPrice(), existingItem.currency()));
+                items.set(i, new CartItem(existingItem.productId(), newQuantity, existingItem.unitPrice(), existingItem.currency()));
                 calculateCartTotalPrice();
                 return;
             }
@@ -95,7 +113,7 @@ public class Cart {
 
     //sipariş tamamlandıktan sonra kafkadan gelen mesajla tetiklenir.
     public void clearCart() {
-        if (this.status == CartStatus.CHECKED_OUT){
+        if (this.status == CartStatus.CHECKED_OUT) {
             this.items.clear();
         }
     }

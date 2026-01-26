@@ -1,6 +1,5 @@
 package com.turkcell.cart_service.application.mapper;
 
-import com.turkcell.cart_service.application.dto.request.CartItemRequest;
 import com.turkcell.cart_service.domain.model.CartItem;
 import org.springframework.stereotype.Component;
 

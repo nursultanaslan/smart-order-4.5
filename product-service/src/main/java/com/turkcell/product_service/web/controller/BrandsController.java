@@ -2,6 +2,7 @@ package com.turkcell.product_service.web.controller;
 
 import com.turkcell.product_service.application.brand.dto.request.DeleteBrandRequest;
 import com.turkcell.product_service.application.brand.dto.request.UpdateBrandRequest;
+import com.turkcell.product_service.application.brand.dto.response.BrandListResponse;
 import com.turkcell.product_service.application.brand.dto.response.BrandResponse;
 import com.turkcell.product_service.application.brand.dto.request.CreateBrandRequest;
 import com.turkcell.product_service.application.brand.dto.response.DeletedBrandResponse;
@@ -19,17 +20,31 @@ public class BrandsController {
     private final CreateBrandUseCase createBrandUseCase;
     private final DeleteBrandUseCase  deleteBrandUseCase;
     private final UpdateBrandUseCase updateBrandUseCase;
+    private final GetBrandByIdUseCase getBrandByIdUseCase;
+    private final GetAllBrandsUseCase getAllBrandsUseCase;
 
-    public BrandsController(CreateBrandUseCase createBrandUseCase, DeleteBrandUseCase deleteBrandUseCase, UpdateBrandUseCase updateBrandUseCase) {
+    public BrandsController(CreateBrandUseCase createBrandUseCase, DeleteBrandUseCase deleteBrandUseCase, UpdateBrandUseCase updateBrandUseCase, GetBrandByIdUseCase getBrandByIdUseCase, GetAllBrandsUseCase getAllBrandsUseCase) {
         this.createBrandUseCase = createBrandUseCase;
         this.deleteBrandUseCase = deleteBrandUseCase;
         this.updateBrandUseCase = updateBrandUseCase;
+        this.getBrandByIdUseCase = getBrandByIdUseCase;
+        this.getAllBrandsUseCase = getAllBrandsUseCase;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BrandResponse create(@RequestBody @Valid CreateBrandRequest request) {
         return createBrandUseCase.createBrand(request);
+    }
+
+    @GetMapping()
+    public BrandListResponse findAll() {
+        return getAllBrandsUseCase.getAllBrands();
+    }
+
+    @GetMapping("/{id}")
+    public BrandResponse findById(@PathVariable("id") UUID brandId) {
+        return getBrandByIdUseCase.getBrandById(brandId);
     }
 
     @DeleteMapping("/{id}")

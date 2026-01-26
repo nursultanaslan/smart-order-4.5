@@ -2,7 +2,7 @@ package com.turkcell.product_service.application.category.usecases;
 
 import com.turkcell.product_service.application.category.dto.request.DeleteCategoryRequest;
 import com.turkcell.product_service.application.category.dto.response.DeletedCategoryResponse;
-import com.turkcell.product_service.application.category.exception.CategoryNotFoundException;
+import com.turkcell.product_service.domain.exception.CategoryNotFoundException;
 import com.turkcell.product_service.application.category.mapper.CategoryMapper;
 import com.turkcell.product_service.domain.model.category.Category;
 import com.turkcell.product_service.domain.model.category.CategoryId;

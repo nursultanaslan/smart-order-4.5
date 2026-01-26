@@ -2,7 +2,7 @@ package com.turkcell.product_service.application.brand.usecases;
 
 import com.turkcell.product_service.application.brand.dto.request.DeleteBrandRequest;
 import com.turkcell.product_service.application.brand.dto.response.DeletedBrandResponse;
-import com.turkcell.product_service.application.brand.exception.BrandNotFoundException;
+import com.turkcell.product_service.domain.exception.BrandNotFoundException;
 import com.turkcell.product_service.application.brand.mapper.BrandMapper;
 import com.turkcell.product_service.domain.model.brand.Brand;
 import com.turkcell.product_service.domain.model.brand.BrandId;
