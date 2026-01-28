@@ -12,5 +12,5 @@ public interface ProductClient {
 
     //product-service'ten stok ve ürün fiyat bilgisini alacagım.
     @GetMapping("/{id}")
-    public ProductResponse getProductById(@PathVariable("id") UUID productId);
+    ProductResponse getProductById(@PathVariable("id") UUID productId);
 }

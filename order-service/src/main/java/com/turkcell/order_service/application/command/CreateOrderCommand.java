@@ -10,5 +10,5 @@ import java.util.UUID;
 public record CreateOrderCommand(
         UUID customerId,
         UUID cartId,
-        List<OrderItemDto> lines) implements Command<OrderResponse> {
+        List<OrderItemDto> items) implements Command<OrderResponse> {
 }

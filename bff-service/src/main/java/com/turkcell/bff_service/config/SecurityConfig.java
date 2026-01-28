@@ -19,7 +19,7 @@ public class SecurityConfig {
                 return http
                         .csrf(ServerHttpSecurity.CsrfSpec::disable)
                         .authorizeExchange(ex -> ex
-                                .pathMatchers(HttpMethod.GET, "/api/v1/public/**").permitAll()
+                                .pathMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
                                 .pathMatchers("/login/**", "/oauth2/**", "/logout/**").permitAll()
                                 .anyExchange().authenticated())
                         .oauth2Login(Customizer.withDefaults())

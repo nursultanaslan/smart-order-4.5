@@ -6,7 +6,10 @@ import com.turkcell.cart_service.domain.model.Cart;
 import com.turkcell.cart_service.domain.model.CartStatus;
 import com.turkcell.cart_service.domain.model.CustomerId;
 import com.turkcell.cart_service.domain.repository.CartRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
@@ -18,6 +21,7 @@ import java.util.UUID;
 @Validated
 public class AddToCartUseCase {
 
+    private static final Logger log = LoggerFactory.getLogger(AddToCartUseCase.class);
     private final CartRepository cartRepository;
     private final ProductClient productClient;
 
@@ -32,7 +36,10 @@ public class AddToCartUseCase {
      * domain methodu olan addItem methodu ile sepete ürün ekleme işlemini gerceklestir
      * save işlemi ile kaydet.
      * **/
+    @Transactional
     public Cart addToCart(UUID customerId, UUID productId, Integer quantity ) {
+        log.info("Ürünün id'sini kullanarak sepete yeni bir ürün ekler : {}", productId);
+
         //ürünün stoğunu ve o anki güncel fiyatını alır.
         ProductResponse product = productClient.getProductById(productId);
 

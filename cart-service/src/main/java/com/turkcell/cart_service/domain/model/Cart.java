@@ -90,7 +90,8 @@ public class Cart {
     }
 
 
-    public void updateQuantity(UUID productId, int newQuantity) {
+    public void updateQuantity(UUID productId, int newQuantity, int availableStock) {
+        validateStock(newQuantity, availableStock);
         if (this.status == CartStatus.CHECKED_OUT) {
             return;
         }
@@ -121,6 +122,7 @@ public class Cart {
     }
 
     private void validateStock(int quantity, int availableStock) {
+        //sepete eklenecek ürün miktari mevcut stoktan küçükse yetersiz stok hatası ver.
         if(quantity > availableStock) {
             throw new InsufficientStockException("insufficient stock");
         }

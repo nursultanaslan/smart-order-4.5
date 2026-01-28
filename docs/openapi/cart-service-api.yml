@@ -60,6 +60,9 @@ paths:
       responses:
         '200':
           description: Product released from cart successfully
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/DeletedCartItemResponse'}
 
   /api/v1/carts/update-quantity/{productId}:
     patch:
@@ -86,6 +89,7 @@ paths:
 components:
   # Reusable schemas (data models)
   schemas:
+    #RequestSchemas
     CartItemRequest:
       type: object
       required:
@@ -98,6 +102,15 @@ components:
         quantity:
           type: integer
           minimum: 1
+    UpdateQuantityRequest:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          format: int32
+          minimum: 1
+
+    #Response Schemas
     CartItemResponse:
       type: object
       properties:
@@ -112,8 +125,6 @@ components:
           format: decimal
         currency:
           type: string
-
-
     CartItem:
       type: object
       properties:
@@ -137,14 +148,13 @@ components:
           minItems: 0
           items: {$ref: '#/components/schemas/CartItem'}
           description: "List of cart items"
-
-    UpdateQuantityRequest:
+    DeletedCartItemResponse:
       type: object
       properties:
-        quantity:
-          type: integer
-          format: int32
-          minimum: 1
+        productId:
+          type: string
+          format: uuid
+
 
  # Reusable path, query, header and cookie parameters
   parameters:

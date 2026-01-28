@@ -42,19 +42,19 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
         // Önce stock kontrolü ve azaltma işlemini yapıyoruz
         // Eğer stock yetersizse, order kaydedilmeden işlem başarısız olur
         try {
-            for (OrderItem line : order.lines()) {
-                ProductResponse productResponse = productClient.decreaseStock(line.productId(), line.quantity());
+            for (OrderItem item : order.items()) {
+                ProductResponse productResponse = productClient.decreaseStock(item.productId(), item.quantity());
 
                 // ProductResponse'u kontrol ediyoruz
                 if (productResponse == null) {
-                    logger.error("Product stock decrease returned null for productId: {}", line.productId());
+                    logger.error("Product stock decrease returned null for productId: {}", item.productId());
                     throw new RuntimeException(
-                            "Product stock decrease failed: response is null for product " + line.productId());
+                            "Product stock decrease failed: response is null for product " + item.productId());
                 }
 
                 // Güncellenmiş stock bilgisini logluyoruz
                 logger.debug("Stock decreased for productId: {}, remaining stock: {}",
-                        line.productId(), productResponse.stock());
+                        item.productId(), productResponse.stock());
             }
         } catch (Exception e) {
             logger.error("Failed to decrease product stock for order: {}", e.getMessage(), e);

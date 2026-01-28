@@ -1,5 +1,7 @@
 package com.turkcell.cart_service.application.usecase;
 
+import com.turkcell.cart_service.domain.exception.CartNotFoundException;
+import com.turkcell.cart_service.domain.model.Cart;
 import com.turkcell.cart_service.domain.model.CustomerId;
 import com.turkcell.cart_service.domain.repository.CartRepository;
 import org.springframework.stereotype.Service;
@@ -17,14 +19,15 @@ public class DeleteProductUseCase {
         this.cartRepository = cartRepository;
     }
 
-    public void deleteCartItem(UUID customerId, UUID productId) {
+    public Cart deleteCartItem(UUID customerId, UUID productId) {
 
-        cartRepository.findByCustomerId(new CustomerId(customerId))
-                .ifPresent(
-                        cart -> {
-                            cart.removeItemFromCart(productId);
-                            cartRepository.save(cart);
-                        }
-                );
+        Cart cart = cartRepository.findByCustomerId(new CustomerId(customerId))
+                .orElseThrow(() -> new CartNotFoundException("Cart not found"));
+
+        cart.removeItemFromCart(productId);
+        cartRepository.save(cart);
+
+
+        return cart;
     }
 }

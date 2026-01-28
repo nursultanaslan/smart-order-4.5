@@ -19,7 +19,7 @@ public class OrderMapper {
 
     public Order toDomain(CreateOrderCommand command) {
         List<OrderItem> orderItems =
-                command.lines().stream()
+                command.items().stream()
                 .map(this::toOrderItem)
                 .collect(Collectors.toList());
 

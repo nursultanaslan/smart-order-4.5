@@ -77,6 +77,12 @@
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 
+		<!-- Spring Boot Starter Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -84,35 +90,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.openapitools</groupId>
-				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>generate-cart-api</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<inputSpec>${project.basedir}/../docs/openapi/cart-service-api.yml</inputSpec>
-							<generatorName>spring</generatorName>
-							<output>${project.build.directory}/generated-sources/openapi</output>
-							<apiPackage>com.turkcell.cart_service.api</apiPackage>
-							<modelPackage>com.turkcell.cart_service.model</modelPackage>
-							<generateApis>true</generateApis>
-							<generateModels>true</generateModels>
-							<configOptions>
-								<interfaceOnly>true</interfaceOnly>
-								<useSpringBoot3>true</useSpringBoot3>
-								<dateLibrary>java8</dateLibrary>
-								<skipDefaultInterface>true</skipDefaultInterface>
-								<useTags>true</useTags>
-							</configOptions>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
