@@ -39,8 +39,14 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
 
         Order order = orderMapper.toDomain(command);
 
-        // Önce stock kontrolü ve azaltma işlemini yapıyoruz
-        // Eğer stock yetersizse, order kaydedilmeden işlem başarısız olur
+        /**
+         * Product Servisten -> ürünlerin güncel fiyat ve stok bilgisini al.
+         * Eğer stok varsa ürünler rezerve edilir. (stoktan düşülmez)
+         * Payment Servise gidilir -> ödeme işlemi başarılı ise PaymentSuccess Eventi fırlatılır.
+         * Order Service sipariş durumunu Completed yapar. PENDING to COMPLETED
+         * Product Service rezerve stoğu kalıcı olarak düşer.
+         * Cart service sepeti boşaltır
+         * **/
         try {
             for (OrderItem item : order.items()) {
                 ProductResponse productResponse = productClient.decreaseStock(item.productId(), item.quantity());

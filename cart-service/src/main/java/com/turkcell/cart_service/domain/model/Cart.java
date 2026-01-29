@@ -115,6 +115,7 @@ public class Cart {
     }
 
     //sipariş tamamlandıktan sonra kafkadan gelen mesajla tetiklenir.
+    //ödeme başarılı ise sepeti boşalt.
     public void clearCart() {
         if (this.status == CartStatus.CHECKED_OUT) {
             this.items.clear();
