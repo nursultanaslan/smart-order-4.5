@@ -4,6 +4,12 @@ eureka:
       defaultZone: http://discovery-server:8761/eureka
 
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://keycloak:8585/realms/smartorder-bff-docker/protocol/openid-connect/certs
+
   data:
     redis:
       host: redis
