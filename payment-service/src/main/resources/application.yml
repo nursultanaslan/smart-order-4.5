@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: payment-service
+  profiles:
+    active: docker
+  config:
+    import: configserver:${CONFIG_URI:http://localhost:8787}

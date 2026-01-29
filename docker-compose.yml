@@ -165,6 +165,21 @@ services:
       - config-server
       - discovery-server
 
+  payment-service:
+    image: tcell-payment-service
+    container_name: payment-service
+    ports:
+      - "8090:8090"
+    environment:
+      - CONFIG_URI=http://config-server:8787
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+    depends_on:
+      - config-server
+      - discovery-server
+
+
   kafka:
     image: apache/kafka:3.8.0
     container_name: kafka
