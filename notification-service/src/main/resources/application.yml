@@ -1,14 +1,7 @@
 spring:
   application:
     name: notification-service
-  kafka:
-    bootstrap-servers: localhost:9092
-
-  cloud:
-    stream:
-      bindings:
-        notificationProducer-out-0:
-          destination: notification-queue
-      kafka:
-        binder:
-          brokers: localhost:9092
+  profiles:
+    active: dev
+  config:
+    import: configserver:http://localhost:8787
