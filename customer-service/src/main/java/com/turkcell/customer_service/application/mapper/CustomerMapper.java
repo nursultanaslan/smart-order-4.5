@@ -1,12 +1,9 @@
 package com.turkcell.customer_service.application.mapper;
 
-import com.turkcell.customer_service.application.dto.request.CreateAddressRequest;
 import com.turkcell.customer_service.application.dto.request.CreateCustomerRequest;
 import com.turkcell.customer_service.application.dto.response.*;
-import com.turkcell.customer_service.domain.model.Address;
 import com.turkcell.customer_service.domain.model.Customer;
 import com.turkcell.customer_service.domain.model.Email;
-import com.turkcell.customer_service.domain.model.Phone;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,11 +11,8 @@ public class CustomerMapper {
 
     public Customer toDomain(CreateCustomerRequest request) {
         return Customer.create(
-                request.firstName(),
-                request.lastName(),
-                request.password(),
-                new Email(request.email()),
-                new Phone(request.phoneNumber())
+                request.username(),
+                new Email(request.email())
 
         );
     }

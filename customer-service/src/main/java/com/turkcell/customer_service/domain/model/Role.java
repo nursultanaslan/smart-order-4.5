@@ -1,5 +1,7 @@
 package com.turkcell.customer_service.domain.model;
 
+import java.util.List;
+
 /**
  * Customer roles matching Keycloak realm roles.
  * Must match role names configured in Keycloak (realm: example).
@@ -21,6 +23,9 @@ public enum Role {
             // Unknown role - ignore or log warning
             return null;
         }
+    }
+    public static List<Role> getDefault() {
+        return List.of(CUSTOMER);
     }
 
     /**

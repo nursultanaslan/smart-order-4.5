@@ -27,7 +27,7 @@ public class Customer {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
-        this.roles = roles;
+        this.roles = roles != null ? roles : Role.getDefault();
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
@@ -35,22 +35,23 @@ public class Customer {
         this.createdAt = createdAt;
     }
 
-    public static Customer create(String firstName, String lastName, String username, List<Role> roles, Email email, Phone phoneNumber, OffsetDateTime createdAt) {
+    public static Customer create(String username, Email email) {
+        validateUsername(username);
         return new Customer(
                 CustomerId.generate(),
-                firstName,
-                lastName,
+                null,
+                null,
                 username,
-                roles,
+                Role.getDefault(),
                 email,
-                phoneNumber,
+                null,
                 null,
                 false,   //ilk creation zamanında false.
                 OffsetDateTime.now()
                 );
     }
 
-    public static Customer rehydrate(CustomerId id, String firstName, String lastName,String username, List<Role> roles, Email email, Phone phoneNumber, Address address, Boolean emailVerified, OffsetDateTime createdAt) {
+    public static Customer rehydrate(CustomerId id, String firstName, String lastName,String username, List<Role> roles, Email email, Phone phoneNumber, Address address, boolean emailVerified, OffsetDateTime createdAt) {
         return new Customer(
                 id,
                 firstName,
@@ -91,6 +92,11 @@ public class Customer {
         this.address = newAddress;
     }
 
+    //trigger after an event.
+    public void markEmailVerified() {
+        this.emailVerified = true;
+    }
+
 
     //validate methods
     public static void validateFirstName(String firstName){
@@ -102,6 +108,21 @@ public class Customer {
     public static void validateLastName(String lastName){
         if (lastName == null || lastName.isEmpty()){
             throw new IllegalArgumentException("Last name is null or empty");
+        }
+    }
+
+    public static void validateUsername(String username) {
+        if (username == null || username.isEmpty()){
+            throw new IllegalArgumentException("Username is null or empty");
+        }
+        if (!username.matches("^[a-zA-Z0-9._]+$")){
+            throw new IllegalArgumentException("Username contains invalid characters.");
+        }
+        if (username.length() < 3){
+            throw  new IllegalArgumentException("Username is too short");
+        }
+        if (username.length() > 16){
+            throw new IllegalArgumentException("Username is too long");
         }
     }
 
