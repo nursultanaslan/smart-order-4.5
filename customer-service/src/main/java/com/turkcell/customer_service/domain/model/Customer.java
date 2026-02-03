@@ -1,50 +1,67 @@
 package com.turkcell.customer_service.domain.model;
 
+import java.time.OffsetDateTime;
+import java.util.List;
+
 //rich domain
 //Customer entitysinin gercek hayattaki davranısları nelerdir?
+//password domainin işi değil keycloakta tutulur.
 public class Customer {
 
     private final CustomerId id;
 
     private String firstName;
     private String lastName;
-    private String password;
+    private String username;
 
+    private List<Role> roles;
     private Email email;
     private Phone phoneNumber;
     private Address address;
 
-    private Customer(CustomerId id,  String firstName, String lastName, String password, Email email, Phone phoneNumber, Address address) {
+    private boolean emailVerified;
+    private OffsetDateTime createdAt;
+
+    private Customer(CustomerId id, String firstName, String lastName, String username, List<Role> roles, Email email, Phone phoneNumber, Address address, boolean emailVerified, OffsetDateTime createdAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.password = password;
+        this.username = username;
+        this.roles = roles;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.emailVerified = emailVerified;
+        this.createdAt = createdAt;
     }
 
-    public static Customer create(String firstName, String lastName, String password, Email email, Phone phoneNumber) {
+    public static Customer create(String firstName, String lastName, String username, List<Role> roles, Email email, Phone phoneNumber, OffsetDateTime createdAt) {
         return new Customer(
                 CustomerId.generate(),
                 firstName,
-                password,
                 lastName,
+                username,
+                roles,
                 email,
                 phoneNumber,
-                null);
+                null,
+                false,   //ilk creation zamanında false.
+                OffsetDateTime.now()
+                );
     }
 
-    public static Customer rehydrate(CustomerId id, String firstName, String lastName, String password, Email email, Phone phoneNumber, Address address) {
-
+    public static Customer rehydrate(CustomerId id, String firstName, String lastName,String username, List<Role> roles, Email email, Phone phoneNumber, Address address, Boolean emailVerified, OffsetDateTime createdAt) {
         return new Customer(
                 id,
                 firstName,
                 lastName,
-                password,
+                username,
+                roles,
                 email,
                 phoneNumber,
-                address
+                address,
+                emailVerified,
+                createdAt
         );
     }
 
@@ -102,8 +119,12 @@ public class Customer {
         return lastName;
     }
 
-    public String password() {
-        return password;
+    public String username() {
+        return username;
+    }
+
+    public List<Role> roles() {
+        return roles;
     }
 
     public Email email() {
@@ -116,5 +137,13 @@ public class Customer {
 
     public Address address() {
         return address;
+    }
+
+    public boolean emailVerified() {
+        return emailVerified;
+    }
+
+    public OffsetDateTime createdAt() {
+        return createdAt;
     }
 }
