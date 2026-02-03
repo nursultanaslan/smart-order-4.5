@@ -1,7 +1,7 @@
-package com.turkcell.customer_service.persistence.mapper;
+package com.turkcell.customer_service.infrastructure.persistence.mapper;
 
 import com.turkcell.customer_service.domain.model.*;
-import com.turkcell.customer_service.persistence.entity.JpaCustomerEntity;
+import com.turkcell.customer_service.infrastructure.persistence.entity.JpaCustomerEntity;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,6 +10,7 @@ public class CustomerEntityMapper {
     public JpaCustomerEntity toEntity(Customer customer) {
         return new JpaCustomerEntity(
                 customer.id().value(),
+                customer.keycloakId(),
                 customer.firstName(),
                 customer.lastName(),
                 customer.password(),
@@ -27,6 +28,7 @@ public class CustomerEntityMapper {
     public Customer toDomain(JpaCustomerEntity entity) {
         return Customer.rehydrate(
                 new CustomerId(entity.id()),
+                entity.keycloakId(),
                 entity.firstName(),
                 entity.lastName(),
                 entity.password(),

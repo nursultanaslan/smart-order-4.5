@@ -1,4 +1,4 @@
-package com.turkcell.customer_service.persistence.entity;
+package com.turkcell.customer_service.infrastructure.persistence.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +14,8 @@ public class JpaCustomerEntity {
     @Id
     @Column(columnDefinition = "uuid")
     private UUID id;
+    @Column(name = "keycloak_id", unique = true)
+    private UUID keycloakId;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -40,8 +42,9 @@ public class JpaCustomerEntity {
     public JpaCustomerEntity() {
     }
 
-    public JpaCustomerEntity(UUID id, String firstName, String lastName, String password, String email, String phoneNumber, String country, String city, String street, String postalCode, Integer houseNumber) {
+    public JpaCustomerEntity(UUID id, UUID keycloakId, String firstName, String lastName, String password, String email, String phoneNumber, String country, String city, String street, String postalCode, Integer houseNumber) {
         this.id = id;
+        this.keycloakId = keycloakId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -60,6 +63,14 @@ public class JpaCustomerEntity {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public UUID keycloakId() {
+        return keycloakId;
+    }
+
+    public void setKeycloakId(UUID keycloakId) {
+        this.keycloakId = keycloakId;
     }
 
     public String firstName() {

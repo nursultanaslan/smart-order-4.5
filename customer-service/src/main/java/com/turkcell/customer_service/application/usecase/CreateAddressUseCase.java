@@ -2,8 +2,7 @@ package com.turkcell.customer_service.application.usecase;
 
 import com.turkcell.customer_service.application.dto.request.CreateAddressRequest;
 import com.turkcell.customer_service.application.dto.response.CreatedAddressResponse;
-import com.turkcell.customer_service.application.exception.CustomerNotFoundException;
-import com.turkcell.customer_service.application.mapper.CustomerMapper;
+import com.turkcell.customer_service.domain.exception.CustomerNotFoundException;
 import com.turkcell.customer_service.domain.model.Address;
 import com.turkcell.customer_service.domain.model.Customer;
 import com.turkcell.customer_service.domain.model.CustomerId;
@@ -18,11 +17,9 @@ import java.util.UUID;
 @Validated
 public class CreateAddressUseCase {
 
-    private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
 
-    public CreateAddressUseCase(CustomerMapper customerMapper, CustomerRepository customerRepository) {
-        this.customerMapper = customerMapper;
+    public CreateAddressUseCase(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 

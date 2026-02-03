@@ -1,6 +1,6 @@
-package com.turkcell.customer_service.persistence.repository;
+package com.turkcell.customer_service.infrastructure.persistence.repository;
 
-import com.turkcell.customer_service.persistence.entity.JpaCustomerEntity;
+import com.turkcell.customer_service.infrastructure.persistence.entity.JpaCustomerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

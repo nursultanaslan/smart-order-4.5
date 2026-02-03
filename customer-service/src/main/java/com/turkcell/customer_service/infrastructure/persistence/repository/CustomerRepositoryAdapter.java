@@ -1,10 +1,10 @@
-package com.turkcell.customer_service.persistence.repository;
+package com.turkcell.customer_service.infrastructure.persistence.repository;
 
 import com.turkcell.customer_service.domain.model.Customer;
 import com.turkcell.customer_service.domain.model.CustomerId;
 import com.turkcell.customer_service.domain.port.CustomerRepository;
-import com.turkcell.customer_service.persistence.entity.JpaCustomerEntity;
-import com.turkcell.customer_service.persistence.mapper.CustomerEntityMapper;
+import com.turkcell.customer_service.infrastructure.persistence.entity.JpaCustomerEntity;
+import com.turkcell.customer_service.infrastructure.persistence.mapper.CustomerEntityMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

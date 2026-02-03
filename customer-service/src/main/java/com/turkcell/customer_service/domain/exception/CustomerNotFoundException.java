@@ -1,4 +1,4 @@
-package com.turkcell.customer_service.application.exception;
+package com.turkcell.customer_service.domain.exception;
 
 public class CustomerNotFoundException extends RuntimeException {
     public CustomerNotFoundException(String message) {

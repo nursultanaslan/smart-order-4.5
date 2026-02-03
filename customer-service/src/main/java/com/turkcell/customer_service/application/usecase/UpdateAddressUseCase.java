@@ -2,7 +2,7 @@ package com.turkcell.customer_service.application.usecase;
 
 import com.turkcell.customer_service.application.dto.request.UpdateAddressRequest;
 import com.turkcell.customer_service.application.dto.response.UpdatedAddressResponse;
-import com.turkcell.customer_service.application.exception.CustomerNotFoundException;
+import com.turkcell.customer_service.domain.exception.CustomerNotFoundException;
 import com.turkcell.customer_service.application.mapper.CustomerMapper;
 import com.turkcell.customer_service.domain.model.Address;
 import com.turkcell.customer_service.domain.model.Customer;

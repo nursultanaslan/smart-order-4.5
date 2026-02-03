@@ -10,7 +10,7 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: http://localhost:8585/realms/smartorder-bff-dev
+            issuer-uri: http://localhost:8585/realms/smartorder-bff-dev    #oidc discovery (.well-known/openid-configuration)
             user-name-attribute: preferred_username
         registration:
           keycloak:

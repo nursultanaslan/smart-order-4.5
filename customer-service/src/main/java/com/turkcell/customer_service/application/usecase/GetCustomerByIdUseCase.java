@@ -1,8 +1,7 @@
 package com.turkcell.customer_service.application.usecase;
 
-import com.turkcell.customer_service.application.dto.response.CustomerResponse;
 import com.turkcell.customer_service.application.dto.response.GetCustomerByIdResponse;
-import com.turkcell.customer_service.application.exception.CustomerNotFoundException;
+import com.turkcell.customer_service.domain.exception.CustomerNotFoundException;
 import com.turkcell.customer_service.application.mapper.CustomerMapper;
 import com.turkcell.customer_service.domain.model.Customer;
 import com.turkcell.customer_service.domain.model.CustomerId;
