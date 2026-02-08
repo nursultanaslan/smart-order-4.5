@@ -11,9 +11,7 @@ public class CustomerMapper {
 
     public Customer toDomain(CreateCustomerRequest request) {
         return Customer.create(
-                request.username(),
                 new Email(request.email())
-
         );
     }
 

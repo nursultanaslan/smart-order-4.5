@@ -12,21 +12,19 @@ public class Customer {
 
     private String firstName;
     private String lastName;
-    private String username;
 
     private List<Role> roles;
     private Email email;
     private Phone phoneNumber;
-    private Address address;
+    private Address address;  //TODO: adress list olmalı.
 
     private boolean emailVerified;
     private OffsetDateTime createdAt;
 
-    private Customer(CustomerId id, String firstName, String lastName, String username, List<Role> roles, Email email, Phone phoneNumber, Address address, boolean emailVerified, OffsetDateTime createdAt) {
+    private Customer(CustomerId id, String firstName, String lastName, List<Role> roles, Email email, Phone phoneNumber, Address address, boolean emailVerified, OffsetDateTime createdAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.username = username;
         this.roles = roles != null ? roles : Role.getDefault();
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -35,13 +33,11 @@ public class Customer {
         this.createdAt = createdAt;
     }
 
-    public static Customer create(String username, Email email) {
-        validateUsername(username);
+    public static Customer create(Email email) {
         return new Customer(
                 CustomerId.generate(),
                 null,
                 null,
-                username,
                 Role.getDefault(),
                 email,
                 null,
@@ -51,12 +47,11 @@ public class Customer {
                 );
     }
 
-    public static Customer rehydrate(CustomerId id, String firstName, String lastName,String username, List<Role> roles, Email email, Phone phoneNumber, Address address, boolean emailVerified, OffsetDateTime createdAt) {
+    public static Customer rehydrate(CustomerId id, String firstName, String lastName, List<Role> roles, Email email, Phone phoneNumber, Address address, boolean emailVerified, OffsetDateTime createdAt) {
         return new Customer(
                 id,
                 firstName,
                 lastName,
-                username,
                 roles,
                 email,
                 phoneNumber,
@@ -111,21 +106,6 @@ public class Customer {
         }
     }
 
-    public static void validateUsername(String username) {
-        if (username == null || username.isEmpty()){
-            throw new IllegalArgumentException("Username is null or empty");
-        }
-        if (!username.matches("^[a-zA-Z0-9._]+$")){
-            throw new IllegalArgumentException("Username contains invalid characters.");
-        }
-        if (username.length() < 3){
-            throw  new IllegalArgumentException("Username is too short");
-        }
-        if (username.length() > 16){
-            throw new IllegalArgumentException("Username is too long");
-        }
-    }
-
 
     //getters
     public CustomerId id() {
@@ -138,10 +118,6 @@ public class Customer {
 
     public String lastName() {
         return lastName;
-    }
-
-    public String username() {
-        return username;
     }
 
     public List<Role> roles() {

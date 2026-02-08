@@ -20,10 +20,11 @@ public class SecurityConfig {
                         .csrf(ServerHttpSecurity.CsrfSpec::disable)
                         .authorizeExchange(ex -> ex
                                 .pathMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
-                                .pathMatchers("/login/**", "/oauth2/**", "/logout/**").permitAll()
+                                .pathMatchers("/login/**", "/oauth2/**", "/logout/**", "/register/**").permitAll()
                                 .anyExchange().authenticated())
                         .oauth2Login(Customizer.withDefaults())
                         .oauth2Client(Customizer.withDefaults())
+                        .logout(l -> l.logoutUrl("/logout"))
                         .build();
         }
 }
