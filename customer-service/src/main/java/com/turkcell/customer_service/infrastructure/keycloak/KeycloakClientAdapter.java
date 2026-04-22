@@ -1,6 +1,5 @@
 package com.turkcell.customer_service.infrastructure.keycloak;
 
-import com.turkcell.customer_service.domain.model.AuthToken;
 import com.turkcell.customer_service.domain.model.Customer;
 import com.turkcell.customer_service.domain.model.CustomerId;
 import com.turkcell.customer_service.domain.port.KeycloakPort;
@@ -29,15 +28,6 @@ public class KeycloakClientAdapter implements KeycloakPort {
         return null;
     }
 
-    @Override
-    public AuthToken authenticate(String email, String password) {
-        return null;
-    }
-
-    @Override
-    public AuthToken refreshToken(String refreshToken) {
-        return null;
-    }
 
     @Override
     public Customer getCustomerById(CustomerId id) {

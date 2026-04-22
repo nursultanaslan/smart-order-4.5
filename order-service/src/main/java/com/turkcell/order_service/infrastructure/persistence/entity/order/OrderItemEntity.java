@@ -15,34 +15,34 @@ public class OrderItemEntity {
 
     @Column(name = "product_name", nullable = false)
     private String productName;
-    @Column(name = "unite_price")
-    private BigDecimal unitPrice;
+    @Column(name = "unite_price_at_order_time")
+    private BigDecimal unitPriceAtOrderTime;
     @Column(name = "currency", nullable = false)
     private String currency;
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
-    @Column(name = "line_total_price", precision = 8, scale = 2)
-    private BigDecimal itemTotalPrice;
+    @Column(name = "items_total_price_At_order_time", precision = 8, scale = 2)
+    private BigDecimal itemsTotalPriceAtOrderTime;
 
     @ManyToOne()
     @JoinColumn(name = "order_id")
     private JpaOrderEntity order;
 
 
-    public OrderItemEntity(UUID productId, String productName, BigDecimal unitPrice, String currency, Integer quantity, BigDecimal itemTotalPrice) {
+    public OrderItemEntity(UUID productId, String productName, BigDecimal unitPriceAtOrderTime, String currency, Integer quantity, BigDecimal itemsTotalPriceAtOrderTime) {
         this.productId = productId;
         this.productName = productName;
-        this.unitPrice = unitPrice;
+        this.unitPriceAtOrderTime = unitPriceAtOrderTime;
         this.currency = currency;
         this.quantity = quantity;
-        this.itemTotalPrice = itemTotalPrice;
+        this.itemsTotalPriceAtOrderTime = itemsTotalPriceAtOrderTime;
     }
 
     public OrderItemEntity() {
 
     }
 
-    public UUID productId() {
+    public UUID getProductId() {
         return productId;
     }
 
@@ -50,7 +50,7 @@ public class OrderItemEntity {
         this.productId = productId;
     }
 
-    public String productName() {
+    public String getProductName() {
         return productName;
     }
 
@@ -58,15 +58,15 @@ public class OrderItemEntity {
         this.productName = productName;
     }
 
-    public BigDecimal unitPrice() {
-        return unitPrice;
+    public BigDecimal getUnitPriceAtOrderTime() {
+        return unitPriceAtOrderTime;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setUnitPriceAtOrderTime(BigDecimal unitPriceAtOrderTime) {
+        this.unitPriceAtOrderTime = unitPriceAtOrderTime;
     }
 
-    public String currency() {
+    public String getCurrency() {
         return currency;
     }
 
@@ -74,7 +74,7 @@ public class OrderItemEntity {
         this.currency = currency;
     }
 
-    public Integer quantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
@@ -82,15 +82,15 @@ public class OrderItemEntity {
         this.quantity = quantity;
     }
 
-    public BigDecimal itemTotalPrice() {
-        return itemTotalPrice;
+    public BigDecimal getItemsTotalPriceAtOrderTime() {
+        return itemsTotalPriceAtOrderTime;
     }
 
-    public void setItemTotalPrice(BigDecimal itemTotalPrice) {
-        this.itemTotalPrice = itemTotalPrice;
+    public void setItemsTotalPriceAtOrderTime(BigDecimal itemsTotalPriceAtOrderTime) {
+        this.itemsTotalPriceAtOrderTime = itemsTotalPriceAtOrderTime;
     }
 
-    public JpaOrderEntity order() {
+    public JpaOrderEntity getOrder() {
         return order;
     }
 

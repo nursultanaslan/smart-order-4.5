@@ -27,10 +27,10 @@ public class IntegrationEventMapper {
         return new OrderItemEntity(
                 item.productId(),
                 item.productName(),
-                item.unitPrice(),
+                item.unitPriceAtOrderTime(),
                 item.currency(),
                 item.quantity(),
-                item.itemTotalPrice()
+                item.itemsTotalPriceAtOrderTime()
         );
     }
 }

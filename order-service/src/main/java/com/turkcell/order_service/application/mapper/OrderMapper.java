@@ -40,8 +40,7 @@ public class OrderMapper {
                 dto.productName(),
                 dto.price(),
                 dto.currency(),
-                dto.quantity(),
-                itemTotalPrice);
+                dto.quantity());
     }
 
     public OrderItemDto toDto(OrderItem orderItem) {

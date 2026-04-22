@@ -1,12 +1,11 @@
 package com.turkcell.order_service.domain.model;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 
-//aggregate-root
+//aggregate root
 public class Order {
 
     private final OrderId id;
@@ -14,20 +13,18 @@ public class Order {
     private final CustomerId customerId;
     private final CartId cartId;
 
-    private BigDecimal totalPrice;
-    private final String currency;
+    private Money totalPrice;
 
     private final OffsetDateTime createdAt;
     private OrderStatus orderStatus;
     private final List<OrderItem> items;
 
-    private Order(OrderId id, CustomerId customerId, CartId cartId, BigDecimal totalPrice, String currency,
-            OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderItem> items) {
+    private Order(OrderId id, CustomerId customerId, CartId cartId, Money totalPrice,
+                  OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderItem> items) {
         this.id = id;
         this.customerId = customerId;
         this.cartId = cartId;
-        this.totalPrice = totalPrice;
-        this.currency = currency;
+        this.totalPrice = calculateOrderTotalPrice();
         this.createdAt = createdAt;
         this.orderStatus = orderStatus != null ? orderStatus : OrderStatus.getDefault();
         this.items = items;
@@ -40,22 +37,20 @@ public class Order {
                 customerId,
                 cartId,
                 null, // totalPrice will be calculated
-                items.getFirst().currency(), // currency from first item (all items have same currency after validation)
                 createdAt,
                 OrderStatus.getDefault(),
                 items);
-        order.calculateTotalPrice();
+        order.calculateOrderTotalPrice();
         return order;
     }
 
-    public static Order rehydrate(OrderId id, CustomerId customerId, CartId cartId, BigDecimal totalPrice,
-            String currency, OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderItem> items) {
+    public static Order rehydrate(OrderId id, CustomerId customerId, CartId cartId, Money totalPrice,
+                                  OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderItem> items) {
         return new Order(
                 id,
                 customerId,
                 cartId,
                 totalPrice,
-                currency,
                 createdAt,
                 orderStatus,
                 items
@@ -63,13 +58,10 @@ public class Order {
     }
 
     // worker methods
-    public void calculateTotalPrice() {
-        this.totalPrice = items
-                .stream()
-                .map(item -> item.unitPrice().multiply(BigDecimal.valueOf(item.quantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .setScale(2, RoundingMode.HALF_UP);
-        validateTotalPrice(this.totalPrice);
+    public Money calculateOrderTotalPrice() {
+        items.stream()
+                .map(OrderItem::calculateLineTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
     }
 
@@ -100,12 +92,6 @@ public class Order {
     }
 
     // validate methods - invariants
-    public static void validateTotalPrice(BigDecimal totalPrice) {
-        if (totalPrice.signum() < 0) {
-            throw new IllegalArgumentException("Total price cannot be negative");
-        }
-    }
-
     public static void validateCurrencyConsistency(List<OrderItem> items) {
         if (items == null || items.isEmpty()) {
             throw new IllegalArgumentException("Order items cannot be null or empty");
@@ -133,12 +119,8 @@ public class Order {
         return cartId;
     }
 
-    public BigDecimal totalPrice() {
+    public Money totalPrice() {
         return totalPrice;
-    }
-
-    public String currency() {
-        return currency;
     }
 
     public OffsetDateTime createdAt() {
