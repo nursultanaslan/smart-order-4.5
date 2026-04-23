@@ -6,7 +6,8 @@ import java.util.UUID;
 public record OrderItemDto(
         UUID productId,
         String productName,
+        BigDecimal unitPriceAtOrderTime,
+        String currency,
         Integer quantity,
-        BigDecimal price,
-        String currency) {
+        BigDecimal lineTotalPrice) {
 }

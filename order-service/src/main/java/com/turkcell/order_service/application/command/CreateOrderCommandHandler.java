@@ -75,8 +75,8 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
                 savedOrder.customerId(),
                 savedOrder.cartId(),
                 savedOrder.createdAt(),
-                savedOrder.totalPrice(),
-                savedOrder.currency(),
+                savedOrder.totalPrice().value(),
+                savedOrder.totalPrice().currency(),
                 savedOrder.items());
 
         domainEventsPublisher.publish(event);

@@ -10,7 +10,8 @@ public record OrderItem(
         String productName,
         BigDecimal unitPriceAtOrderTime,
         String currency,
-        Integer quantity) {
+        Integer quantity,
+        BigDecimal lineTotalPrice) {
 
     public OrderItem {
         Objects.requireNonNull(productId, "Product Id cannot be null");
@@ -30,10 +31,8 @@ public record OrderItem(
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity cannot be negative");
         }
-    }
 
-    public BigDecimal calculateLineTotal() {
-        return unitPriceAtOrderTime
+        lineTotalPrice = unitPriceAtOrderTime
                 .multiply(BigDecimal.valueOf(quantity))
                 .setScale(2, RoundingMode.HALF_UP);
     }

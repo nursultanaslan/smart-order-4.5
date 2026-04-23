@@ -13,7 +13,7 @@ public class Order {
     private final CustomerId customerId;
     private final CartId cartId;
 
-    private Money totalPrice;
+    private final Money totalPrice;
 
     private final OffsetDateTime createdAt;
     private OrderStatus orderStatus;
@@ -24,24 +24,28 @@ public class Order {
         this.id = id;
         this.customerId = customerId;
         this.cartId = cartId;
-        this.totalPrice = calculateOrderTotalPrice();
+        this.totalPrice = totalPrice;
         this.createdAt = createdAt;
         this.orderStatus = orderStatus != null ? orderStatus : OrderStatus.getDefault();
         this.items = items;
     }
 
-    public static Order create(CustomerId customerId, CartId cartId, OffsetDateTime createdAt, List<OrderItem> items) {
+    public static Order create(CustomerId customerId, CartId cartId, List<OrderItem> items) {
         validateCurrencyConsistency(items);
-        Order order = new Order(
+
+        String currency = items.getFirst().currency();
+        BigDecimal totalValue = items.stream()
+                .map(OrderItem::lineTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        Money totalPrice = new Money(totalValue, currency);
+        return new Order(
                 OrderId.generate(),
                 customerId,
                 cartId,
-                null, // totalPrice will be calculated
-                createdAt,
+                totalPrice,
+                OffsetDateTime.now(),
                 OrderStatus.getDefault(),
                 items);
-        order.calculateOrderTotalPrice();
-        return order;
     }
 
     public static Order rehydrate(OrderId id, CustomerId customerId, CartId cartId, Money totalPrice,
@@ -59,10 +63,11 @@ public class Order {
 
     // worker methods
     public Money calculateOrderTotalPrice() {
-        items.stream()
-                .map(OrderItem::calculateLineTotal)
+        BigDecimal totalValue = items.stream()
+                .map(OrderItem::lineTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-
+        String currency = items.getFirst().currency();
+        return new Money(totalValue, currency);
     }
 
     // set status

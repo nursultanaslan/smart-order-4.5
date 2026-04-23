@@ -10,9 +10,7 @@ import com.turkcell.order_service.domain.model.OrderItem;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class OrderMapper {
@@ -20,42 +18,45 @@ public class OrderMapper {
     public Order toDomain(CreateOrderCommand command) {
         List<OrderItem> orderItems =
                 command.items().stream()
-                .map(this::toOrderItem)
-                .collect(Collectors.toList());
+                        .map(this::toOrderItem)
+                        .toList();
 
         return Order.create(
                 new CustomerId(command.customerId()),
                 new CartId(command.cartId()),
-                OffsetDateTime.now(),
                 orderItems);
     }
 
     public OrderItem toOrderItem(OrderItemDto dto) {
-        BigDecimal itemTotalPrice = dto.price()
+        BigDecimal itemTotalPrice = dto.unitPriceAtOrderTime()
                 .multiply(BigDecimal.valueOf(dto.quantity()))
                 .setScale(2, java.math.RoundingMode.HALF_UP);
 
         return new OrderItem(
                 dto.productId(),
                 dto.productName(),
-                dto.price(),
+                dto.unitPriceAtOrderTime(),
                 dto.currency(),
-                dto.quantity());
+                dto.quantity(),
+                dto.lineTotalPrice()
+        );
     }
 
     public OrderItemDto toDto(OrderItem orderItem) {
         return new OrderItemDto(
                 orderItem.productId(),
                 orderItem.productName(),
+                orderItem.unitPriceAtOrderTime(),
+                orderItem.currency(),
                 orderItem.quantity(),
-                orderItem.unitPrice(),
-                orderItem.currency());
+                orderItem.lineTotalPrice()
+        );
     }
 
     public OrderResponse toResponse(Order order) {
         return new OrderResponse(
                 order.id().value(),
-                order.totalPrice(),
-                order.currency());
+                order.totalPrice().value(),
+                order.totalPrice().currency());
     }
 }
