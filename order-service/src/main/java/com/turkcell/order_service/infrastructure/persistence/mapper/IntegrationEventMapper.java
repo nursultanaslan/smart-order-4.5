@@ -30,7 +30,7 @@ public class IntegrationEventMapper {
                 item.unitPriceAtOrderTime(),
                 item.currency(),
                 item.quantity(),
-                item.itemsTotalPriceAtOrderTime()
+                item.lineTotalPrice()
         );
     }
 }
