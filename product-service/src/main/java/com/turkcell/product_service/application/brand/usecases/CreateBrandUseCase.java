@@ -8,7 +8,6 @@ import com.turkcell.product_service.domain.model.brand.Brand;
 import com.turkcell.product_service.domain.policy.BrandNameUniquePolicy;
 import com.turkcell.product_service.domain.repository.BrandRepository;
 import jakarta.validation.Valid;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -26,7 +25,6 @@ public class CreateBrandUseCase {
         this.brandNameUniquePolicy = brandNameUniquePolicy;
     }
 
-    @PreAuthorize("hasAnyAuthority('BRAND_CREATE')")
     public BrandResponse createBrand(@Valid CreateBrandRequest request) {
 
         if (!brandNameUniquePolicy.isUnique(request.brandName())){

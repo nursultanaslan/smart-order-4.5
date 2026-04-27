@@ -11,7 +11,7 @@ public class JpaProductEntity {
 
     @Id
     @Column(columnDefinition = "uuid")
-    private UUID id;
+    private UUID productId;
     @Column(name = "product_name", nullable = false)
     private String productName;
     @Column(name = "amount", nullable = false, precision = 18, scale = 2)
@@ -31,8 +31,8 @@ public class JpaProductEntity {
     public JpaProductEntity() {
     }
 
-    public JpaProductEntity(UUID id, String productName, BigDecimal amount, String currency, String description, Integer stock, UUID brandId, UUID categoryId) {
-        this.id = id;
+    public JpaProductEntity(UUID productId, String productName, BigDecimal amount, String currency, String description, Integer stock, UUID brandId, UUID categoryId) {
+        this.productId = productId;
         this.productName = productName;
         this.amount = amount;
         this.currency = currency;
@@ -42,12 +42,12 @@ public class JpaProductEntity {
         this.categoryId = categoryId;
     }
 
-    public UUID id() {
-        return id;
+    public UUID productId() {
+        return productId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setProductId(UUID productId) {
+        this.productId = productId;
     }
 
     public String productName() {

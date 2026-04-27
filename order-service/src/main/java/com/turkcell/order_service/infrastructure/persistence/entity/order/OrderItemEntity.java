@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@Table(name = "order_lines")
+@Table(name = "order_items")
 public class OrderItemEntity {
 
     @Id

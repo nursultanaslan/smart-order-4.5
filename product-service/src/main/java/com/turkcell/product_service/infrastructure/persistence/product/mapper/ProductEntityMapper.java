@@ -13,7 +13,7 @@ public class ProductEntityMapper {
 
     public Product toDomain(JpaProductEntity entity){
         return Product.rehydrate(
-                new ProductId(entity.id()),
+                new ProductId(entity.productId()),
                 entity.productName(),
                 new Money(entity.amount(), entity.currency()),
                 entity.description(),

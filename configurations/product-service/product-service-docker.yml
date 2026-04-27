@@ -11,7 +11,7 @@ spring:
           jwk-set-uri: http://keycloak:8585/realms/smartorder-bff-docker/protocol/openid-connect/certs
 
   datasource:
-    url: jdbc:postgresql://productsv_db:5432/product_service_db
+    url: jdbc:postgresql://productsv_db:5437/product_service_db
     username: postgres
     password: productservice_db_password
 

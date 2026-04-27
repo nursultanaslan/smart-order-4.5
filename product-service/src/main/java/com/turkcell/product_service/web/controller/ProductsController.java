@@ -92,7 +92,7 @@ public class ProductsController {
         return updateProductCommandHandler.handle(finalCommand);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/price")
     public ProductResponse updateProductPrice(@PathVariable("id") UUID productId, @RequestBody UpdateProductPriceCommand command) {
         UpdateProductPriceCommand finalCommand = new UpdateProductPriceCommand(
                 productId,
