@@ -1,5 +1,7 @@
 package com.turkcell.product_service.domain.model.category;
 
+import com.turkcell.product_service.domain.exception.InvalidCategoryNameException;
+
 //aggregate root -> has own lifecycle
 public class Category {
 
@@ -30,10 +32,10 @@ public class Category {
 
     public static void validateCategoryName(String categoryName) {
         if (categoryName == null || categoryName.isBlank()) {
-            throw new IllegalArgumentException("categoryName cannot be null or empty");
+            throw new InvalidCategoryNameException("categoryName cannot be null or empty");
         }
         if (categoryName.length() < 2) {
-            throw new IllegalArgumentException("categoryName cannot be less than 2");
+            throw new InvalidCategoryNameException("categoryName cannot be less than 2");
         }
     }
 

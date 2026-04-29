@@ -23,7 +23,7 @@ public class GetCategoryByIdUseCase {
 
     public CategoryResponse getCategoryById(UUID categoryId) {
         Category category = categoryRepository.findById(new CategoryId(categoryId))
-                .orElseThrow(() -> new CategoryNotFoundException("Category not found!"));
+                .orElseThrow(() -> new CategoryNotFoundException(new CategoryId(categoryId)));
 
         return categoryMapper.toResponse(category);
     }

@@ -31,7 +31,7 @@ public class UpdateProductPriceCommandHandler implements CommandHandler<UpdatePr
     public ProductResponse handle(UpdateProductPriceCommand command) {
 
         Product product = productRepository.findById(new ProductId(command.productId()))
-                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException(new ProductId(command.productId())));
 
         Money money = new Money(command.newAmount(), command.currency());
         product.changePrice(money);  //domain behaviour

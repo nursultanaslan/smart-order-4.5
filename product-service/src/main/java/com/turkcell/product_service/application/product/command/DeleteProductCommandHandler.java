@@ -25,7 +25,7 @@ public class DeleteProductCommandHandler implements CommandHandler<DeleteProduct
     public DeletedProductResponse handle(DeleteProductCommand command) {
 
         Product product = productRepository.findById(new ProductId(command.productId()))
-                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException(new ProductId(command.productId())));
 
         productRepository.delete(product);
         return productMapper.toDeletedResponse(product);

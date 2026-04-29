@@ -26,7 +26,7 @@ public class DeleteCategoryUseCase {
 
     public DeletedCategoryResponse deleteCategory(@Valid DeleteCategoryRequest request) {
         Category category = categoryRepository.findById(new CategoryId(request.categoryId()))
-                .orElseThrow(() -> new CategoryNotFoundException("Category not found!"));
+                .orElseThrow(() -> new CategoryNotFoundException(new CategoryId(request.categoryId())));
         categoryRepository.delete(category);
         return categoryMapper.toDeletedResponse(category);
     }

@@ -22,7 +22,7 @@ public class UpdateCategoryUseCase {
 
     public CategoryResponse updateCategory(UpdateCategoryRequest request) {
         Category category = categoryRepository.findById(new CategoryId(request.categoryId()))
-                .orElseThrow(() -> new CategoryNotFoundException("Category not found!"));
+                .orElseThrow(() -> new CategoryNotFoundException(new CategoryId(request.categoryId())));
 
         if (request.categoryName() != null && !request.categoryName().isEmpty()) {
             category.updateCategoryName(request.categoryName());

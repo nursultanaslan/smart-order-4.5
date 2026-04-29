@@ -23,7 +23,7 @@ public class GetBrandByIdUseCase {
 
     public BrandResponse getBrandById(UUID brandId) {
         Brand brand = brandRepository.findById(new BrandId(brandId))
-                .orElseThrow(() -> new BrandNotFoundException("Brand not found!"));
+                .orElseThrow(() -> new BrandNotFoundException(new BrandId(brandId)));
 
         return brandMapper.toResponse(brand);
 

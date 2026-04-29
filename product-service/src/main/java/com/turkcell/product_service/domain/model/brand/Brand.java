@@ -1,5 +1,7 @@
 package com.turkcell.product_service.domain.model.brand;
 
+import com.turkcell.product_service.domain.exception.InvalidBrandNameException;
+
 //aggregate root -> has own lifecycle
 public class Brand {
 
@@ -28,7 +30,7 @@ public class Brand {
 
     public static void validateBrandName(String brandName) {
         if (brandName == null || brandName.isBlank()) {
-            throw new IllegalArgumentException("BrandName cannot be null or blank");
+            throw new InvalidBrandNameException("BrandName cannot be null or blank");
         }
     }
 

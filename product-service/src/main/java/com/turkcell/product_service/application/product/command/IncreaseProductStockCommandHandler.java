@@ -23,7 +23,7 @@ public class IncreaseProductStockCommandHandler implements CommandHandler<Increa
     @Override
     public ProductResponse handle(IncreaseProductStockCommand command) {
         Product product = productRepository.findById(new ProductId(command.productId()))
-                .orElseThrow(() -> new ProductNotFoundException("Product not found!"));
+                .orElseThrow(() -> new ProductNotFoundException(new ProductId(command.productId())));
 
         product.restock(command.quantity());
 

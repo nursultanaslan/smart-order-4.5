@@ -23,7 +23,7 @@ public class DecreaseProductStockCommandHandler implements CommandHandler<Decrea
     @Override
     public ProductResponse handle(DecreaseProductStockCommand command) {
         Product product = productRepository.findById(new ProductId(command.productId()))
-                .orElseThrow(() -> new ProductNotFoundException("Product not found!"));
+                .orElseThrow(() -> new ProductNotFoundException(new ProductId(command.productId())));
 
         product.dispatch(command.quantity());
 

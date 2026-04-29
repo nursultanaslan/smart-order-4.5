@@ -29,7 +29,7 @@ public class UpdateProductDetailsCommandHandler implements CommandHandler<Update
         ProductId id = new ProductId(command.productId());
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException(id));
 
         if (command.productName() != null) {
             product.updateProductName(command.productName());

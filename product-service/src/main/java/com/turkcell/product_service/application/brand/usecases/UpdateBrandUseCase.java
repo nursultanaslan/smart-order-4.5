@@ -24,7 +24,7 @@ public class UpdateBrandUseCase {
     public BrandResponse updateBrand(UpdateBrandRequest request) {
 
         Brand brand = brandRepository.findById(new BrandId(request.brandId()))
-                .orElseThrow(() -> new BrandNotFoundException("Brand not found!"));
+                .orElseThrow(() -> new BrandNotFoundException(new BrandId(request.brandId())));
 
         if (request.brandName() != null) {
             brand.updateBrandName(

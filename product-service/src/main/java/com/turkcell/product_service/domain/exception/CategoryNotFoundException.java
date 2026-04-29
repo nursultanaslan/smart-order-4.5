@@ -1,7 +1,10 @@
 package com.turkcell.product_service.domain.exception;
 
-public class CategoryNotFoundException extends RuntimeException {
-    public CategoryNotFoundException(String message) {
-        super(message);
+import com.turkcell.product_service.domain.exception.base.NotFoundException;
+import com.turkcell.product_service.domain.model.category.CategoryId;
+
+public class CategoryNotFoundException extends NotFoundException {
+    public CategoryNotFoundException(CategoryId categoryId) {
+        super("Category not found with id: " + categoryId.value());
     }
 }

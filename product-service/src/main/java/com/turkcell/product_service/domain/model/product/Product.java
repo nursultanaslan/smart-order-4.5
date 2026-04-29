@@ -1,5 +1,9 @@
 package com.turkcell.product_service.domain.model.product;
 
+import com.turkcell.product_service.domain.exception.InsufficientStockException;
+import com.turkcell.product_service.domain.exception.InvalidDescriptionException;
+import com.turkcell.product_service.domain.exception.InvalidProductNameException;
+import com.turkcell.product_service.domain.exception.InvalidStockException;
 import com.turkcell.product_service.domain.model.brand.BrandId;
 import com.turkcell.product_service.domain.model.category.CategoryId;
 
@@ -32,6 +36,9 @@ public class Product {
             String productName, Money money,
             String description, Integer stock,
             BrandId brandId, CategoryId categoryId) {
+        validateProductName(productName);
+        validateDescription(description);
+        validateStock(stock);
         return new Product(
                 ProductId.generate(),
                 productName,
@@ -60,25 +67,25 @@ public class Product {
     //validations
     public static void validateProductName(String productName){
         if (productName == null || productName.trim().isEmpty()){
-            throw new IllegalArgumentException("name cannot be null");
+            throw new InvalidProductNameException("name cannot be null");
         }
         if (productName.length() > 120){
-            throw new IllegalArgumentException("Name length cannot be larger than 120 characters");
+            throw new InvalidProductNameException("Name length cannot be larger than 120 characters");
         }
     }
 
     public static void validateDescription(String description){
         if (description == null || description.trim().isEmpty()){
-            throw new IllegalArgumentException("Description cannot be null");
+            throw new InvalidDescriptionException("Description cannot be null");
         }
         if (description.length() >= 255){
-            throw new IllegalArgumentException("Description length must be maximum 255 characters");
+            throw new InvalidDescriptionException("Description length must be maximum 255 characters");
         }
     }
 
     public static void validateStock(Integer stock){
         if (stock == null || stock < 0){
-            throw new IllegalArgumentException("Stock cannot be null or negative value");
+            throw new InvalidStockException("Stock cannot be null or negative value");
         }
     }
 
@@ -106,10 +113,10 @@ public class Product {
     //stok azalt
     public void dispatch(Integer quantityToDispatch){
         if (quantityToDispatch == null || quantityToDispatch < 0){
-            throw new IllegalArgumentException("Quantity to dispatch must be positive");
+            throw new InvalidStockException("Quantity to dispatch must be positive");
         }
         if (this.stock < quantityToDispatch){
-            throw new IllegalArgumentException("insufficient stock");
+            throw new InsufficientStockException();
         }
 
         this.stock -= quantityToDispatch;
@@ -118,7 +125,7 @@ public class Product {
     //stok arttır.
     public void restock(Integer quantityToRestock){
         if (quantityToRestock == null || quantityToRestock < 0){
-            throw new IllegalArgumentException("Quantity to restock must be positive");
+            throw new InvalidStockException("Quantity to restock must be positive");
         }
         this.stock += quantityToRestock;
     }

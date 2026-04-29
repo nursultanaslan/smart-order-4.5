@@ -2,8 +2,8 @@ package com.turkcell.product_service.domain.exception;
 
 import com.turkcell.product_service.domain.exception.base.DomainException;
 
-public class CategoryNameAlreadyExistsException extends DomainException {
-    public CategoryNameAlreadyExistsException(String message) {
+public class InvalidBrandNameException extends DomainException {
+    public InvalidBrandNameException(String message) {
         super(message);
     }
 }

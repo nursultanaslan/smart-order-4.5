@@ -25,7 +25,7 @@ public class GetProductByIdQueryHandler implements QueryHandler<GetProductByIdQu
     public GetProductByIdResponse handle(GetProductByIdQuery query) {
 
         Product product = productRepository.findById(new ProductId(query.productId()))
-                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException(new ProductId(query.productId())));
 
         return productMapper.toGetByIdResponse(product);
 
