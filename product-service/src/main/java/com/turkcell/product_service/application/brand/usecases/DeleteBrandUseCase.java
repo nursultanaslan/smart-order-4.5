@@ -25,8 +25,9 @@ public class DeleteBrandUseCase {
     }
 
     public DeletedBrandResponse deleteBrand(@Valid DeleteBrandRequest request) {
-        Brand brand = brandRepository.findById(new BrandId(request.brandId()))
-                .orElseThrow(() -> new BrandNotFoundException(new BrandId(request.brandId())));
+        BrandId brandId = new BrandId(request.brandId());
+        Brand brand = brandRepository.findById(brandId)
+                .orElseThrow(() -> new BrandNotFoundException(brandId));
 
         brandRepository.delete(brand);
         return brandMapper.toDeletedResponse(brand);

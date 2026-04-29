@@ -10,6 +10,7 @@
         <module name="cart-service" />
         <module name="discovery-server" />
         <module name="payment-service" />
+        <module name="inventory-service" />
         <module name="customer-service" />
         <module name="bff-service" />
         <module name="gateway-server" />
@@ -21,6 +22,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="inventory-service" options="-parameters" />
       <module name="payment-service" options="" />
     </option>
   </component>

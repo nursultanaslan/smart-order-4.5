@@ -29,9 +29,6 @@ public class CreateProductCommandHandler implements CommandHandler<CreateProduct
         this.categoryRepository = categoryRepository;
     }
 
-    //TODO: brandId ve categoryId ye ait verilerin
-    // veritabanında bulunup bulunmadığını kontrol etmeden ekliyor.
-
     @Override
     @Transactional
     public ProductResponse handle(CreateProductCommand command) {

@@ -19,10 +19,10 @@ public class Product {
     private Integer stock;
     //TODO: minStockThreshold
 
-    private BrandId brandId;
-    private CategoryId categoryId;
+    private final BrandId brandId;
+    private final CategoryId categoryId;
 
-    //TODO: for product lifecyle: productStatus(active, passive, out_of_stock, archived), publishedAt
+    //TODO: for product lifecycle: productStatus(active, passive, out_of_stock, archived), publishedAt
     // for audit : createdAt, updatedAt,
 
     private Product(ProductId id, String productName, Money money,
