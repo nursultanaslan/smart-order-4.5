@@ -28,6 +28,7 @@ public class Brand {
         );
     }
 
+    //TODO: delete brand anında o markaya ait productlar bulunuyorsa o marka silinememeli.
     public static void validateBrandName(String brandName) {
         if (brandName == null || brandName.isBlank()) {
             throw new InvalidBrandNameException("BrandName cannot be null or blank");

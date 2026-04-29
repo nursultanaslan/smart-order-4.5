@@ -13,5 +13,7 @@ public interface CategoryRepository {
     List<Category> findAll();
     void deleteById(CategoryId id);
     void delete(Category category);
+
     boolean existsByCategoryNameIgnoreCase(String categoryName);
+    boolean existsByCategorId(CategoryId categoryId);
 }

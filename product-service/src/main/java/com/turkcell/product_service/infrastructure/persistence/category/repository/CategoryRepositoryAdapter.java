@@ -59,4 +59,9 @@ public class CategoryRepositoryAdapter implements CategoryRepository {
     public boolean existsByCategoryNameIgnoreCase(String categoryName) {
         return categoryRepository.existsByCategoryNameIgnoreCase(categoryName);
     }
+
+    @Override
+    public boolean existsByCategorId(CategoryId categoryId) {
+        return categoryRepository.existsByCategoryId(categoryId.value());
+    }
 }

@@ -10,7 +10,7 @@ public class JpaCategoryEntity {
 
     @Id
     @Column(columnDefinition = "uuid")
-    private UUID id;
+    private UUID categoryId;
 
     @Column(name = "category_name")
     private String categoryName;
@@ -18,20 +18,20 @@ public class JpaCategoryEntity {
     public JpaCategoryEntity() {
     }
 
-    public JpaCategoryEntity(UUID id, String categoryName) {
-        this.id = id;
+    public JpaCategoryEntity(UUID categoryId, String categoryName) {
+        this.categoryId = categoryId;
         this.categoryName = categoryName;
     }
 
-    public UUID id() {
-        return id;
+    public UUID getCategoryId() {
+        return categoryId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String categoryName() {
+    public String getCategoryName() {
         return categoryName;
     }
 

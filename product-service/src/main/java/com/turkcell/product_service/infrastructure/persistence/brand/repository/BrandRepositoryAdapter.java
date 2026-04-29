@@ -60,4 +60,9 @@ public class BrandRepositoryAdapter implements BrandRepository {
     public boolean existsByBrandNameIgnoreCase(String brandName) {
         return brandRepository.existsByBrandNameIgnoreCase(brandName);
     }
+
+    @Override
+    public boolean existsByBrandId(BrandId brandId) {
+        return brandRepository.existsByBrandId(brandId.value());
+    }
 }

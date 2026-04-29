@@ -10,32 +10,31 @@ public class JpaBrandEntity {
 
     @Id
     @Column(columnDefinition = "uuid")
-    private UUID id;
+    private UUID brandId;
     @Column(name = "brand_name")
     private String brandName;
 
     public JpaBrandEntity() {
     }
 
-    public JpaBrandEntity(UUID id, String brandName) {
-        this.id = id;
+    public JpaBrandEntity(UUID brandId, String brandName) {
+        this.brandId = brandId;
         this.brandName = brandName;
     }
 
-    public UUID id() {
-        return id;
+    public UUID getBrandId() {
+        return brandId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setBrandId(UUID brandId) {
+        this.brandId = brandId;
     }
 
-    public String brandName() {
+    public String getBrandName() {
         return brandName;
     }
 
     public void setBrandName(String brandName) {
         this.brandName = brandName;
     }
-
 }

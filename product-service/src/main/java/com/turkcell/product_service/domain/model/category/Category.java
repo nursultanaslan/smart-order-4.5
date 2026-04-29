@@ -30,6 +30,8 @@ public class Category {
         );
     }
 
+    //TODO: delete category anında o kategoriye ait productlar bulunuyorsa o kategori silinememeli.
+
     public static void validateCategoryName(String categoryName) {
         if (categoryName == null || categoryName.isBlank()) {
             throw new InvalidCategoryNameException("categoryName cannot be null or empty");

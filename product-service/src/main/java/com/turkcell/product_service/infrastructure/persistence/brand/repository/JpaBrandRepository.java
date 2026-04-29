@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface JpaBrandRepository extends JpaRepository<JpaBrandEntity, UUID> {
 
     boolean existsByBrandNameIgnoreCase(String brandName);
+    boolean existsByBrandId(UUID brandId);
 }

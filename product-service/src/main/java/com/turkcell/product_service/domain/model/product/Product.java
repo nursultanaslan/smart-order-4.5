@@ -17,9 +17,13 @@ public class Product {
     private Money price;
     private String description;
     private Integer stock;
+    //TODO: minStockThreshold
 
     private BrandId brandId;
     private CategoryId categoryId;
+
+    //TODO: for product lifecyle: productStatus(active, passive, out_of_stock, archived), publishedAt
+    // for audit : createdAt, updatedAt,
 
     private Product(ProductId id, String productName, Money money,
                     String description, Integer stock, BrandId brandId, CategoryId categoryId) {

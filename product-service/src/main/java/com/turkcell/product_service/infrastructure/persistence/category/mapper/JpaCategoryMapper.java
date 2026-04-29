@@ -17,8 +17,8 @@ public class JpaCategoryMapper {
 
     public Category toDomain(JpaCategoryEntity entity) {
         return Category.rehydrate(
-                new CategoryId(entity.id()),
-                entity.categoryName()
+                new CategoryId(entity.getCategoryId()),
+                entity.getCategoryName()
         );
     }
 }

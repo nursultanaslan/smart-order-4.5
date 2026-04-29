@@ -17,8 +17,8 @@ public class JpaBrandMapper {
 
     public Brand toDomain(JpaBrandEntity entity) {
         return Brand.rehydrate(
-                new BrandId(entity.id()),
-                entity.brandName()
+                new BrandId(entity.getBrandId()),
+                entity.getBrandName()
         );
     }
 }

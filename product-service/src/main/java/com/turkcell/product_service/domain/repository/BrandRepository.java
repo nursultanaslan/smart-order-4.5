@@ -13,5 +13,7 @@ public interface BrandRepository {
     List<Brand> findAll();
     void deleteById(BrandId id);
     void delete(Brand brand);
+
     boolean existsByBrandNameIgnoreCase(String brandName);
+    boolean existsByBrandId(BrandId brandId);
 }
