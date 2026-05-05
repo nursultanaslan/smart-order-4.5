@@ -28,7 +28,7 @@ public class AddToCartUseCase {
     }
 
     /**
-     * ProductClient üzerinden güncel fiyat ve stogu al
+     * ProductClient üzerinden ürün bilgilerini ve Inventory serviceten stogu al
      * CartRepository uzerinden mevcut sepeti getir yoksa yeni sepet yarat
      * domain methodu olan addItem methodu ile sepete ürün ekleme işlemini gerceklestir
      * save işlemi ile kaydet.

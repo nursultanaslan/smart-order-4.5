@@ -1,7 +1,6 @@
 package com.turkcell.product_service.domain.model.product;
 
 public enum ProductStatus {
-
     ACTIVE,
     PASSIVE,
     DRAFT, //ARCHIVED
