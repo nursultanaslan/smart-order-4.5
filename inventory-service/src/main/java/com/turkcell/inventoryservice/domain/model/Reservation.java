@@ -17,6 +17,7 @@ public class Reservation {
 
     private Instant createdAt;
     private Instant expiresAt;
+    private Long version;
 
 
     private Reservation(ReservationId reservationId, OrderId orderId, List<ReservationItem> items,
