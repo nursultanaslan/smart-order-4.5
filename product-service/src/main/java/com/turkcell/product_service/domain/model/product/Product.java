@@ -76,6 +76,9 @@ public class Product {
         if (productName.length() > 120){
             throw new InvalidProductNameException("Name length cannot be larger than 120 characters");
         }
+        if (productName.length() < 3){
+            throw new InvalidProductNameException("Name length cannot be less than 3 characters");
+        }
     }
 
     public static void validateDescription(String description){

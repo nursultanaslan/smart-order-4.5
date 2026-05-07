@@ -1,33 +1,35 @@
 package com.turkcell.order_service.application.command;
 
 import com.turkcell.order_service.application.client.ProductClient;
-import com.turkcell.order_service.application.dto.response.OrderResponse;
+import com.turkcell.order_service.application.dto.response.CreateOrderResult;
 import com.turkcell.order_service.application.dto.response.ProductResponse;
 import com.turkcell.order_service.application.mapper.OrderMapper;
 import com.turkcell.order_service.core.cqrs.CommandHandler;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
 import com.turkcell.order_service.domain.model.Order;
 import com.turkcell.order_service.domain.model.OrderItem;
-import com.turkcell.order_service.domain.port.DomainEventsPublisher;
-import com.turkcell.order_service.domain.port.OrderRepository;
+import com.turkcell.order_service.domain.repository.DomainEventsPublisher;
+import com.turkcell.order_service.domain.repository.IOrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Component
-public class CreateOrderCommandHandler implements CommandHandler<CreateOrderCommand, OrderResponse> {
+public class CreateOrderCommandHandler implements CommandHandler<CreateOrderCommand, CreateOrderResult> {
 
     private static final Logger logger = LoggerFactory.getLogger(CreateOrderCommandHandler.class);
 
-    private final OrderRepository orderRepository;
+    private final IOrderRepository IOrderRepository;
     private final OrderMapper orderMapper;
     private final DomainEventsPublisher domainEventsPublisher;
     private final ProductClient productClient;
 
-    public CreateOrderCommandHandler(OrderRepository orderRepository, OrderMapper orderMapper,
-            DomainEventsPublisher domainEventsPublisher, ProductClient productClient) {
-        this.orderRepository = orderRepository;
+    public CreateOrderCommandHandler(IOrderRepository IOrderRepository, OrderMapper orderMapper,
+                                     DomainEventsPublisher domainEventsPublisher, ProductClient productClient) {
+        this.IOrderRepository = IOrderRepository;
         this.orderMapper = orderMapper;
         this.domainEventsPublisher = domainEventsPublisher;
         this.productClient = productClient;
@@ -35,7 +37,7 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
 
     @Override
     @Transactional
-    public OrderResponse handle(CreateOrderCommand command) {
+    public CreateOrderResult handle(CreateOrderCommand command) {
 
         Order order = orderMapper.toDomain(command);
 
@@ -68,7 +70,7 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
         }
 
         // Stock işlemi başarılı olduktan sonra order'ı kaydediyoruz
-        Order savedOrder = orderRepository.save(order);
+        Order savedOrder = IOrderRepository.save(order);
 
         OrderCreatedEvent event = new OrderCreatedEvent(
                 savedOrder.id(),
@@ -81,6 +83,10 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
 
         domainEventsPublisher.publish(event);
 
-        return orderMapper.toResponse(savedOrder);
+        return new CreateOrderResult(
+                savedOrder.id().value(),
+                savedOrder.totalPrice().value(),
+                savedOrder.totalPrice().currency()
+        );
     }
 }

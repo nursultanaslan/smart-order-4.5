@@ -35,7 +35,7 @@ public class Order {
 
         String currency = items.getFirst().currency();
         BigDecimal totalValue = items.stream()
-                .map(OrderItem::lineTotalPrice)
+                .map(OrderItem::calculateLineTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         Money totalPrice = new Money(totalValue, currency);
         return new Order(
@@ -64,7 +64,7 @@ public class Order {
     // worker methods
     public Money calculateOrderTotalPrice() {
         BigDecimal totalValue = items.stream()
-                .map(OrderItem::lineTotalPrice)
+                .map(OrderItem::calculateLineTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         String currency = items.getFirst().currency();
         return new Money(totalValue, currency);

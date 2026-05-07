@@ -1,4 +1,4 @@
-package com.turkcell.order_service.domain.port;
+package com.turkcell.order_service.domain.repository;
 
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
 

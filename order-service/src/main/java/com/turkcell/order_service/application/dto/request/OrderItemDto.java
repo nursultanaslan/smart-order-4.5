@@ -8,6 +8,5 @@ public record OrderItemDto(
         String productName,
         BigDecimal unitPriceAtOrderTime,
         String currency,
-        Integer quantity,
-        BigDecimal lineTotalPrice) {
+        Integer quantity) {
 }
