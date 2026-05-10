@@ -15,6 +15,7 @@
         <module name="bff-service" />
         <module name="gateway-server" />
         <module name="product-service" />
+        <module name="shipment-service" />
         <module name="order-service" />
         <module name="notification-service" />
       </profile>
@@ -24,6 +25,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="inventory-service" options="" />
       <module name="payment-service" options="" />
+      <module name="shipment-service" options="-parameters" />
     </option>
   </component>
 </project>
