@@ -1,6 +1,5 @@
 package com.turkcell.product_service.domain.repository;
 
-import com.turkcell.product_service.domain.model.brand.BrandId;
 import com.turkcell.product_service.domain.model.category.CategoryId;
 import com.turkcell.product_service.domain.model.product.Product;
 import com.turkcell.product_service.domain.model.product.ProductId;

@@ -5,7 +5,7 @@ import com.turkcell.order_service.application.dto.request.OrderItemDto;
 import com.turkcell.order_service.domain.model.CartId;
 import com.turkcell.order_service.domain.model.CustomerId;
 import com.turkcell.order_service.domain.model.Order;
-import com.turkcell.order_service.domain.model.OrderItem;
+import com.turkcell.order_service.domain.model.OrderLineItem;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -15,7 +15,7 @@ import java.util.List;
 public class OrderMapper {
 
     public Order toDomain(CreateOrderCommand command) {
-        List<OrderItem> orderItems =
+        List<OrderLineItem> orderLineItems =
                 command.items().stream()
                         .map(this::toOrderItem)
                         .toList();
@@ -23,15 +23,15 @@ public class OrderMapper {
         return Order.create(
                 new CustomerId(command.customerId()),
                 new CartId(command.cartId()),
-                orderItems);
+                orderLineItems);
     }
 
-    public OrderItem toOrderItem(OrderItemDto dto) {
+    public OrderLineItem toOrderItem(OrderItemDto dto) {
         BigDecimal itemTotalPrice = dto.unitPriceAtOrderTime()
                 .multiply(BigDecimal.valueOf(dto.quantity()))
                 .setScale(2, java.math.RoundingMode.HALF_UP);
 
-        return new OrderItem(
+        return new OrderLineItem(
                 dto.productId(),
                 dto.productName(),
                 dto.unitPriceAtOrderTime(),

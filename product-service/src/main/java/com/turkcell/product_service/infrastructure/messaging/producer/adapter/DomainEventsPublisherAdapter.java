@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.turkcell.product_service.domain.event.ProductPriceChangedEvent;
 import com.turkcell.product_service.domain.repository.DomainEventsPublisher;
 import com.turkcell.product_service.infrastructure.messaging.producer.event.ProductPriceChangedIntegrationEvent;
-import com.turkcell.product_service.infrastructure.persistence.outbox.ProductOutboxEntity;
+import com.turkcell.product_service.infrastructure.persistence.outbox.entity.ProductOutboxEntity;
 import com.turkcell.product_service.infrastructure.persistence.outbox.mapper.IntegrationEventMapper;
 import com.turkcell.product_service.infrastructure.persistence.outbox.repository.OutboxRepository;
 import org.springframework.stereotype.Component;

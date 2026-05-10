@@ -1,4 +1,4 @@
-package com.turkcell.product_service.infrastructure.persistence.category.model;
+package com.turkcell.product_service.infrastructure.persistence.category.entity;
 
 import jakarta.persistence.*;
 

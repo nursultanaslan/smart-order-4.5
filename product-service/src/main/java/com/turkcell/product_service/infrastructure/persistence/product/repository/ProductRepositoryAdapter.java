@@ -5,7 +5,7 @@ import com.turkcell.product_service.domain.model.product.Product;
 import com.turkcell.product_service.domain.model.product.ProductId;
 import com.turkcell.product_service.domain.repository.ProductRepository;
 import com.turkcell.product_service.infrastructure.persistence.product.mapper.ProductEntityMapper;
-import com.turkcell.product_service.infrastructure.persistence.product.model.JpaProductEntity;
+import com.turkcell.product_service.infrastructure.persistence.product.entity.JpaProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

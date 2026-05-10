@@ -21,4 +21,5 @@ public record CartItem(
     public BigDecimal itemTotalPrice() {
         return unitPrice.multiply(BigDecimal.valueOf(quantity));
     }
+//TODO: add changeQuantity method
 }

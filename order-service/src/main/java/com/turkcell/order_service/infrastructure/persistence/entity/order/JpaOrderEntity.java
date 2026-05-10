@@ -1,5 +1,6 @@
 package com.turkcell.order_service.infrastructure.persistence.entity.order;
 
+import com.turkcell.order_service.domain.model.OrderStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -14,7 +15,7 @@ public class JpaOrderEntity {
 
     @Id
     @Column(columnDefinition = "uuid")
-    private UUID id;
+    private UUID orderId;
 
     @Column(name = "total_price")
     private BigDecimal totalPrice;
@@ -32,17 +33,33 @@ public class JpaOrderEntity {
     private UUID cartId;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderItemEntity> items = new ArrayList<>();
+    private List<OrderLineItemEntity> items = new ArrayList<>();
 
-    public UUID id() {
-        return id;
+    public JpaOrderEntity(UUID orderId, BigDecimal totalPrice, String currency, OffsetDateTime createdAt,
+                          OrderStatus orderStatus, UUID customerId, UUID cartId, List<OrderLineItemEntity> items) {
+        this.orderId = orderId;
+        this.totalPrice = totalPrice;
+        this.currency = currency;
+        this.createdAt = createdAt;
+        this.orderStatus = orderStatus;
+        this.customerId = customerId;
+        this.cartId = cartId;
+        this.items = items;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public JpaOrderEntity() {
+
     }
 
-    public BigDecimal totalPrice() {
+    public UUID getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(UUID orderId) {
+        this.orderId = orderId;
+    }
+
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
@@ -50,7 +67,7 @@ public class JpaOrderEntity {
         this.totalPrice = totalPrice;
     }
 
-    public String currency() {
+    public String getCurrency() {
         return currency;
     }
 
@@ -58,7 +75,7 @@ public class JpaOrderEntity {
         this.currency = currency;
     }
 
-    public OffsetDateTime createdAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
@@ -66,7 +83,7 @@ public class JpaOrderEntity {
         this.createdAt = createdAt;
     }
 
-    public OrderStatus orderStatus() {
+    public OrderStatus getOrderStatus() {
         return orderStatus;
     }
 
@@ -74,7 +91,7 @@ public class JpaOrderEntity {
         this.orderStatus = orderStatus;
     }
 
-    public UUID customerId() {
+    public UUID getCustomerId() {
         return customerId;
     }
 
@@ -82,7 +99,7 @@ public class JpaOrderEntity {
         this.customerId = customerId;
     }
 
-    public UUID cartId() {
+    public UUID getCartId() {
         return cartId;
     }
 
@@ -90,11 +107,11 @@ public class JpaOrderEntity {
         this.cartId = cartId;
     }
 
-    public List<OrderItemEntity> items() {
+    public List<OrderLineItemEntity> getItems() {
         return items;
     }
 
-    public void setItems(List<OrderItemEntity> items) {
+    public void setItems(List<OrderLineItemEntity> items) {
         this.items = items;
     }
 }

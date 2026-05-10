@@ -5,7 +5,7 @@ import com.turkcell.product_service.domain.model.category.CategoryId;
 import com.turkcell.product_service.domain.model.product.Money;
 import com.turkcell.product_service.domain.model.product.Product;
 import com.turkcell.product_service.domain.model.product.ProductId;
-import com.turkcell.product_service.infrastructure.persistence.product.model.JpaProductEntity;
+import com.turkcell.product_service.infrastructure.persistence.product.entity.JpaProductEntity;
 import org.springframework.stereotype.Component;
 
 @Component

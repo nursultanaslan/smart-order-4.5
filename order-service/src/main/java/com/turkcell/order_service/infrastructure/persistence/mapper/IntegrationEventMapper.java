@@ -1,9 +1,9 @@
 package com.turkcell.order_service.infrastructure.persistence.mapper;
 
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
-import com.turkcell.order_service.domain.model.OrderItem;
+import com.turkcell.order_service.domain.model.OrderLineItem;
 import com.turkcell.order_service.infrastructure.messaging.producer.event.OrderCreatedIntegrationEvent;
-import com.turkcell.order_service.infrastructure.persistence.entity.order.OrderItemEntity;
+import com.turkcell.order_service.infrastructure.persistence.entity.order.OrderLineItemEntity;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,13 +23,14 @@ public class IntegrationEventMapper {
                         .toList());
     }
 
-    private OrderItemEntity toIntegrationOrderItem(OrderItem item) {
-        return new OrderItemEntity(
+    private OrderLineItemEntity toIntegrationOrderItem(OrderLineItem item) {
+        return new OrderLineItemEntity(
                 item.productId(),
                 item.productName(),
                 item.unitPriceAtOrderTime(),
                 item.currency(),
                 item.quantity()
+
         );
     }
 }

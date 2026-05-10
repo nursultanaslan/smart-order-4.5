@@ -7,15 +7,13 @@ import com.turkcell.order_service.application.mapper.OrderMapper;
 import com.turkcell.order_service.core.cqrs.CommandHandler;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
 import com.turkcell.order_service.domain.model.Order;
-import com.turkcell.order_service.domain.model.OrderItem;
+import com.turkcell.order_service.domain.model.OrderLineItem;
 import com.turkcell.order_service.domain.repository.DomainEventsPublisher;
 import com.turkcell.order_service.domain.repository.IOrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 @Component
 public class CreateOrderCommandHandler implements CommandHandler<CreateOrderCommand, CreateOrderResult> {
@@ -50,7 +48,7 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
          * Cart service sepeti boşaltır
          * **/
         try {
-            for (OrderItem item : order.items()) {
+            for (OrderLineItem item : order.items()) {
                 ProductResponse productResponse = productClient.decreaseStock(item.productId(), item.quantity());
 
                 // ProductResponse'u kontrol ediyoruz

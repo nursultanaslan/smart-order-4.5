@@ -2,7 +2,7 @@ package com.turkcell.product_service.infrastructure.persistence.category.mapper;
 
 import com.turkcell.product_service.domain.model.category.Category;
 import com.turkcell.product_service.domain.model.category.CategoryId;
-import com.turkcell.product_service.infrastructure.persistence.category.model.JpaCategoryEntity;
+import com.turkcell.product_service.infrastructure.persistence.category.entity.JpaCategoryEntity;
 import org.springframework.stereotype.Component;
 
 @Component

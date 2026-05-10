@@ -1,7 +1,7 @@
 package com.turkcell.order_service.infrastructure.messaging.producer.event;
 
 
-import com.turkcell.order_service.infrastructure.persistence.entity.order.OrderItemEntity;
+import com.turkcell.order_service.infrastructure.persistence.entity.order.OrderLineItemEntity;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -15,5 +15,5 @@ public record OrderCreatedIntegrationEvent(
                 OffsetDateTime createdAt,
                 BigDecimal totalPrice,
                 String currency,
-                List<OrderItemEntity> items) {
+                List<OrderLineItemEntity> items) {
 }

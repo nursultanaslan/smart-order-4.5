@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "order_items")
-public class OrderItemEntity {
+public class OrderLineItemEntity {
 
     @Id
     @Column(columnDefinition = "uuid", nullable = false)
@@ -26,15 +26,18 @@ public class OrderItemEntity {
     @JoinColumn(name = "order_id")
     private JpaOrderEntity order;
 
-    public OrderItemEntity(UUID productId, String productName, BigDecimal unitPriceAtOrderTime, String currency, Integer quantity) {
+
+    public OrderLineItemEntity(UUID productId, String productName, BigDecimal unitPriceAtOrderTime,
+                               String currency, Integer quantity, JpaOrderEntity order) {
         this.productId = productId;
         this.productName = productName;
         this.unitPriceAtOrderTime = unitPriceAtOrderTime;
         this.currency = currency;
         this.quantity = quantity;
+        this.order = order;
     }
 
-    public OrderItemEntity() {
+    public OrderLineItemEntity() {
 
     }
 

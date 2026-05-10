@@ -4,11 +4,16 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
-
-//aggregate root
+/**
+ * tüm güncellemeler sadece Aggregate Root üzerinden yapılır.
+ * böylece Order'in iş kuralları her zaman korunur(kontrol edilip uygulandığı icin kural ihlal edilemez).
+ * ve eş zamanlı güncellemeler kontrol altına alınır. version number (optimistic locking)/database lock (pessimistic locking)
+ * */
+//Business Object
+//aggregate root : tüm iş kuralları burada yaşar
 public class Order {
 
-    private final OrderId id;
+    private final OrderId orderId;
 
     private final CustomerId customerId;
     private final CartId cartId;
@@ -17,11 +22,11 @@ public class Order {
 
     private final OffsetDateTime createdAt;
     private OrderStatus orderStatus;
-    private final List<OrderItem> items;
+    private final List<OrderLineItem> items;
 
-    private Order(OrderId id, CustomerId customerId, CartId cartId, Money totalPrice,
-                  OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderItem> items) {
-        this.id = id;
+    private Order(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice,
+                  OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderLineItem> items) {
+        this.orderId = orderId;
         this.customerId = customerId;
         this.cartId = cartId;
         this.totalPrice = totalPrice;
@@ -30,12 +35,12 @@ public class Order {
         this.items = items;
     }
 
-    public static Order create(CustomerId customerId, CartId cartId, List<OrderItem> items) {
+    public static Order create(CustomerId customerId, CartId cartId, List<OrderLineItem> items) {
         validateCurrencyConsistency(items);
 
         String currency = items.getFirst().currency();
         BigDecimal totalValue = items.stream()
-                .map(OrderItem::calculateLineTotalPrice)
+                .map(OrderLineItem::calculateLineTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         Money totalPrice = new Money(totalValue, currency);
         return new Order(
@@ -48,10 +53,10 @@ public class Order {
                 items);
     }
 
-    public static Order rehydrate(OrderId id, CustomerId customerId, CartId cartId, Money totalPrice,
-                                  OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderItem> items) {
+    public static Order rehydrate(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice,
+                                  OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderLineItem> items) {
         return new Order(
-                id,
+                orderId,
                 customerId,
                 cartId,
                 totalPrice,
@@ -64,7 +69,7 @@ public class Order {
     // worker methods
     public Money calculateOrderTotalPrice() {
         BigDecimal totalValue = items.stream()
-                .map(OrderItem::calculateLineTotalPrice)
+                .map(OrderLineItem::calculateLineTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         String currency = items.getFirst().currency();
         return new Money(totalValue, currency);
@@ -97,7 +102,7 @@ public class Order {
     }
 
     // validate methods - invariants
-    public static void validateCurrencyConsistency(List<OrderItem> items) {
+    public static void validateCurrencyConsistency(List<OrderLineItem> items) {
         if (items == null || items.isEmpty()) {
             throw new IllegalArgumentException("Order items cannot be null or empty");
         }
@@ -112,8 +117,8 @@ public class Order {
     }
 
     // getters
-    public OrderId id() {
-        return id;
+    public OrderId orderId() {
+        return orderId;
     }
 
     public CustomerId customerId() {
@@ -136,7 +141,7 @@ public class Order {
         return orderStatus;
     }
 
-    public List<OrderItem> items() {
+    public List<OrderLineItem> items() {
         return Collections.unmodifiableList(items);
     }
 }

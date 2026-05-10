@@ -5,14 +5,14 @@ import java.math.RoundingMode;
 import java.util.Objects;
 import java.util.UUID;
 
-public record OrderItem(
+public record OrderLineItem(
         UUID productId,
         String productName,
         BigDecimal unitPriceAtOrderTime,
         String currency,
         Integer quantity) {
 
-    public OrderItem {
+    public OrderLineItem {
         Objects.requireNonNull(productId, "Product Id cannot be null");
         Objects.requireNonNull(productName, "Product Name cannot be null");
         Objects.requireNonNull(currency, "Currency cannot be null");

@@ -4,7 +4,7 @@ import com.turkcell.product_service.domain.model.brand.Brand;
 import com.turkcell.product_service.domain.model.brand.BrandId;
 import com.turkcell.product_service.domain.repository.BrandRepository;
 import com.turkcell.product_service.infrastructure.persistence.brand.mapper.JpaBrandMapper;
-import com.turkcell.product_service.infrastructure.persistence.brand.model.JpaBrandEntity;
+import com.turkcell.product_service.infrastructure.persistence.brand.entity.JpaBrandEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

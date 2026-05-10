@@ -2,7 +2,7 @@ package com.turkcell.product_service.infrastructure.persistence.brand.mapper;
 
 import com.turkcell.product_service.domain.model.brand.Brand;
 import com.turkcell.product_service.domain.model.brand.BrandId;
-import com.turkcell.product_service.infrastructure.persistence.brand.model.JpaBrandEntity;
+import com.turkcell.product_service.infrastructure.persistence.brand.entity.JpaBrandEntity;
 import org.springframework.stereotype.Component;
 
 @Component
