@@ -1,7 +1,7 @@
 package com.turkcell.order_service.infrastructure.persistence.adapter;
 
-import com.turkcell.order_service.domain.model.Order;
-import com.turkcell.order_service.domain.model.OrderId;
+import com.turkcell.order_service.domain.aggregate.Order;
+import com.turkcell.order_service.domain.aggregate.valueobjects.OrderId;
 import com.turkcell.order_service.domain.repository.IOrderRepository;
 import com.turkcell.order_service.infrastructure.persistence.entity.order.JpaOrderEntity;
 import com.turkcell.order_service.infrastructure.persistence.mapper.OrderEntityMapper;
@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * OUTBOUND ADAPTER
+ * */
 @Repository
 public class OrderRepositoryAdapter implements IOrderRepository {
 

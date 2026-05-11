@@ -1,4 +1,6 @@
-package com.turkcell.order_service.domain.model;
+package com.turkcell.order_service.domain.aggregate;
+
+import com.turkcell.order_service.domain.aggregate.valueobjects.*;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -35,6 +37,7 @@ public class Order {
         this.items = items;
     }
 
+    //CreateOrder Saga'sını başlatır.
     public static Order create(CustomerId customerId, CartId cartId, List<OrderLineItem> items) {
         validateCurrencyConsistency(items);
 

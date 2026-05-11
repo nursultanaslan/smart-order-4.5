@@ -2,10 +2,10 @@ package com.turkcell.order_service.application.mapper;
 
 import com.turkcell.order_service.application.command.CreateOrderCommand;
 import com.turkcell.order_service.application.dto.request.OrderItemDto;
-import com.turkcell.order_service.domain.model.CartId;
-import com.turkcell.order_service.domain.model.CustomerId;
-import com.turkcell.order_service.domain.model.Order;
-import com.turkcell.order_service.domain.model.OrderLineItem;
+import com.turkcell.order_service.domain.aggregate.valueobjects.CartId;
+import com.turkcell.order_service.domain.aggregate.valueobjects.CustomerId;
+import com.turkcell.order_service.domain.aggregate.Order;
+import com.turkcell.order_service.domain.aggregate.valueobjects.OrderLineItem;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;

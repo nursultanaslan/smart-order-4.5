@@ -10,7 +10,7 @@ import com.turkcell.order_service.infrastructure.persistence.repository.OutboxRe
 import org.springframework.stereotype.Component;
 
 /**
- * Domain Events Publisher Adapter
+ * Domain Events Publisher Adapter (OUTBOUND ADAPTER)
  * Domain event'leri alıp outbox pattern kullanarak persistence katmanına kaydeder.
  * Bu sayede application layer infrastructure detaylarından bağımsız kalır.
  */

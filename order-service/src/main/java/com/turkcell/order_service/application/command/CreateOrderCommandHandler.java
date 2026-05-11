@@ -6,8 +6,8 @@ import com.turkcell.order_service.application.dto.response.ProductResponse;
 import com.turkcell.order_service.application.mapper.OrderMapper;
 import com.turkcell.order_service.core.cqrs.CommandHandler;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
-import com.turkcell.order_service.domain.model.Order;
-import com.turkcell.order_service.domain.model.OrderLineItem;
+import com.turkcell.order_service.domain.aggregate.Order;
+import com.turkcell.order_service.domain.aggregate.valueobjects.OrderLineItem;
 import com.turkcell.order_service.domain.repository.DomainEventsPublisher;
 import com.turkcell.order_service.domain.repository.IOrderRepository;
 import org.slf4j.Logger;
@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * INBOUND ADAPTER
+ */
 @Component
 public class CreateOrderCommandHandler implements CommandHandler<CreateOrderCommand, CreateOrderResult> {
 
@@ -71,7 +74,7 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
         Order savedOrder = IOrderRepository.save(order);
 
         OrderCreatedEvent event = new OrderCreatedEvent(
-                savedOrder.id(),
+                savedOrder.orderId(),
                 savedOrder.customerId(),
                 savedOrder.cartId(),
                 savedOrder.createdAt(),
@@ -82,7 +85,7 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
         domainEventsPublisher.publish(event);
 
         return new CreateOrderResult(
-                savedOrder.id().value(),
+                savedOrder.orderId().value(),
                 savedOrder.totalPrice().value(),
                 savedOrder.totalPrice().currency()
         );

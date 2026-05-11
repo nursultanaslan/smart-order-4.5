@@ -1,4 +1,4 @@
-package com.turkcell.order_service.domain.model;
+package com.turkcell.order_service.domain.aggregate.valueobjects;
 
 import java.math.BigDecimal;
 import java.util.Objects;
