@@ -1,4 +1,4 @@
-package com.turkcell.order_service.domain.model;
+package com.turkcell.order_service.domain.aggregate.valueobjects;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -9,7 +9,4 @@ public record CustomerId(UUID value) implements Serializable {
         Objects.requireNonNull(value, "value for customerId must not be null");
     }
 
-    public static CustomerId generate() {
-        return new CustomerId(UUID.randomUUID());
-    }
 }

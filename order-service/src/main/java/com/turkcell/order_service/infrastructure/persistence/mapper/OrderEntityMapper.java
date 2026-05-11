@@ -1,6 +1,7 @@
 package com.turkcell.order_service.infrastructure.persistence.mapper;
 
-import com.turkcell.order_service.domain.model.*;
+import com.turkcell.order_service.domain.aggregate.*;
+import com.turkcell.order_service.domain.aggregate.valueobjects.*;
 import com.turkcell.order_service.infrastructure.persistence.entity.order.JpaOrderEntity;
 import com.turkcell.order_service.infrastructure.persistence.entity.order.OrderLineItemEntity;
 import org.springframework.stereotype.Component;

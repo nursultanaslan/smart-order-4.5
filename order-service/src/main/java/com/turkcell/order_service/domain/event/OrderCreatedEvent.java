@@ -1,9 +1,9 @@
 package com.turkcell.order_service.domain.event;
 
-import com.turkcell.order_service.domain.model.CartId;
-import com.turkcell.order_service.domain.model.CustomerId;
-import com.turkcell.order_service.domain.model.OrderId;
-import com.turkcell.order_service.domain.model.OrderLineItem;
+import com.turkcell.order_service.domain.aggregate.valueobjects.CartId;
+import com.turkcell.order_service.domain.aggregate.valueobjects.CustomerId;
+import com.turkcell.order_service.domain.aggregate.valueobjects.OrderId;
+import com.turkcell.order_service.domain.aggregate.valueobjects.OrderLineItem;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

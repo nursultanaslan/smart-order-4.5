@@ -1,7 +1,7 @@
 package com.turkcell.order_service.domain.repository;
 
-import com.turkcell.order_service.domain.model.Order;
-import com.turkcell.order_service.domain.model.OrderId;
+import com.turkcell.order_service.domain.aggregate.Order;
+import com.turkcell.order_service.domain.aggregate.valueobjects.OrderId;
 
 import java.util.List;
 import java.util.Optional;
