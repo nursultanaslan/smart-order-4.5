@@ -1,4 +1,4 @@
 package com.turkcell.order_service.domain.event;
 
-public record OrderCancelledEvent() {
+public class OrderCancelledEvent implements OrderDomainEvent {
 }
