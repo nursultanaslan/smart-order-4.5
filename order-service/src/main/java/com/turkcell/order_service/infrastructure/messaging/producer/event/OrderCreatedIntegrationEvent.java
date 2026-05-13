@@ -12,7 +12,6 @@ public record OrderCreatedIntegrationEvent(
                 UUID orderId,
                 UUID customerId,
                 UUID cartId,
-                OffsetDateTime createdAt,
                 BigDecimal totalPrice,
                 String currency,
                 List<OrderLineItemEntity> items) {

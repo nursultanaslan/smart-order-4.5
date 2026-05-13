@@ -5,7 +5,7 @@ import com.turkcell.order_service.application.dto.response.CreateOrderResult;
 import com.turkcell.order_service.application.dto.response.ProductResponse;
 import com.turkcell.order_service.application.mapper.OrderMapper;
 import com.turkcell.order_service.core.cqrs.CommandHandler;
-import com.turkcell.order_service.domain.event.OrderCreatedEvent;
+import com.turkcell.order_service.domain.event.OrderCreated;
 import com.turkcell.order_service.domain.aggregate.Order;
 import com.turkcell.order_service.domain.aggregate.valueobjects.OrderLineItem;
 import com.turkcell.order_service.domain.repository.DomainEventsPublisher;
@@ -73,14 +73,7 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
         // Stock işlemi başarılı olduktan sonra order'ı kaydediyoruz
         Order savedOrder = IOrderRepository.save(order);
 
-        OrderCreatedEvent event = new OrderCreatedEvent(
-                savedOrder.orderId(),
-                savedOrder.customerId(),
-                savedOrder.cartId(),
-                savedOrder.createdAt(),
-                savedOrder.totalPrice().value(),
-                savedOrder.totalPrice().currency(),
-                savedOrder.items());
+        OrderCreated event = new OrderCreated();
 
         domainEventsPublisher.publish(event);
 

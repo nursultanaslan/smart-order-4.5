@@ -1,8 +1,8 @@
 package com.turkcell.order_service.domain.repository;
 
-import com.turkcell.order_service.domain.event.OrderCreatedEvent;
+import com.turkcell.order_service.domain.event.OrderCreated;
 
 public interface DomainEventsPublisher {
 
-    void publish(OrderCreatedEvent event);
+    void publish(OrderCreated event);
 }

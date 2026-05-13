@@ -1,4 +1,4 @@
-package com.turkcell.order_service.domain.event;
+package com.turkcell.order_service.domain.event.base;
 
 import java.time.Instant;
 import java.util.UUID;
