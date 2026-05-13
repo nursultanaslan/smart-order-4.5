@@ -20,7 +20,7 @@ public class OrderOutboxEntity {
 
     @Column(nullable = false, columnDefinition = "uuid")
     private UUID eventId = UUID.randomUUID(); // kafkada tutulacak her evente ozel id. (idempotency)
-    private String eventType; // hangi türde event gidecek -> OrderCreatedEvent
+    private String eventType; // hangi türde event gidecek -> OrderCreated
     private String payloadJson; // gönderilecek eventin içerisindeki Json detayları
 
     @Column(nullable = false, columnDefinition = "uuid")

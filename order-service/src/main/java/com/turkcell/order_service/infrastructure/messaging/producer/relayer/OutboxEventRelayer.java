@@ -47,7 +47,7 @@ public class OutboxEventRelayer {
             Message<OrderCreatedIntegrationEvent> message = MessageBuilder.withPayload(event).build();
             //Kafkaya ulaştı
             try {
-                boolean isSent = streamBridge.send("OrderCreatedEvent", message);
+                boolean isSent = streamBridge.send("OrderCreated", message);
                 //fakat isSent'in true olması -> mesaj gitmedi
                 if (!isSent) {
                     pendingEvent.setRetryCount(pendingEvent.retryCount() + 1);

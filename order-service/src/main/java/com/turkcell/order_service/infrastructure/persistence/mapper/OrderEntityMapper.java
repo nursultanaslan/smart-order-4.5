@@ -27,7 +27,7 @@ public class OrderEntityMapper {
                 new Money(entity.getTotalPrice(), entity.getCurrency()),
                 entity.getCreatedAt(),
                 entity.getOrderStatus(),
-                items
+                items,
         );
     }
 

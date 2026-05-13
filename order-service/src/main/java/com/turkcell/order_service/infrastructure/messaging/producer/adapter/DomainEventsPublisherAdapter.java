@@ -1,6 +1,6 @@
 package com.turkcell.order_service.infrastructure.messaging.producer.adapter;
 
-import com.turkcell.order_service.domain.event.OrderCreatedEvent;
+import com.turkcell.order_service.domain.event.OrderCreated;
 import com.turkcell.order_service.domain.repository.DomainEventsPublisher;
 import com.turkcell.order_service.infrastructure.messaging.producer.event.OrderCreatedIntegrationEvent;
 import com.turkcell.order_service.infrastructure.persistence.entity.outbox.OrderOutboxEntity;
@@ -29,7 +29,7 @@ public class DomainEventsPublisherAdapter implements DomainEventsPublisher {
     }
 
     @Override
-    public void publish(OrderCreatedEvent event) {
+    public void publish(OrderCreated event) {
 
         OrderCreatedIntegrationEvent orderIntegrationEvent =
                 integrationEventMapper.toIntegrationEvent(event);

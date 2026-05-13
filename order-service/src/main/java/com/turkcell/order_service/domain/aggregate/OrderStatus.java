@@ -2,10 +2,12 @@ package com.turkcell.order_service.domain.aggregate;
 
 public enum OrderStatus {
     PENDING,
-    IN_PROGRESS,
-    COMPLETED,
+    CONFIRMED,
+    PREPARED,
+    SHIPPED,
+    DELIVERED,
     CANCELLED,
-    CLAIMED;
+    RETURNED;
 
     public static OrderStatus getDefault() {
         return PENDING;
