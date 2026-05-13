@@ -73,7 +73,14 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
         // Stock işlemi başarılı olduktan sonra order'ı kaydediyoruz
         Order savedOrder = IOrderRepository.save(order);
 
-        OrderCreated event = new OrderCreated();
+        OrderCreated event = new OrderCreated(
+                savedOrder.orderId(),
+                savedOrder.cartId(),
+                savedOrder.customerId(),
+                savedOrder.items(),
+                savedOrder.totalPrice(),
+                savedOrder.createdAt()
+        );
 
         domainEventsPublisher.publish(event);
 

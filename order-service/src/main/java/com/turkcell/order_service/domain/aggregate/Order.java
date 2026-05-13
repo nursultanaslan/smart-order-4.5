@@ -22,19 +22,24 @@ public class Order {
 
     private final Money totalPrice;
 
-    private final OffsetDateTime createdAt;
     private OrderStatus orderStatus;
     private final List<OrderLineItem> items;
 
-    private Order(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice,
-                  OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderLineItem> items) {
+    private final OffsetDateTime createdAt;
+    private final OffsetDateTime deliveredAt;
+    private final OffsetDateTime cancelledAt;
+
+    private Order(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice, OrderStatus orderStatus,
+                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt, OffsetDateTime cancelledAt) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.cartId = cartId;
         this.totalPrice = totalPrice;
-        this.createdAt = createdAt;
-        this.orderStatus = orderStatus != null ? orderStatus : OrderStatus.getDefault();
+        this.orderStatus = orderStatus;
         this.items = items;
+        this.createdAt = createdAt;
+        this.deliveredAt = deliveredAt;
+        this.cancelledAt = cancelledAt;
     }
 
     //CreateOrder Saga'sını başlatır.
@@ -51,22 +56,27 @@ public class Order {
                 customerId,
                 cartId,
                 totalPrice,
-                OffsetDateTime.now(),
                 OrderStatus.getDefault(),
-                items);
+                items,
+                OffsetDateTime.now(),
+                OffsetDateTime.now(),
+                OffsetDateTime.now()
+                );
     }
 
-    public static Order rehydrate(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice,
-                                  OffsetDateTime createdAt, OrderStatus orderStatus, List<OrderLineItem> items) {
-        return new Order(
-                orderId,
-                customerId,
-                cartId,
-                totalPrice,
-                createdAt,
-                orderStatus,
-                items
-        );
+    public static Order rehydrate(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice, OrderStatus orderStatus,
+                                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt, OffsetDateTime cancelledAt ) {
+       return new Order(
+               orderId,
+               customerId,
+               cartId,
+               totalPrice,
+               orderStatus,
+               items,
+               createdAt,
+               deliveredAt,
+               cancelledAt
+       );
     }
 
     // worker methods
@@ -79,29 +89,11 @@ public class Order {
     }
 
     // set status
-    //pending statusunden sonraki süreç.
-    public void markInProgress() {
-        this.orderStatus = OrderStatus.IN_PROGRESS;
-    }
-
     public void markCancelled() {
         if (orderStatus != OrderStatus.PENDING) {
             throw new IllegalStateException("Only pending orders can be marked as cancelled.");
         }
         this.orderStatus = OrderStatus.CANCELLED;
-    }
-
-    //sipariş teslim edildi -> tamamlandı olarak işaretlenir
-    public void markCompleted() {
-        this.orderStatus = OrderStatus.COMPLETED;
-    }
-
-
-    public void markClaimed() {
-        if (orderStatus != OrderStatus.COMPLETED) {
-            throw new IllegalStateException("Sipariş teslim alındıktan sonra iptal süreci başlatılabilir.");
-        }
-        this.orderStatus = OrderStatus.CLAIMED;
     }
 
     // validate methods - invariants
@@ -136,15 +128,23 @@ public class Order {
         return totalPrice;
     }
 
-    public OffsetDateTime createdAt() {
-        return createdAt;
-    }
-
     public OrderStatus orderStatus() {
         return orderStatus;
     }
 
     public List<OrderLineItem> items() {
         return Collections.unmodifiableList(items);
+    }
+
+    public OffsetDateTime createdAt() {
+        return createdAt;
+    }
+
+    public OffsetDateTime deliveredAt() {
+        return deliveredAt;
+    }
+
+    public OffsetDateTime cancelledAt() {
+        return cancelledAt;
     }
 }

@@ -1,6 +1,11 @@
 package com.turkcell.order_service.domain.event;
 
+import com.turkcell.order_service.domain.aggregate.OrderStatus;
+import com.turkcell.order_service.domain.aggregate.valueobjects.OrderId;
 import com.turkcell.order_service.domain.event.base.OrderDomainEvent;
 
-public class OrderConfirmed implements OrderDomainEvent {
+public record OrderConfirmed(
+        OrderId orderId,
+        OrderStatus status
+) implements OrderDomainEvent {
 }
