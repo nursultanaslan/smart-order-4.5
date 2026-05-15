@@ -22,7 +22,7 @@ public class OutboxMapper {
         orderOutboxEntity.setAggregateId(integrationEvent.orderId());
         orderOutboxEntity.setAggregateType("Order");
         orderOutboxEntity.setEventId(UUID.randomUUID());
-        orderOutboxEntity.setEventType("OrderCreated");
+        orderOutboxEntity.setEventType("OrderCreatedEvent");
         orderOutboxEntity.setPayloadJson(serializeEvent(integrationEvent));
         return orderOutboxEntity;
     }

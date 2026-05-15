@@ -7,7 +7,8 @@ public enum OrderStatus {
     SHIPPED,
     DELIVERED,
     CANCELLED,
-    RETURNED;
+    RETURNED,
+    COMPLETED;
 
     public static OrderStatus getDefault() {
         return PENDING;

@@ -59,8 +59,8 @@ public class Order {
                 OrderStatus.getDefault(),
                 items,
                 OffsetDateTime.now(),
-                OffsetDateTime.now(),
-                OffsetDateTime.now()
+                null,
+                null
                 );
     }
 

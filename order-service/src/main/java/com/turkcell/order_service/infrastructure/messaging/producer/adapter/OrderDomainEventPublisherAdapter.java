@@ -1,13 +1,13 @@
 package com.turkcell.order_service.infrastructure.messaging.producer.adapter;
 
-import com.turkcell.order_service.domain.event.OrderCreated;
-import com.turkcell.order_service.domain.repository.DomainEventsPublisher;
-import com.turkcell.order_service.infrastructure.messaging.producer.event.OrderCreatedIntegrationEvent;
-import com.turkcell.order_service.infrastructure.persistence.entity.outbox.OrderOutboxEntity;
+import com.turkcell.order_service.domain.event.base.DomainEvent;
+import com.turkcell.order_service.domain.repository.OrderDomainEventPublisher;
 import com.turkcell.order_service.infrastructure.persistence.mapper.IntegrationEventMapper;
 import com.turkcell.order_service.infrastructure.persistence.mapper.OutboxMapper;
 import com.turkcell.order_service.infrastructure.persistence.repository.OutboxRepository;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * Domain Events Publisher Adapter (OUTBOUND ADAPTER)
@@ -16,27 +16,20 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class DomainEventsPublisherAdapter implements DomainEventsPublisher {
+public class OrderDomainEventPublisherAdapter implements OrderDomainEventPublisher {
 
     private final OutboxRepository outboxRepository;
     private final OutboxMapper outboxMapper;
     private final IntegrationEventMapper integrationEventMapper;
 
-    public DomainEventsPublisherAdapter(OutboxRepository outboxRepository, OutboxMapper outboxMapper, IntegrationEventMapper integrationEventMapper) {
+    public OrderDomainEventPublisherAdapter(OutboxRepository outboxRepository, OutboxMapper outboxMapper, IntegrationEventMapper integrationEventMapper) {
         this.outboxRepository = outboxRepository;
         this.outboxMapper = outboxMapper;
         this.integrationEventMapper = integrationEventMapper;
     }
 
     @Override
-    public void publish(OrderCreated event) {
-
-        OrderCreatedIntegrationEvent orderIntegrationEvent =
-                integrationEventMapper.toIntegrationEvent(event);
-
-        OrderOutboxEntity orderOutboxEntity = outboxMapper.toOutbox(orderIntegrationEvent);
-
-        outboxRepository.save(orderOutboxEntity);
+    public void publish(List<DomainEvent> domainEvents) {
 
     }
 }

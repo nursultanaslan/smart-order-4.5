@@ -5,10 +5,10 @@ import com.turkcell.order_service.application.dto.response.CreateOrderResult;
 import com.turkcell.order_service.application.dto.response.ProductResponse;
 import com.turkcell.order_service.application.mapper.OrderMapper;
 import com.turkcell.order_service.core.cqrs.CommandHandler;
-import com.turkcell.order_service.domain.event.OrderCreated;
+import com.turkcell.order_service.domain.event.OrderCreatedEvent;
 import com.turkcell.order_service.domain.aggregate.Order;
 import com.turkcell.order_service.domain.aggregate.valueobjects.OrderLineItem;
-import com.turkcell.order_service.domain.repository.DomainEventsPublisher;
+import com.turkcell.order_service.domain.repository.OrderDomainEventPublisher;
 import com.turkcell.order_service.domain.repository.IOrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,14 +25,14 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
 
     private final IOrderRepository IOrderRepository;
     private final OrderMapper orderMapper;
-    private final DomainEventsPublisher domainEventsPublisher;
+    private final OrderDomainEventPublisher orderDomainEventPublisher;
     private final ProductClient productClient;
 
     public CreateOrderCommandHandler(IOrderRepository IOrderRepository, OrderMapper orderMapper,
-                                     DomainEventsPublisher domainEventsPublisher, ProductClient productClient) {
+                                     OrderDomainEventPublisher orderDomainEventPublisher, ProductClient productClient) {
         this.IOrderRepository = IOrderRepository;
         this.orderMapper = orderMapper;
-        this.domainEventsPublisher = domainEventsPublisher;
+        this.orderDomainEventPublisher = orderDomainEventPublisher;
         this.productClient = productClient;
     }
 
@@ -73,7 +73,7 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
         // Stock işlemi başarılı olduktan sonra order'ı kaydediyoruz
         Order savedOrder = IOrderRepository.save(order);
 
-        OrderCreated event = new OrderCreated(
+        OrderCreatedEvent event = new OrderCreatedEvent(
                 savedOrder.orderId(),
                 savedOrder.cartId(),
                 savedOrder.customerId(),
@@ -82,7 +82,7 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
                 savedOrder.createdAt()
         );
 
-        domainEventsPublisher.publish(event);
+        orderDomainEventPublisher.publish(event);
 
         return new CreateOrderResult(
                 savedOrder.orderId().value(),
