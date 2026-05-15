@@ -9,7 +9,7 @@ import com.turkcell.order_service.domain.event.base.OrderDomainEvent;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-public record OrderDelivered(
+public record OrderDeliveredEvent(
         OrderId orderId,
         OrderStatus status,
         List<OrderLineItem> lineItems,

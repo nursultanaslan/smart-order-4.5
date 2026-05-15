@@ -1,11 +1,17 @@
 package com.turkcell.order_service.domain.event;
 
 import com.turkcell.order_service.domain.aggregate.OrderStatus;
+import com.turkcell.order_service.domain.aggregate.valueobjects.Money;
 import com.turkcell.order_service.domain.aggregate.valueobjects.OrderId;
+import com.turkcell.order_service.domain.aggregate.valueobjects.OrderLineItem;
 import com.turkcell.order_service.domain.event.base.OrderDomainEvent;
 
-public record OrderReturnCompleted(
+import java.util.List;
+
+public record OrderShippedEvent(
         OrderId orderId,
-        OrderStatus status
+        OrderStatus status,
+        List<OrderLineItem> lineItems,
+        Money totalPrice
 ) implements OrderDomainEvent {
 }
