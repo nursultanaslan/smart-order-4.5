@@ -11,7 +11,7 @@
 
 	<artifactId>order-service</artifactId>
 	<name>SmartOrder Order Service</name>
-	<description>Order Processing Service</description>
+	<description>Order service manages all order processes</description>
 
 	<dependencies>
 
