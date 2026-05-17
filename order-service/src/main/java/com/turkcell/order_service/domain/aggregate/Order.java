@@ -1,16 +1,19 @@
 package com.turkcell.order_service.domain.aggregate;
 
 import com.turkcell.order_service.domain.aggregate.valueobjects.*;
+import com.turkcell.order_service.domain.event.OrderCreatedEvent;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
+
 /**
  * tüm güncellemeler sadece Aggregate Root üzerinden yapılır.
  * böylece Order'in iş kuralları her zaman korunur(kontrol edilip uygulandığı icin kural ihlal edilemez).
  * ve eş zamanlı güncellemeler kontrol altına alınır. version number (optimistic locking)/database lock (pessimistic locking)
- * */
+ *
+ */
 //Business Object
 //aggregate root : tüm iş kuralları burada yaşar
 public class Order {
@@ -29,13 +32,15 @@ public class Order {
     private final OffsetDateTime deliveredAt;
     private final OffsetDateTime cancelledAt;
 
+    private Long version;
+
     private Order(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice, OrderStatus orderStatus,
-                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt, OffsetDateTime cancelledAt) {
+                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt, OffsetDateTime cancelledAt,  Long version) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.cartId = cartId;
         this.totalPrice = totalPrice;
-        this.orderStatus = orderStatus;
+        this.orderStatus = OrderStatus.getDefault();
         this.items = items;
         this.createdAt = createdAt;
         this.deliveredAt = deliveredAt;
@@ -43,7 +48,7 @@ public class Order {
     }
 
     //CreateOrder Saga'sını başlatır.
-    public static Order create(CustomerId customerId, CartId cartId, List<OrderLineItem> items) {
+    public static OrderCreatedEvent create(CustomerId customerId, CartId cartId, List<OrderLineItem> items) {
         validateCurrencyConsistency(items);
 
         String currency = items.getFirst().currency();
@@ -51,32 +56,31 @@ public class Order {
                 .map(OrderLineItem::calculateLineTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         Money totalPrice = new Money(totalValue, currency);
-        return new Order(
+
+        return new OrderCreatedEvent(
                 OrderId.generate(),
-                customerId,
                 cartId,
-                totalPrice,
-                OrderStatus.getDefault(),
+                customerId,
                 items,
-                OffsetDateTime.now(),
-                null,
-                null
-                );
+                totalPrice,
+                OffsetDateTime.now()
+        );
     }
 
     public static Order rehydrate(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice, OrderStatus orderStatus,
-                                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt, OffsetDateTime cancelledAt ) {
-       return new Order(
-               orderId,
-               customerId,
-               cartId,
-               totalPrice,
-               orderStatus,
-               items,
-               createdAt,
-               deliveredAt,
-               cancelledAt
-       );
+                                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt, OffsetDateTime cancelledAt, Long version) {
+        return new Order(
+                orderId,
+                customerId,
+                cartId,
+                totalPrice,
+                orderStatus,
+                items,
+                createdAt,
+                deliveredAt,
+                cancelledAt,
+                version
+        );
     }
 
     // worker methods
@@ -90,7 +94,7 @@ public class Order {
 
     // set status
     public void markCancelled() {
-        if (orderStatus != OrderStatus.PENDING) {
+        if (orderStatus != OrderStatus.APPROVAL_PENDING) {
             throw new IllegalStateException("Only pending orders can be marked as cancelled.");
         }
         this.orderStatus = OrderStatus.CANCELLED;
@@ -146,5 +150,9 @@ public class Order {
 
     public OffsetDateTime cancelledAt() {
         return cancelledAt;
+    }
+
+    public Long version() {
+        return version;
     }
 }

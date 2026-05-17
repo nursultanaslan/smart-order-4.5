@@ -16,13 +16,13 @@ import java.util.List;
  */
 
 @Component
-public class OrderDomainEventPublisherAdapter implements OrderDomainEventPublisher {
+public class OrderDomainEventPublishingAdapter implements OrderDomainEventPublisher {
 
     private final OutboxRepository outboxRepository;
     private final OutboxMapper outboxMapper;
     private final IntegrationEventMapper integrationEventMapper;
 
-    public OrderDomainEventPublisherAdapter(OutboxRepository outboxRepository, OutboxMapper outboxMapper, IntegrationEventMapper integrationEventMapper) {
+    public OrderDomainEventPublishingAdapter(OutboxRepository outboxRepository, OutboxMapper outboxMapper, IntegrationEventMapper integrationEventMapper) {
         this.outboxRepository = outboxRepository;
         this.outboxMapper = outboxMapper;
         this.integrationEventMapper = integrationEventMapper;
