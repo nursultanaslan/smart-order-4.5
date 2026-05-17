@@ -2,6 +2,7 @@ package com.turkcell.order_service.domain.aggregate;
 
 import com.turkcell.order_service.domain.aggregate.valueobjects.*;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
+import com.turkcell.order_service.domain.event.base.ResultWithDomainEvents;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -34,8 +35,8 @@ public class Order {
 
     private Long version;
 
-    private Order(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice, OrderStatus orderStatus,
-                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt, OffsetDateTime cancelledAt,  Long version) {
+    private Order(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice,
+                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt, OffsetDateTime cancelledAt, Long version) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.cartId = cartId;
@@ -48,7 +49,7 @@ public class Order {
     }
 
     //CreateOrder Saga'sını başlatır.
-    public static OrderCreatedEvent create(CustomerId customerId, CartId cartId, List<OrderLineItem> items) {
+    public static ResultWithDomainEvents<Order, OrderCreatedEvent> create(CustomerId customerId, CartId cartId, List<OrderLineItem> items) {
         validateCurrencyConsistency(items);
 
         String currency = items.getFirst().currency();
@@ -56,25 +57,38 @@ public class Order {
                 .map(OrderLineItem::calculateLineTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         Money totalPrice = new Money(totalValue, currency);
-
-        return new OrderCreatedEvent(
+        Order order = new Order(
                 OrderId.generate(),
+                customerId,
+                cartId,
+                totalPrice,
+                items,
+                OffsetDateTime.now(),
+                null,
+                null,
+                0L
+        );
+
+        OrderCreatedEvent event = new OrderCreatedEvent(
+                order.orderId,
                 cartId,
                 customerId,
                 items,
                 totalPrice,
                 OffsetDateTime.now()
+
         );
+
+        return new ResultWithDomainEvents<>(order, event);
     }
 
-    public static Order rehydrate(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice, OrderStatus orderStatus,
+    public static Order rehydrate(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice,
                                   List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt, OffsetDateTime cancelledAt, Long version) {
         return new Order(
                 orderId,
                 customerId,
                 cartId,
                 totalPrice,
-                orderStatus,
                 items,
                 createdAt,
                 deliveredAt,
