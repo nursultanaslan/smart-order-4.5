@@ -13,9 +13,8 @@ import java.util.List;
  * tüm güncellemeler sadece Aggregate Root üzerinden yapılır.
  * böylece Order'in iş kuralları her zaman korunur(kontrol edilip uygulandığı icin kural ihlal edilemez).
  * ve eş zamanlı güncellemeler kontrol altına alınır. version number (optimistic locking)/database lock (pessimistic locking)
- *
  */
-//Business Object
+//Business Object : sadece business rules bilir.
 //aggregate root : tüm iş kuralları burada yaşar
 public class Order {
 
@@ -32,11 +31,13 @@ public class Order {
     private final OffsetDateTime createdAt;
     private final OffsetDateTime deliveredAt;
     private final OffsetDateTime cancelledAt;
+    private final OffsetDateTime updatedAt;
 
     private Long version;
 
     private Order(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice,
-                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt, OffsetDateTime cancelledAt, Long version) {
+                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt,
+                  OffsetDateTime cancelledAt, OffsetDateTime updatedAt, Long version) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.cartId = cartId;
@@ -46,10 +47,13 @@ public class Order {
         this.createdAt = createdAt;
         this.deliveredAt = deliveredAt;
         this.cancelledAt = cancelledAt;
+        this.updatedAt = updatedAt;
+        this.version = version;
     }
 
     //CreateOrder Saga'sını başlatır.
-    public static ResultWithDomainEvents<Order, OrderCreatedEvent> create(CustomerId customerId, CartId cartId, List<OrderLineItem> items) {
+    public static ResultWithDomainEvents<Order, OrderCreatedEvent>
+            create(CustomerId customerId, CartId cartId, List<OrderLineItem> items) {
         validateCurrencyConsistency(items);
 
         String currency = items.getFirst().currency();
@@ -64,6 +68,7 @@ public class Order {
                 totalPrice,
                 items,
                 OffsetDateTime.now(),
+                null,
                 null,
                 null,
                 0L
@@ -83,7 +88,8 @@ public class Order {
     }
 
     public static Order rehydrate(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice,
-                                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt, OffsetDateTime cancelledAt, Long version) {
+                                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt,
+                                  OffsetDateTime cancelledAt, OffsetDateTime updatedAt, Long version) {
         return new Order(
                 orderId,
                 customerId,
@@ -93,25 +99,34 @@ public class Order {
                 createdAt,
                 deliveredAt,
                 cancelledAt,
+                updatedAt,
                 version
         );
     }
 
-    // worker methods
-    public Money calculateOrderTotalPrice() {
-        BigDecimal totalValue = items.stream()
+    // domain behaviors/worker methods/business logic
+
+    public void confirm() {
+    }
+
+    public void preparing() {
+
+    }
+
+    public void shipped() {
+
+    }
+
+    public void cancel() {
+
+    }
+
+    public Money getOrderTotal(){
+        BigDecimal totalPrice = items.stream()
                 .map(OrderLineItem::calculateLineTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         String currency = items.getFirst().currency();
-        return new Money(totalValue, currency);
-    }
-
-    // set status
-    public void markCancelled() {
-        if (orderStatus != OrderStatus.APPROVAL_PENDING) {
-            throw new IllegalStateException("Only pending orders can be marked as cancelled.");
-        }
-        this.orderStatus = OrderStatus.CANCELLED;
+        return new Money(totalPrice, currency);
     }
 
     // validate methods - invariants
@@ -164,6 +179,10 @@ public class Order {
 
     public OffsetDateTime cancelledAt() {
         return cancelledAt;
+    }
+
+    public OffsetDateTime updatedAt() {
+        return updatedAt;
     }
 
     public Long version() {
