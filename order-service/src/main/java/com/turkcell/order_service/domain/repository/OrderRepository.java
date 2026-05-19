@@ -6,7 +6,7 @@ import com.turkcell.order_service.domain.aggregate.valueobjects.OrderId;
 import java.util.List;
 import java.util.Optional;
 
-public interface IOrderRepository {
+public interface OrderRepository {
     Order save(Order order);
     List<Order> findAll();
     Optional<Order> findById(OrderId orderId);

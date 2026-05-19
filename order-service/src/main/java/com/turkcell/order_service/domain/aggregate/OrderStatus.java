@@ -3,7 +3,7 @@ package com.turkcell.order_service.domain.aggregate;
 public enum OrderStatus {
     APPROVAL_PENDING,
     APPROVED,
-    PREPARED,
+    PREPARING,
     SHIPPED,
     DELIVERED,
     CANCEL_PENDING,
