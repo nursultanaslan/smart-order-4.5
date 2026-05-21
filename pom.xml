@@ -24,6 +24,7 @@
         <module>product-service</module>
         <module>payment-service</module>
         <module>inventory-service</module>
+        <module>return-service</module>
     </modules>
 
     <properties>
