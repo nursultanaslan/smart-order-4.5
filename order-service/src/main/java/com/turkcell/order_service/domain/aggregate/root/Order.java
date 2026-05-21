@@ -1,5 +1,6 @@
-package com.turkcell.order_service.domain.aggregate;
+package com.turkcell.order_service.domain.aggregate.root;
 
+import com.turkcell.order_service.domain.aggregate.enums.OrderStatus;
 import com.turkcell.order_service.domain.aggregate.valueobjects.*;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
 import com.turkcell.order_service.domain.event.base.ResultWithDomainEvents;
@@ -51,7 +52,7 @@ public class Order {
         this.version = version;
     }
 
-    //CreateOrder Saga'sını başlatır.
+    //Create Order Saga'sını başlatır.
     public static ResultWithDomainEvents<Order, OrderCreatedEvent>
             create(CustomerId customerId, CartId cartId, List<OrderLineItem> items) {
         validateCurrencyConsistency(items);
@@ -106,9 +107,6 @@ public class Order {
 
     // domain behaviors/worker methods/business logic
 
-    public void confirm() {
-    }
-
     public void preparing() {
 
     }
@@ -118,6 +116,10 @@ public class Order {
     }
 
     public void cancel() {
+
+    }
+
+    public void returnOrder(){
 
     }
 
