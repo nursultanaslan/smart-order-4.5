@@ -6,7 +6,7 @@ import com.turkcell.order_service.application.dto.response.ProductResponse;
 import com.turkcell.order_service.application.mapper.OrderMapper;
 import com.turkcell.order_service.core.cqrs.CommandHandler;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
-import com.turkcell.order_service.domain.aggregate.Order;
+import com.turkcell.order_service.domain.aggregate.root.Order;
 import com.turkcell.order_service.domain.aggregate.valueobjects.OrderLineItem;
 import com.turkcell.order_service.domain.repository.OrderDomainEventPublisher;
 import com.turkcell.order_service.domain.repository.OrderRepository;

@@ -1,6 +1,6 @@
 package com.turkcell.order_service.infrastructure.persistence.entity.order;
 
-import com.turkcell.order_service.domain.aggregate.OrderStatus;
+import com.turkcell.order_service.domain.aggregate.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

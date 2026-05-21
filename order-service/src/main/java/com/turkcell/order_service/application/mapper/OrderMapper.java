@@ -4,7 +4,7 @@ import com.turkcell.order_service.application.command.CreateOrderCommand;
 import com.turkcell.order_service.application.dto.request.OrderItemDto;
 import com.turkcell.order_service.domain.aggregate.valueobjects.CartId;
 import com.turkcell.order_service.domain.aggregate.valueobjects.CustomerId;
-import com.turkcell.order_service.domain.aggregate.Order;
+import com.turkcell.order_service.domain.aggregate.root.Order;
 import com.turkcell.order_service.domain.aggregate.valueobjects.OrderLineItem;
 import org.springframework.stereotype.Component;
 
