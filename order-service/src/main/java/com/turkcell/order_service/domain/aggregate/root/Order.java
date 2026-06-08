@@ -52,7 +52,7 @@ public class Order {
         this.version = version;
     }
 
-    //Create Order Saga'sını başlatır.
+    //Create Order Saga'sını başlatır. (factory method)
     public static ResultWithDomainEvents<Order, OrderCreatedEvent>
             create(CustomerId customerId, CartId cartId, List<OrderLineItem> items) {
         validateCurrencyConsistency(items);
@@ -121,6 +121,12 @@ public class Order {
 
     public void returnOrder(){
 
+    }
+
+    public void noteApproved() {
+    }
+    
+    public void noteRejected() {
     }
 
     public Money getOrderTotal(){
