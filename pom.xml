@@ -25,6 +25,7 @@
         <module>payment-service</module>
         <module>inventory-service</module>
         <module>return-service</module>
+        <module>shipment-service</module>
     </modules>
 
     <parent>
