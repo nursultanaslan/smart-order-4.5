@@ -6,8 +6,8 @@ import com.turkcell.order_service.domain.event.OrderCreatedEvent;
 import com.turkcell.order_service.domain.event.base.ResultWithDomainEvents;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,10 +16,11 @@ import java.util.List;
  * ve eş zamanlı güncellemeler kontrol altına alınır. version number (optimistic locking)/database lock (pessimistic locking)
  */
 //Business Object : sadece business rules bilir.
-//aggregate root : tüm iş kuralları burada yaşar
+//Aggregate Root : tüm iş kuralları burada yaşar.
 public class Order {
 
-    private final OrderId orderId;
+    private final OrderId orderId;          //technical identifier
+    private final OrderNumber orderNumber;  //business identifier
 
     private final CustomerId customerId;
     private final CartId cartId;
@@ -29,17 +30,18 @@ public class Order {
     private OrderStatus orderStatus;
     private final List<OrderLineItem> items;
 
-    private final OffsetDateTime createdAt;
-    private final OffsetDateTime deliveredAt;
-    private final OffsetDateTime cancelledAt;
-    private final OffsetDateTime updatedAt;
+    private final Instant createdAt;
+    private final Instant deliveredAt;
+    private final Instant cancelledAt;
+    private Instant updatedAt;
 
     private Long version;
 
-    private Order(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice,
-                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt,
-                  OffsetDateTime cancelledAt, OffsetDateTime updatedAt, Long version) {
+    private Order(OrderId orderId, OrderNumber orderNumber, CustomerId customerId, CartId cartId, Money totalPrice,
+                  List<OrderLineItem> items, Instant createdAt, Instant deliveredAt,
+                  Instant cancelledAt, Instant updatedAt, Long version) {
         this.orderId = orderId;
+        this.orderNumber = orderNumber;
         this.customerId = customerId;
         this.cartId = cartId;
         this.totalPrice = totalPrice;
@@ -62,13 +64,15 @@ public class Order {
                 .map(OrderLineItem::calculateLineTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         Money totalPrice = new Money(totalValue, currency);
+
         Order order = new Order(
                 OrderId.generate(),
+                OrderNumber.generate(),
                 customerId,
                 cartId,
                 totalPrice,
                 items,
-                OffsetDateTime.now(),
+                Instant.now(),
                 null,
                 null,
                 null,
@@ -88,11 +92,12 @@ public class Order {
         return new ResultWithDomainEvents<>(order, event);
     }
 
-    public static Order rehydrate(OrderId orderId, CustomerId customerId, CartId cartId, Money totalPrice,
-                                  List<OrderLineItem> items, OffsetDateTime createdAt, OffsetDateTime deliveredAt,
-                                  OffsetDateTime cancelledAt, OffsetDateTime updatedAt, Long version) {
+    public static Order rehydrate(OrderId orderId, OrderNumber orderNumber, CustomerId customerId, CartId cartId, Money totalPrice,
+                                  List<OrderLineItem> items, Instant createdAt, Instant deliveredAt,
+                                  Instant cancelledAt, Instant updatedAt, Long version) {
         return new Order(
                 orderId,
+                orderNumber,
                 customerId,
                 cartId,
                 totalPrice,
@@ -106,27 +111,74 @@ public class Order {
     }
 
     // domain behaviors/worker methods/business logic
-
+    //sipariş hazırlanıyor
     public void preparing() {
-
+        if (orderStatus == OrderStatus.APPROVED) {
+            this.orderStatus = OrderStatus.PREPARING;
+        } else {
+            throw new IllegalArgumentException("Order status cannot be preparing");
+        }
+        this.updatedAt = Instant.now();
     }
 
+    //sipariş kargoya verildi.
     public void shipped() {
 
+
     }
 
+    //sipariş iptal edildi.
+    //sipariş oluşturulduktan sonra 15 dakika içerisinde iptal edilebilir.
+    //siparişi oluşturdun ve bir anda karar degiştirdin -> iptal etmek istedin -> 15 dkn var.
+    //siparişi oluşturduktan sonra 15 dk geçmiş ise artık iptal edilemez.
     public void cancel() {
-
+        if (orderStatus == OrderStatus.APPROVED) {
+            this.orderStatus = OrderStatus.CANCEL_PENDING;
+        }else {
+            //TODO: UnsupportedStateTransitionException
+            throw new IllegalArgumentException("Order status cannot be cancelled");
+        }
     }
 
+    public void undoPendingCancel() {
+        if (orderStatus == OrderStatus.CANCEL_PENDING) {
+            this.orderStatus = OrderStatus.APPROVED;
+        }else  {
+            throw new IllegalArgumentException("Order status cannot be undo pending cancel");
+        }
+    }
+
+    public void noteCancelled() {
+        if (orderStatus == OrderStatus.CANCEL_PENDING) {
+            this.orderStatus = OrderStatus.CANCELLED;
+        }else  {
+            throw new IllegalArgumentException("Order status cannot be cancelled");
+        }
+    }
+
+    public void noteApproved() {
+        if (orderStatus == OrderStatus.APPROVAL_PENDING) {
+            this.orderStatus = OrderStatus.APPROVED;
+        }else   {
+            throw new IllegalArgumentException("Order status cannot be approved");
+        }
+    }
+
+    public void noteRejected() {
+        if (orderStatus == OrderStatus.APPROVAL_PENDING) {
+            this.orderStatus = OrderStatus.REJECTED;
+        } else  {
+            throw new IllegalArgumentException("Order status cannot be rejected");
+        }
+    }
+
+    //siparişi iade et. sipariş teslim edildi -> deliveredAt tarihinden sonra 14 gün içerisinde
     public void returnOrder(){
 
     }
 
-    public void noteApproved() {
-    }
-    
-    public void noteRejected() {
+    public void calcReturnDeadline() {
+
     }
 
     public Money getOrderTotal(){
@@ -153,8 +205,13 @@ public class Order {
     }
 
     // getters
+
     public OrderId orderId() {
         return orderId;
+    }
+
+    public OrderNumber orderNumber() {
+        return orderNumber;
     }
 
     public CustomerId customerId() {
@@ -174,22 +231,22 @@ public class Order {
     }
 
     public List<OrderLineItem> items() {
-        return Collections.unmodifiableList(items);
+        return items;
     }
 
-    public OffsetDateTime createdAt() {
+    public Instant createdAt() {
         return createdAt;
     }
 
-    public OffsetDateTime deliveredAt() {
+    public Instant deliveredAt() {
         return deliveredAt;
     }
 
-    public OffsetDateTime cancelledAt() {
+    public Instant cancelledAt() {
         return cancelledAt;
     }
 
-    public OffsetDateTime updatedAt() {
+    public Instant updatedAt() {
         return updatedAt;
     }
 
