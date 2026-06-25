@@ -9,6 +9,7 @@ public enum OrderStatus {
     DELIVERED,      //shipment serviceten gelen CARGODELIVERED eventinden sonra Order statusu DELIVERED olarak ayarlanır.
     CANCEL_PENDING,
     CANCELLED,
+    RETURN_REQUESTED,
     RETURNED,
     COMPLETED;     //İade süresi doldu herhangi bir iade işlemi yapılmadı -> sipariş tamamlandı olarak işaretlenir.
 

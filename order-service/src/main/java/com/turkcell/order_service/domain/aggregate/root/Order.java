@@ -4,12 +4,14 @@ import com.turkcell.order_service.domain.aggregate.enums.OrderStatus;
 import com.turkcell.order_service.domain.aggregate.valueobjects.*;
 import com.turkcell.order_service.domain.event.OrderCreatedEvent;
 import com.turkcell.order_service.domain.event.base.ResultWithDomainEvents;
+import com.turkcell.order_service.domain.exception.ReturnPeriodExpiredException;
 import com.turkcell.order_service.domain.exception.UnsupportedStateTransitionException;
 
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,6 +29,8 @@ public class Order {
     private final CustomerId customerId;
     private final CartId cartId;
 
+    private final Money totalPrice;
+
     private OrderStatus orderStatus;
     private final List<OrderLineItem> items;
 
@@ -38,12 +42,13 @@ public class Order {
     private Long version;
 
     private Order(OrderId orderId, OrderNumber orderNumber, CustomerId customerId, CartId cartId,
-                  List<OrderLineItem> items, Instant createdAt, Instant deliveredAt,
+                  Money totalPrice, List<OrderLineItem> items, Instant createdAt, Instant deliveredAt,
                   Instant cancelledAt, Instant updatedAt, Long version) {
         this.orderId = orderId;
         this.orderNumber = orderNumber;
         this.customerId = customerId;
         this.cartId = cartId;
+        this.totalPrice = totalPrice;
         this.orderStatus = OrderStatus.getDefault();
         this.items = items;
         this.createdAt = createdAt;
@@ -69,6 +74,7 @@ public class Order {
                 OrderNumber.generate(),
                 customerId,
                 cartId,
+                totalPrice,
                 items,
                 Instant.now(),
                 null,
@@ -91,13 +97,14 @@ public class Order {
     }
 
     public static Order rehydrate(OrderId orderId, OrderNumber orderNumber, CustomerId customerId, CartId cartId,
-                                  List<OrderLineItem> items, Instant createdAt, Instant deliveredAt,
+                                  Money totalPrice, List<OrderLineItem> items, Instant createdAt, Instant deliveredAt,
                                   Instant cancelledAt, Instant updatedAt, Long version) {
         return new Order(
                 orderId,
                 orderNumber,
                 customerId,
                 cartId,
+                totalPrice,
                 items,
                 createdAt,
                 deliveredAt,
@@ -108,6 +115,7 @@ public class Order {
     }
 
     // domain behaviors/worker methods/business logic
+
     //sipariş hazırlanıyor. ödeme onaylandıktan (payment confirmed) sonra çağrılır.
     public void preparing() {
         if (orderStatus == OrderStatus.APPROVED) {
@@ -119,9 +127,14 @@ public class Order {
     }
 
     //sipariş kargoya verildi.
+    //ödeme alınmıştır -> sipariş APPROVED olmuştur -> hazırlanmıştır -> kargoya verilebilir.
     public void shipped() {
-
-
+        if (orderStatus == OrderStatus.PREPARING) {
+            this.orderStatus = OrderStatus.SHIPPED;
+        } else  {
+            throw new UnsupportedStateTransitionException(orderStatus);
+        }
+        this.updatedAt = Instant.now();
     }
 
     //sipariş iptal edildi -> stok geri eklenir -> ödeme iade süreci tetiklenir
@@ -134,15 +147,34 @@ public class Order {
         }else {
             throw new UnsupportedStateTransitionException(orderStatus);
         }
+        //createdAt kontrolu, duration check
+        Instant cancelDeadline = createdAt.plus(Duration.ofMinutes(15));
+        if( Instant.now() != cancelDeadline ) {
+            throw new IllegalArgumentException("iptal etmek için süre doldu!");
+        }
+        this.updatedAt = Instant.now();
     }
 
-    //cancel işlemini geri al.
-    public void undoPendingCancel() {
-        if (orderStatus == OrderStatus.CANCEL_PENDING) {
-            this.orderStatus = OrderStatus.APPROVED;
-        }else  {
-            throw new UnsupportedStateTransitionException(orderStatus);
+    //sipariş teslim edilmiştir. -> iade süresi dolmustur -> herhangi bir iade yapılmamıstır
+    // 14 günün sonunda order COMPLETED olarak işaretlenir.
+    //TODO: nasıl tetiklenecek & herhangi bir noktayı tetiklemesi gerekecek mi?
+    public void complete() {
+        if (Instant.now().isBefore(deliveredAt.plus(Duration.ofDays(14)))) {
+            throw new IllegalArgumentException("iade süresi doldu!");
         }
+        if (orderStatus != OrderStatus.DELIVERED) {
+            throw new IllegalArgumentException("teslim edilmemiş bir sipariş tamamlandı olarak işaretlenemez");
+        }
+        this.orderStatus = OrderStatus.COMPLETED;
+        this.updatedAt = Instant.now();
+    }
+
+    //shipment service'ten gelen eventle tetiklenir ve order DELIVERED olarak işaretlenir.
+    public void delivered() {
+        if (orderStatus == OrderStatus.SHIPPED) {
+            this.orderStatus = OrderStatus.DELIVERED;
+        }
+        this.updatedAt = Instant.now();
     }
 
     //TODO:Event fırlat.
@@ -153,6 +185,8 @@ public class Order {
         }else  {
             throw new UnsupportedStateTransitionException(orderStatus);
         }
+        this.cancelledAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
     //TODO:Event fırlat.
@@ -163,6 +197,7 @@ public class Order {
         }else   {
             throw new UnsupportedStateTransitionException(orderStatus);
         }
+        this.updatedAt = Instant.now();
     }
 
     //TODO:Event fırlat.
@@ -173,16 +208,33 @@ public class Order {
         } else  {
             throw new UnsupportedStateTransitionException(orderStatus);
         }
+        this.updatedAt = Instant.now();
+    }
+
+    //TODO:Event fırlat.
+    //iade kabul edildi -> geri ödeme (refund) yapıldı.
+    public void noteReturned(){
+        if (orderStatus == OrderStatus.RETURN_REQUESTED) {
+            this.orderStatus = OrderStatus.RETURNED;
+        }else   {
+            throw new UnsupportedStateTransitionException(orderStatus);
+        }
+        this.updatedAt = Instant.now();
     }
 
     //siparişi iade et.
     // sipariş teslim edildi -> deliveredAt tarihinden sonra 14 gün içerisinde
+    //
     public void returnOrder(){
-
-    }
-
-    public Instant calcReturnDeadline() {
-        return deliveredAt.plus(Duration.ofDays(14));
+        if(orderStatus == OrderStatus.DELIVERED) {
+            this.orderStatus = OrderStatus.RETURN_REQUESTED;
+        }
+        Instant returnDeadline = deliveredAt.plus(Duration.ofDays(14));
+        if (Instant.now().isAfter(returnDeadline)) {
+            throw new ReturnPeriodExpiredException("iade süresi doldu.");
+        }
+        this.orderStatus = OrderStatus.RETURN_REQUESTED;
+        this.updatedAt = Instant.now();
     }
 
     public Money getOrderTotal(){
@@ -225,12 +277,16 @@ public class Order {
         return cartId;
     }
 
+    public Money getTotalPrice() {
+        return totalPrice;
+    }
+
     public OrderStatus getOrderStatus() {
         return orderStatus;
     }
 
     public List<OrderLineItem> getItems() {
-        return items;
+        return Collections.unmodifiableList(items);
     }
 
     public Instant getCreatedAt() {
