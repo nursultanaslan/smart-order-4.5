@@ -181,14 +181,15 @@ public class Order {
     }
 
     //sipariş iptal edildi.
-    public void noteCancelled() {
-        if (orderStatus == OrderStatus.CANCEL_PENDING) {
-            this.orderStatus = OrderStatus.CANCELLED;
-        } else {
+    //PaymentRefundCompletedEvent eventi ile tetiklenir.
+    public OrderCancelledEvent noteCancelled() {
+        if (orderStatus != OrderStatus.CANCEL_PENDING) {
             throw new UnsupportedStateTransitionException(orderStatus);
         }
+        this.orderStatus = OrderStatus.CANCELLED;
         this.cancelledAt = Instant.now();
         this.updatedAt = Instant.now();
+        return new OrderCancelledEvent();
     }
 
     //sipariş onaylandı.
@@ -241,7 +242,7 @@ public class Order {
         return new OrderReturnRequestedEvent();
     }
 
-    public Money getOrderTotal() {
+    private Money getOrderTotal() {
         BigDecimal totalPrice = items.stream()
                 .map(OrderLineItem::calculateLineTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
