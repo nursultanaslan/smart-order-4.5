@@ -171,9 +171,10 @@ public class Order {
     //shipment service'ten gelen ShipmentDeliveredEventle tetiklenir ve order DELIVERED olarak işaretlenir.
     //OrderDeliveredEvent yayınlar
     public OrderDeliveredEvent delivered() {
-        if (orderStatus == OrderStatus.SHIPPED) {
-            this.orderStatus = OrderStatus.DELIVERED;
+        if (orderStatus != OrderStatus.SHIPPED) {
+            throw new  UnsupportedStateTransitionException(orderStatus);
         }
+        this.orderStatus = OrderStatus.DELIVERED;
         this.updatedAt = Instant.now();
         return new OrderDeliveredEvent();
     }
