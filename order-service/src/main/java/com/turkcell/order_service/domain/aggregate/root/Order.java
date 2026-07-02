@@ -4,7 +4,8 @@ import com.turkcell.order_service.domain.aggregate.enums.OrderStatus;
 import com.turkcell.order_service.domain.aggregate.valueobjects.*;
 import com.turkcell.order_service.domain.event.*;
 import com.turkcell.order_service.domain.event.base.ResultWithDomainEvents;
-import com.turkcell.order_service.domain.exception.UnsupportedStateTransitionException;
+import com.turkcell.order_service.domain.exception.OrderCannotBeCancelledException;
+import com.turkcell.order_service.domain.exception.UnsupportedOrderStateTransitionException;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -60,6 +61,7 @@ public class Order {
     //Create Order Saga'sını başlatır. (factory method)
     public static ResultWithDomainEvents<Order, OrderCreatedEvent>
     create(CustomerId customerId, CartId cartId, List<OrderLineItem> items) {
+        validateLineItems(items);
         validateCurrencyConsistency(items);
 
         String currency = items.getFirst().currency();
@@ -120,7 +122,7 @@ public class Order {
         if (orderStatus == OrderStatus.APPROVED) {
             this.orderStatus = OrderStatus.PREPARING;
         } else {
-            throw new UnsupportedStateTransitionException(orderStatus);
+            throw new UnsupportedOrderStateTransitionException(orderStatus);
         }
         this.updatedAt = Instant.now();
     }
@@ -131,7 +133,7 @@ public class Order {
         if (orderStatus == OrderStatus.PREPARING) {
             this.orderStatus = OrderStatus.SHIPPED;
         } else {
-            throw new UnsupportedStateTransitionException(orderStatus);
+            throw new UnsupportedOrderStateTransitionException(orderStatus);
         }
         this.updatedAt = Instant.now();
         return new OrderShippedEvent();
@@ -144,7 +146,7 @@ public class Order {
     //sipariş hazırlanmaya başlanmışsa da iptal edilemez.
     public void cancel() {
         if (orderStatus != OrderStatus.APPROVED) {
-            throw new UnsupportedStateTransitionException(orderStatus);
+            throw new UnsupportedOrderStateTransitionException(orderStatus);
         }
         validateCancelDeadline(this.createdAt);
         this.orderStatus = OrderStatus.CANCEL_PENDING;
@@ -172,7 +174,7 @@ public class Order {
     //OrderDeliveredEvent yayınlar
     public OrderDeliveredEvent delivered() {
         if (orderStatus != OrderStatus.SHIPPED) {
-            throw new  UnsupportedStateTransitionException(orderStatus);
+            throw new UnsupportedOrderStateTransitionException(orderStatus);
         }
         this.orderStatus = OrderStatus.DELIVERED;
         this.updatedAt = Instant.now();
@@ -183,7 +185,7 @@ public class Order {
     //PaymentRefundCompletedEvent eventi ile tetiklenir.
     public OrderCancelledEvent noteCancelled() {
         if (orderStatus != OrderStatus.CANCEL_PENDING) {
-            throw new UnsupportedStateTransitionException(orderStatus);
+            throw new UnsupportedOrderStateTransitionException(orderStatus);
         }
         this.orderStatus = OrderStatus.CANCELLED;
         this.cancelledAt = Instant.now();
@@ -195,7 +197,7 @@ public class Order {
     //payment saga başarılıdır. PaymentAuthorizedEventi dinler -> OrderApprovedEvent yayınlar.
     public OrderApprovedEvent noteApproved() {
         if (orderStatus != OrderStatus.APPROVAL_PENDING) {
-            throw new UnsupportedStateTransitionException(orderStatus);
+            throw new UnsupportedOrderStateTransitionException(orderStatus);
         }
         this.orderStatus = OrderStatus.APPROVED;
         this.updatedAt = Instant.now();
@@ -212,7 +214,7 @@ public class Order {
     //ödeme alınamadı -> PaymentFailedEvent'i dinler -> OrderRejectedEvent yayınlar.
     public OrderRejectedEvent noteRejected() {
         if (orderStatus != OrderStatus.APPROVAL_PENDING) {
-            throw new UnsupportedStateTransitionException(orderStatus);
+            throw new UnsupportedOrderStateTransitionException(orderStatus);
         }
         this.orderStatus = OrderStatus.REJECTED;
         this.updatedAt = Instant.now();
@@ -223,7 +225,7 @@ public class Order {
     //OrderReturnCompletedEvent yayınlanır.
     public OrderReturnCompletedEvent noteReturned() {
         if (orderStatus != OrderStatus.RETURN_REQUESTED) {
-            throw new UnsupportedStateTransitionException(orderStatus);
+            throw new UnsupportedOrderStateTransitionException(orderStatus);
         }
         this.orderStatus = OrderStatus.RETURNED;
         this.updatedAt = Instant.now();
@@ -251,10 +253,6 @@ public class Order {
 
     // validate methods - invariants
     public static void validateCurrencyConsistency(List<OrderLineItem> items) {
-        if (items == null || items.isEmpty()) {
-            throw new IllegalArgumentException("Order items cannot be null or empty");
-        }
-
         String firstCurrency = items.getFirst().currency();
         boolean allSameCurrency = items.stream()
                 .allMatch(item -> firstCurrency.equals(item.currency()));
@@ -263,11 +261,18 @@ public class Order {
             throw new IllegalArgumentException("All order items must have the same currency");
         }
     }
+
+    public static void validateLineItems(List<OrderLineItem> items) {
+        if (items == null || items.isEmpty()) {
+            throw new IllegalArgumentException("Order en az bir OrderLine içermelidir");
+        }
+    }
+
     public static void validateCancelDeadline(Instant createdAt) {
         //createdAt kontrolu, duration check
         Instant cancelDeadline = createdAt.plus(Duration.ofMinutes(15));
         if (Instant.now().isAfter(cancelDeadline)) {
-            throw new IllegalArgumentException("iptal etmek için süre doldu!");
+            throw new OrderCannotBeCancelledException("şipariş iptal edilemez!");
         }
     }
 
