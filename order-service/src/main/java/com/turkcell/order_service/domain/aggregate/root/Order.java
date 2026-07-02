@@ -4,7 +4,6 @@ import com.turkcell.order_service.domain.aggregate.enums.OrderStatus;
 import com.turkcell.order_service.domain.aggregate.valueobjects.*;
 import com.turkcell.order_service.domain.event.*;
 import com.turkcell.order_service.domain.event.base.ResultWithDomainEvents;
-import com.turkcell.order_service.domain.exception.ReturnPeriodExpiredException;
 import com.turkcell.order_service.domain.exception.UnsupportedStateTransitionException;
 
 import java.math.BigDecimal;
@@ -142,22 +141,21 @@ public class Order {
     //sipariş oluşturulduktan sonra 15 dakika içerisinde iptal edilebilir.
     //siparişi oluşturdun ve bir anda karar degiştirdin -> iptal etmek istedin -> 15 dkn var.
     //siparişi oluşturduktan sonra 15 dk geçmiş ise artık iptal edilemez.
+    //sipariş hazırlanmaya başlanmışsa da iptal edilemez.
     public void cancel() {
-        if (orderStatus == OrderStatus.APPROVED) {
-            this.orderStatus = OrderStatus.CANCEL_PENDING;
-        } else {
+        if (orderStatus != OrderStatus.APPROVED) {
             throw new UnsupportedStateTransitionException(orderStatus);
         }
-        //createdAt kontrolu, duration check
-        Instant cancelDeadline = createdAt.plus(Duration.ofMinutes(15));
-        if (Instant.now() != cancelDeadline) {
-            throw new IllegalArgumentException("iptal etmek için süre doldu!");
-        }
+        validateCancelDeadline(this.createdAt);
+        this.orderStatus = OrderStatus.CANCEL_PENDING;
         this.updatedAt = Instant.now();
     }
 
     //sipariş teslim edilmiştir. -> iade süresi dolmustur -> herhangi bir iade yapılmamıstır
     // 14 günün sonunda order COMPLETED olarak işaretlenir.
+    //deliveredAt null riski var.
+    //method ismi kontrolü
+    //exception mesajı kontrolü
     //TODO: nasıl tetiklenecek & herhangi bir noktayı tetiklemesi gerekecek mi?
     public void complete() {
         if (Instant.now().isBefore(deliveredAt.plus(Duration.ofDays(14)))) {
@@ -262,6 +260,13 @@ public class Order {
 
         if (!allSameCurrency) {
             throw new IllegalArgumentException("All order items must have the same currency");
+        }
+    }
+    public static void validateCancelDeadline(Instant createdAt) {
+        //createdAt kontrolu, duration check
+        Instant cancelDeadline = createdAt.plus(Duration.ofMinutes(15));
+        if (Instant.now().isAfter(cancelDeadline)) {
+            throw new IllegalArgumentException("iptal etmek için süre doldu!");
         }
     }
 
